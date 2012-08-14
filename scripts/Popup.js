@@ -6,11 +6,8 @@ function WIZPlugin() {
 	 */
 	function autoLogin(cookie) {
 		isAutoLogin = true;
-		// chrome.cookies.get({
-		// url : mainUrl,
-		// name : "wiz-clip-auth"
-		// }, function(cookie) {
-		// if (cookie) {
+		$("#waiting").fadeIn();
+		
 		var info = cookie.value;
 		var split_count = info.indexOf("*md5");
 		var loginParam = new Object();
@@ -19,8 +16,6 @@ function WIZPlugin() {
 		loginParam.user_id = info.substring(0, split_count);
 		loginParam.password = info.substring(split_count + 1);
 		login(loginParam);
-		// }
-		// });
 	}
 
 	function login(loginParam) {
@@ -50,12 +45,12 @@ function WIZPlugin() {
 			//返回错误
 			else {
 				if (msg == false) {
-					$("#wiz_login").css("display", "block");
-					$("#wiz_clip_detail").css("display", "none");
+					$("#wiz_login").fadeIn();
+					$("#wiz_clip_detail").hide();
 					document.getElementById("div_error_validator").innerText = "network is wrong"
 				} else {
-					$("#wiz_login").css("display", "block");
-					$("#wiz_clip_detail").css("display", "none");
+					$("#wiz_login").fadeIn();
+					$("#wiz_clip_detail").hide();
 					document.getElementById("div_error_validator").innerText = msg;
 				}
 			}
@@ -143,15 +138,6 @@ window.onload = function() {
 	var plugin = new WIZPlugin();
 	var url = mainUrl;
 	plugin.getCookies(url, "wiz-clip-auth", showByCookies);
-	// var cookies = plugin.getCookies(url, "wiz-clip-auth");
-	// if (cookies) {
-	// $("#wiz_login").css("display", "none");
-	// $("#wiz_clip_detail").css("display", "block");
-	// } else {
-	// $("#wiz_login").css("display", "block");
-	// $("#wiz_clip_detail").css("display", "none");
-	// }
-	// $("#waiting").hide();
 	// We need this so the extension knows when this window's been dismissed (by virtue of this conenction dying).
 	chrome.extension.connect({
 		name : "popupClosed"
@@ -159,12 +145,12 @@ window.onload = function() {
 
 	function showByCookies(cookies) {
 		if (cookies) {
-			$("#wiz_login").css("display", "none");
-			$("#wiz_clip_detail").css("display", "block");
+			$("#wiz_login").hide();
+			$("#wiz_clip_detail").fadeIn();
 			plugin.autoLogin(cookies);
 		} else {
-			$("#wiz_login").css("display", "block");
-			$("#wiz_clip_detail").css("display", "none");
+			$("#wiz_login").fadeIn();
+			$("#wiz_clip_detail").hide();
 		}
 		$("#waiting").hide();
 	}
