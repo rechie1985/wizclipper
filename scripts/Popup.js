@@ -1,27 +1,29 @@
+var mainUrl = "http://service.wiz.cn/web";
 function WIZPlugin() {
 	/**
 	 *自动登陆，使用cookies
 	 */
-	function autoLogin() {
-		chrome.cookies.get({
-			url : "http://service.wiz.cn/web",
-			name : "note_auth"
-		}, function(cookie) {
-			if (cookie) {
-				var info = cookie.value;
-				var split_count = info.indexOf("*md5");
-				var loginParam = new Object();
-				loginParam.client_type = "web3";
-				loginParam.api_version = 3;
-				loginParam.user_id = info.substring(0, split_count);
-				loginParam.password = info.substring(split_count + 1);
-				login(loginParam);
-			}
-		});
+	function autoLogin(cookie) {
+		// chrome.cookies.get({
+		// url : mainUrl,
+		// name : "wiz-clip-auth"
+		// }, function(cookie) {
+		// if (cookie) {
+		var info = cookie.value;
+		var split_count = info.indexOf("*md5");
+		var loginParam = new Object();
+		loginParam.client_type = "web3";
+		loginParam.api_version = 3;
+		loginParam.user_id = info.substring(0, split_count);
+		loginParam.password = info.substring(split_count + 1);
+		login(loginParam);
+		// }
+		// });
 	}
 
 	function login(loginParam) {
-		var url = "http://service.wiz.cn/wizkm/xmlrpc";
+		var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
+		// var url = "http://service.wiz.cn/wizkm/xmlrpc";
 		var sending = xmlrpc.writeCall("accounts.clientLogin", [loginParam]);
 		var port = chrome.extension.connect({
 			name : "login"
@@ -30,12 +32,11 @@ function WIZPlugin() {
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
 				if (keep_passoword.checked) {
-					var key = "wiz-clip-auth";
+					var name = "wiz-clip-auth";
 					var value = user_id.value + "*md5." + hex_md5(password.value);
-					var expires = 14 * 24 * 60 * 60;
 					//cookie保存时间  (秒)
-					var url = "http://service.wiz.cn/web";
-					setCookies(url, key, value, expires);
+					var url = mainUrl;
+					setCookies(url, name, value);
 				}
 				$("#wiz_login").css("display", "none");
 				$("#wiz_clip_detail").css("display", "block");
@@ -52,6 +53,7 @@ function WIZPlugin() {
 					document.getElementById("div_error_validator").innerText = msg;
 				}
 			}
+			$("#waiting").hide();
 		});
 	}
 
@@ -74,23 +76,23 @@ function WIZPlugin() {
 
 	/**
 	 *设置cookies
-	 * @param {Object} key
+	 * @param {Object} name
 	 * @param {Object} value
 	 */
-	function setCookies(url, key, value, expires) {
+	function setCookies(url, name, value) {
 		chrome.cookies.set({
 			url : url,
-			name : key,
-			value : value,
-			expirationDate : expires
+			name : name,
+			value : value
+		}, function(cookie) {
 		});
 	}
 
-	function getCookies(url, key) {
-		chrome.cookies.get(key, function(param) {
-			alert(param);
-			console.log(param);
-		});
+	function getCookies(url, key, callback) {
+		chrome.cookies.get({
+			url : url,
+			name : key
+		}, callback);
 	}
 
 	//add click listener to login button
@@ -102,6 +104,7 @@ function WIZPlugin() {
 		}
 	}
 
+
 	chrome.extension.onRequest.addListener(messageHandler);
 	$("body").bind("keydown", keyDownHandler);
 	function keyDownHandler(e) {
@@ -110,31 +113,64 @@ function WIZPlugin() {
 		});
 		var keycode = e.keyCode;
 		port.postMessage(keycode);
-		if(13 == keycode) {
+		if (13 == keycode) {
 			window.close();
 		}
 	}
 
+
+	this.getCookies = getCookies;
+	this.autoLogin = autoLogin;
 }
 
 window.onload = function() {
+	initPopupPage();
 	var plugin = new WIZPlugin();
-	var port = chrome.extension.connect({
-		name : "checkLogin"
+	var url = mainUrl;
+	plugin.getCookies(url, "wiz-clip-auth", showByCookies);
+	// var cookies = plugin.getCookies(url, "wiz-clip-auth");
+	// if (cookies) {
+	// $("#wiz_login").css("display", "none");
+	// $("#wiz_clip_detail").css("display", "block");
+	// } else {
+	// $("#wiz_login").css("display", "block");
+	// $("#wiz_clip_detail").css("display", "none");
+	// }
+	// $("#waiting").hide();
+	// We need this so the extension knows when this window's been dismissed (by virtue of this conenction dying).
+	chrome.extension.connect({
+		name : "popupClosed"
 	});
-	port.postMessage("");
-	port.onMessage.addListener(function(msg) {
-		if (msg == true) {
-			// window.close();
+
+	function showByCookies(cookies) {
+		if (cookies) {
 			$("#wiz_login").css("display", "none");
 			$("#wiz_clip_detail").css("display", "block");
+			plugin.autoLogin(cookies);
 		} else {
 			$("#wiz_login").css("display", "block");
 			$("#wiz_clip_detail").css("display", "none");
 		}
 		$("#waiting").hide();
-	});
-	
-  // We need this so the extension knows when this window's been dismissed (by virtue of this conenction dying).
-  chrome.extension.connect({name: "popupClosed"});
+	}
+
+	function initPopupPage() {
+		$("#waiting-label").html(chrome.i18n.getMessage("popup_wating"));
+
+		//login page
+		$("#user_id_tip").html(chrome.i18n.getMessage("user_id_tip"));
+		$("#user_id_help").html(chrome.i18n.getMessage("user_id_help"));
+		$("#password_tip").html(chrome.i18n.getMessage("password_tip"));
+		$("#keep_password_tip").html(chrome.i18n.getMessage("keep_password_tip"));
+		$("#login").val(chrome.i18n.getMessage("login_msg"));
+
+		//note info page
+		$("#note_title_tip").html(chrome.i18n.getMessage("note_title_tip"));
+		$("#category_tip").html(chrome.i18n.getMessage("category_tip"));
+		$("#tag_tip").html(chrome.i18n.getMessage("tag_tip"));
+		$("#tag_input").html(chrome.i18n.getMessage("tag_input"));
+		$("#note_submit").val(chrome.i18n.getMessage("note_submit"));
+
+	}
+
 }

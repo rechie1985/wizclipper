@@ -1,8 +1,43 @@
 {
-   "actionName": {
-      "message": "Save to Wiz..."
-   },
-   "extName": {
-      "message": "Save to Wiz"
-   }
+	"actionName": {
+		"message": "Save to Wiz..."
+	},
+	"extName": {
+		"message": "Save to Wiz"
+	},
+	"popup_wating": {
+		"message": "waiting page..."
+	},
+	"user_id_tip": {
+		"message": " account: "
+	},
+	"user_id_help": {
+		"message": "(email or mobile)"
+	},
+	"password_tip": {
+		"message": " password: "
+	},
+	"keep_password_tip": {
+		"message": " keep password: "
+	},
+	"login_msg": {
+		"message": "   login   "
+	},
+	"note_title_tip": {
+		"message": " title: "
+	},
+	"category_tip": {
+		"message": " category: "
+	},
+	"tag_tip": {
+		"message": " tag: "
+	},
+	"tag_input": {
+		"message": " input tag: "
+	},
+	"note_submit": {
+		"message": "   commit   "
+	}
 }
+
+
