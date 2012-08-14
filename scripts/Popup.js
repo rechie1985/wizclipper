@@ -1,9 +1,11 @@
 var mainUrl = "http://service.wiz.cn/web";
 function WIZPlugin() {
+	var isAutoLogin = false;
 	/**
 	 *自动登陆，使用cookies
 	 */
 	function autoLogin(cookie) {
+		isAutoLogin = true;
 		// chrome.cookies.get({
 		// url : mainUrl,
 		// name : "wiz-clip-auth"
@@ -31,15 +33,19 @@ function WIZPlugin() {
 		port.postMessage(sending);
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
+				var name = "wiz-clip-auth";
+				var value = user_id.value + "*md5." + hex_md5(password.value);
+				//cookie保存时间  (秒)
+				var url = mainUrl;
+				var expiredays;
 				if (keep_passoword.checked) {
-					var name = "wiz-clip-auth";
-					var value = user_id.value + "*md5." + hex_md5(password.value);
-					//cookie保存时间  (秒)
-					var url = mainUrl;
-					setCookies(url, name, value);
+					expiredays = 14 * 24 * 60 * 60;
 				}
 				$("#wiz_login").css("display", "none");
 				$("#wiz_clip_detail").css("display", "block");
+				if (!isAutoLogin) {
+					setCookies(url, name, value, expiredays);
+				}
 			}
 			//返回错误
 			else {
@@ -58,6 +64,9 @@ function WIZPlugin() {
 	}
 
 	function doLogin() {
+		$("#waiting").fadeIn();
+		$("#wiz_login").css("display", "none");
+		$("#wiz_clip_detail").css("display", "none");
 		var loginParam = new Object();
 		loginParam.client_type = "web3";
 		loginParam.api_version = 3;
@@ -79,12 +88,18 @@ function WIZPlugin() {
 	 * @param {Object} name
 	 * @param {Object} value
 	 */
-	function setCookies(url, name, value) {
-		chrome.cookies.set({
+	function setCookies(url, name, value, expireSecond) {
+		var exdate = new Date();
+		var param = {
 			url : url,
 			name : name,
 			value : value
-		}, function(cookie) {
+		}
+		if (expireSecond) {
+			var expire = new Date().getTime() / 1000 + expireSecond;
+			param.expirationDate = expire;
+		}
+		chrome.cookies.set(param, function(cookie) {
 		});
 	}
 

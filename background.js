@@ -91,7 +91,6 @@ function wizExecuteSave(info) {
 	var title = info.title;
 	var body = info.params;
 	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") + "&body=" + encodeURIComponent(body).replace(regexp, "+");
-	alert(requestData);
 	$.ajax({
 		type : "POST",
 		url : "http://127.0.0.1:8800/wizkm/a/web/post?",
