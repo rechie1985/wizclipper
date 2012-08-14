@@ -7,8 +7,8 @@ chrome.extension.onConnect.addListener(function(port) {
 	var tab = port.sender.tab;
 	if (port.name && port.name == "login") {
 		port.onMessage.addListener(function(msg) {
-			var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
-			// var url = "http://service.wiz.cn/wizkm/xmlrpc";
+			// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
+			var url = "http://service.wiz.cn/wizkm/xmlrpc";
 			$.ajax({
 				type : "POST",
 				url : url,

@@ -24,8 +24,8 @@ function WIZPlugin() {
 	}
 
 	function login(loginParam) {
-		var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
-		// var url = "http://service.wiz.cn/wizkm/xmlrpc";
+		// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
+		var url = "http://service.wiz.cn/wizkm/xmlrpc";
 		var sending = xmlrpc.writeCall("accounts.clientLogin", [loginParam]);
 		var port = chrome.extension.connect({
 			name : "login"
