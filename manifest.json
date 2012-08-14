@@ -1,0 +1,28 @@
+{
+    "name": "__MSG_extName__",
+    "description": "This extension adds an save button to the toolbar which allows you to save the page to Wiz.",
+    "version": "1.1",
+    "manifest_version": 2,
+    "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDUXgWb0t1zf1GnNvi5QunMBFuFtN5LD3S5m6JcXalE9EtMecSb3Zd8jQX1VnS3V+8rbDAKAe2VinmQG4NSe4540FYmaRVA4KajpXZr01BremNLkZEVkQ+LC50Yo6we7MenAilCU4ec9oYfJ+J22hy99+GCzaxpKUhlcRJkPzWYrQIDAQAB",
+    "default_locale": "en",
+    "browser_action": {
+        "default_icon": "images/wiz_16x16.png",
+        "default_title": "__MSG_actionName__",
+		"default_popup" : "popup.html"
+    },
+    "background": {
+		"page": "background.html"
+    },
+    "content_scripts": [{
+        "js": [ "scripts/ClientClipper.js", "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PreviewController.js", "scripts/pageInfo.js", "scripts/hatena-extract-content/extract-content-all.js" , "scripts/lib/md5.js", "scripts/lib/jquery.min.js", "scripts/lib/xmlrpc.js"],
+        "css": [ "css/contentpreview.css" ],
+        "matches": [ "*://*/*" ]
+   }],
+    "web_accessible_resources": [
+      "images/nudge-icons/nudge-icon-arrow-up.png",
+      "images/nudge-icons/nudge-icon-arrow-down.png",
+      "images/nudge-icons/nudge-icon-arrow-lr.png",
+      "images/nudge-icons/nudge-icon-return.png"
+  ],
+   "permissions": [ "contextMenus", "cookies" ,"tabs", "unlimitedStorage", "http://*/*", "https://*/*" ]
+}

@@ -1,0 +1,114 @@
+<!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+-->
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="pragma" content="no-cache">
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+        <meta http-equiv="description" content="This is my page">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type="text/javascript" src="scripts/lib/jquery.min.js">
+        </script>
+        <script type="text/javascript" src="scripts/lib/md5.js">
+        </script>
+        <script type="text/javascript" src="scripts/lib/xmlrpc.js">
+        </script>
+        <script type="text/javascript" src="scripts/checkUser.js">
+        </script>
+        <link href="css/popup/popup_login.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="css/popup/popup.css" />
+    </head>
+    <body class="popup" id="popup">
+        <div class="wiz_login" id="wiz_login">
+            <div class="header_div">
+                <div class="header_logo">
+                    <img alt="Wiz" src="http://service.wiz.cn/wizkm/images/zh-cn/logo.gif"/>
+                </div>
+            </div>
+            <div id="container">
+                <div class="account_login_div">
+                    <input type="hidden" value="login" name="m"><input type="hidden" name="ui" value="">
+                    <table cellpadding="3">
+                        <tr>
+                            <td colspan="2">
+                                <font color="#6f6f6f">
+                                    请使用的邮箱或手机号码登录
+                                </font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div id="div_error_validator" style="color:red">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table border="0" cellspacing="2" cellpadding="2">
+                        <tbody>
+                            <tr>
+                                <td width="20%" nowrap="nowrap" valign="top">
+                                    <font>
+                                        帐号:
+                                        <br>
+                                    </font>
+                                    <font>
+                                        (Email或手机号)
+                                    </font>
+                                    <br>
+                                </td>
+                                <td>
+                                    <input type="text" name="user_id" size="30" value="" style="width:13em" id="user_id">
+                                    <font class="required_error_font">
+                                        &nbsp;&nbsp; 
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%" nowrap="nowrap" valign="top">
+                                    <font>
+                                        密码: 
+                                    </font>
+                                </td>
+                                <td>
+                                    <input type="password" name="password" size="30" value="" style="width:13em" id="password">
+                                    <font class="required_error_font">
+                                        &nbsp;&nbsp; 
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%" nowrap="nowrap" valign="top">
+                                    <font>
+                                        &nbsp; 
+                                    </font>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="keep_password" id="keep_passoword">
+                                    <font color="#6f6f6f">
+                                        记住密码 
+                                    </font>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td nowrap="nowrap" align="left" style="padding-top: 3px;">
+                                <input type="button" id="login" name="submitBtn" value="   登录   " style="font-weight:bold; margin-bottom:3px;">
+                                <div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
