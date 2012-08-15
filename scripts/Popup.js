@@ -63,7 +63,7 @@ function WIZPlugin() {
 
 	function doLogin() {
 		$("#waiting").fadeIn();
-		$("#waiting-label").html("正在登陆");
+		$("#waiting-label").html(chrome.i18n.getMessage("logining"));
 		$("#wiz_login").hide();
 		//css("display", "none");
 		$("#wiz_clip_detail").hide();
