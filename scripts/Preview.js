@@ -657,8 +657,7 @@ function ContentPreview() {
         }
         break;
       case "keydown" :
-      	var op = getNudgeOp(request.keycode)
-      	nudgePreview(op);
+      	nudgePreview(request.opCmd);
       	break;
       default:
       console.warn("Received invalid Preview message with 'op=" + request.op + "'.");

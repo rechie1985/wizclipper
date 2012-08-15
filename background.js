@@ -63,10 +63,10 @@ chrome.extension.onConnect.addListener(function(port) {
 	});
 });
 
-function getTab(callback, keycode) {
+function getTab(callback, direction) {
 	chrome.windows.getCurrent(function(win) {
 		chrome.tabs.getSelected(win.id, function(tab) {
-			callback(tab, keycode);
+			callback(tab, direction);
 		});
 	});
 }
@@ -78,11 +78,11 @@ function hideContentVeil(tab) {
 	});
 }
 
-function bindKeyDownHandler(tab, keycode) {
+function bindKeyDownHandler(tab, direction) {
 	chrome.tabs.sendRequest(tab.id, {
 		name : "preview",
 		op : "keydown",
-		keycode : keycode
+		opCmd : direction
 	});
 }
 

@@ -7,7 +7,7 @@ function WIZPlugin() {
 	function autoLogin(cookie) {
 		isAutoLogin = true;
 		$("#waiting").fadeIn();
-		
+
 		var info = cookie.value;
 		var split_count = info.indexOf("*md5");
 		var loginParam = new Object();
@@ -109,22 +109,50 @@ function WIZPlugin() {
 	$("#login").bind("click", doLogin);
 	$("#wiz_note_submit").live("keypress", noteSubmit);
 
-	function messageHandler(request, sender, sendResponse) {
-		if (request.cmd && request.cmd == "check") {
-		}
-	}
-
-
-	chrome.extension.onRequest.addListener(messageHandler);
 	$("body").bind("keydown", keyDownHandler);
 	function keyDownHandler(e) {
 		var port = chrome.extension.connect({
 			name : "onkeydown"
 		});
+
 		var keycode = e.keyCode;
-		port.postMessage(keycode);
+		var opCmd = getNudgeOp(keycode, e);
+		console.log(opCmd);
+		if(opCmd && opCmd !== null) {
+			port.postMessage(opCmd);
+		}
 		if (13 == keycode) {
 			window.close();
+		}
+	}
+
+	function getNudgeOp(key, evt) {
+		var returnValue = null;
+		var KEY_ALT = 18, KEY_CTRL = 17;
+		var keyMap = {
+			13 : "enter",
+			27 : "cancle",
+			38 : "expand", // up
+			40 : "shrink", // down
+			37 : "left",
+			39 : "right",
+
+			56 : "topexpand", // alt + up
+			58 : "topshrink", // alt + down
+
+			57 : "bottomexpand", // ctrl + down
+			55 : "bottomshrink", // ctrl + up
+		}
+
+		if (keyMap[key]) {
+			if (evt && evt.altKey == true) {// 18
+				returnValue = keyMap[key + KEY_ALT];
+			} else if (evt && evt.ctrlKey == true) {// 17
+				returnValue = keyMap[key + KEY_CTRL];
+			} else {
+				returnValue = keyMap[key];
+			}
+			return returnValue;
 		}
 	}
 

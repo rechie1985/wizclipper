@@ -13,6 +13,7 @@ body.popup {
 	-webkit-border-radius: 4px;
 	-webkit-user-select: none;
 	width: 400px;
+	clear: both;
 }
 .wiz_login {
 	height: 200px;
