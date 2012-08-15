@@ -1,7 +1,6 @@
 function PreviewController() {
   "use strict";
 
-  //var controller = new Evernote.ContentController();
   var reqName = "preview";
 
   function executeScript(tabId, codeString, callback) {

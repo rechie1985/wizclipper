@@ -15,7 +15,6 @@
 		<script type="text/javascript" src="scripts/lib/md5.js"></script>
 		<script type="text/javascript" src="scripts/lib/xmlrpc.js"></script>
 		<script type="text/javascript" src="scripts/Popup.js"></script>
-		<link href="css/popup/popup_login.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" type="text/css" href="css/popup/popup.css" />
 	</head>
 	<body class="popup" id="popup">
@@ -43,39 +42,33 @@
 							<td colspan="2"><div id="div_error_validator" style="color:red"></div></td>
 						</tr>
 					</table>
-					<table border="0" cellspacing="2" cellpadding="2">
+					<table border="0" cellspacing="2" cellpadding="3">
 						<tbody>
 							<tr>
-								<td width="20%" nowrap="nowrap" valign="top"><font id="user_id_tip"> </font>
-								<br/>
-								<font id="user_id_help"></font>
-								<br>
-								</td>
+								<td nowrap="nowrap" valign="top"><font id="user_id_tip"> </font></td>
 								<td>
 								<input type="text" name="user_id" size="30" value="" style="width:13em" id="user_id">
 								<font class="required_error_font"> &nbsp;&nbsp; </font></td>
 							</tr>
 							<tr>
-								<td width="20%" nowrap="nowrap" valign="top"><font id="password_tip"></font></td>
+								<td nowrap="nowrap" valign="top"><font id="password_tip"></font></td>
 								<td>
 								<input type="password" name="password" size="30" value="" style="width:13em" id="password">
 								<font class="required_error_font"> &nbsp;&nbsp; </font></td>
 							</tr>
 							<tr>
-								<td width="20%" nowrap="nowrap" valign="top"><font> &nbsp; </font></td>
-								<td><font color="#6f6f6f" id="keep_password_tip"></font>
+								<!-- <td width="20%" nowrap="nowrap" valign="top"><font> &nbsp; </font></td> -->
+								<td>
 								<input type="checkbox" name="keep_password" id="keep_passoword">
-								</td>
+								<font color="#6f6f6f" id="keep_password_tip"></font></td>
+							</tr>
+							<tr>
+								<!-- <td> &nbsp; </td> -->
+								<td nowrap="nowrap" align="left" style="padding-top: 3px;">
+								<input type="button" id="login" name="submitBtn" style="font-weight:bold; margin-bottom:3px;">
+								<div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;"></div></td>
 							</tr>
 						</tbody>
-					</table>
-					<table>
-						<tr>
-							<td> &nbsp; </td>
-							<td nowrap="nowrap" align="left" style="padding-top: 3px;">
-							<input type="button" id="login" name="submitBtn" style="font-weight:bold; margin-bottom:3px;">
-							<div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;"></div></td>
-						</tr>
 					</table>
 				</div>
 			</div>

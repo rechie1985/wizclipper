@@ -18,7 +18,7 @@
 		"message": " password: "
 	},
 	"keep_password_tip": {
-		"message": " keep password: "
+		"message": "keep password"
 	},
 	"login_msg": {
 		"message": "   login   "

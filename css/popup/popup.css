@@ -1,11 +1,29 @@
+html body {
+	font-family:"微软雅黑", Helvetica, Arial, sans-serif;
+	font-size: 9pt;
+}
+
+
 body.popup {
 	background-color: #F0F0F0;
 	min-width: 100px;
 	padding-bottom: 8px;
 	margin: 5px;
 	min-height: 10px;
-	max-height: 600px;
 	-webkit-border-radius: 4px;
 	-webkit-user-select: none;
 	width: 400px;
+}
+.wiz_login {
+	height: 200px;
+	width: 320px;
+	padding: 10px;
+	position: relative;
+}
+
+.wiz_login table{
+	padding : 0px 5px 5px 35px;
+}
+.wiz_login table td{
+	width: 90px;
 }

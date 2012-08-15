@@ -160,7 +160,6 @@ window.onload = function() {
 
 		//login page
 		$("#user_id_tip").html(chrome.i18n.getMessage("user_id_tip"));
-		$("#user_id_help").html(chrome.i18n.getMessage("user_id_help"));
 		$("#password_tip").html(chrome.i18n.getMessage("password_tip"));
 		$("#keep_password_tip").html(chrome.i18n.getMessage("keep_password_tip"));
 		$("#login").val(chrome.i18n.getMessage("login_msg"));
