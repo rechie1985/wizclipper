@@ -81,7 +81,11 @@ function WIZPlugin() {
 	 * @param {Event} e
 	 */
 	function noteSubmit(e) {
-
+		var port = chrome.extension.connect({
+			name : "onkeydown"
+		});
+		var opCmd = "enter";
+		port.postMessage(opCmd);
 	}
 
 	/**
@@ -113,7 +117,7 @@ function WIZPlugin() {
 
 	//add click listener to login button
 	$("#login").bind("click", doLogin);
-	$("#wiz_note_submit").live("keypress", noteSubmit);
+	$("#note_submit").live("click", noteSubmit);
 
 	$("body").bind("keydown", keyDownHandler);
 	function keyDownHandler(e) {
@@ -166,11 +170,12 @@ function WIZPlugin() {
 	chrome.extension.onConnect.addListener(messageListener);
 	function messageListener(port) {
 		var name = port.name;
-		if(name && name == "contentVeilShow") {
+		if (name && name == "contentVeilShow") {
 			$("#waiting").hide();
 			$("#wiz_clip_detail").fadeIn();
 		}
 	}
+
 
 	this.getCookies = getCookies;
 	this.autoLogin = autoLogin;

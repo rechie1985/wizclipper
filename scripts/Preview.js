@@ -151,8 +151,7 @@ function ContentPreview() {"use strict";
 				//setTimeout(hidePreviewLegend, 6000);
 			}
 		} else {
-			previewFullPage();
-			console.warn("Couldn't find a preview element. Switch to 'full page' mode.");
+			console.warn("Couldn't find a preview element. We need switch to 'full page' mode.");
 		}
 	}
 
