@@ -36,14 +36,18 @@ function WIZPlugin() {
 				if (keep_passoword.checked) {
 					expiredays = 14 * 24 * 60 * 60;
 				}
-				$("#wiz_login").css("display", "none");
-				$("#wiz_clip_detail").css("display", "block");
+				//登陆成功后隐藏登陆页面，并显示等待页面
+				// $("#wiz_login").hide();
+				// $("#waiting").fadeIn();
+				// $("#waiting-label").html(chrome.i18n.getMessage("popup_wating"));
+				//css("display", "none");
 				if (!isAutoLogin) {
 					setCookies(url, name, value, expiredays);
 				}
 			}
 			//返回错误
 			else {
+				$("#waiting").hide();
 				if (msg == false) {
 					$("#wiz_login").fadeIn();
 					$("#wiz_clip_detail").hide();
@@ -54,14 +58,16 @@ function WIZPlugin() {
 					document.getElementById("div_error_validator").innerText = msg;
 				}
 			}
-			$("#waiting").hide();
 		});
 	}
 
 	function doLogin() {
 		$("#waiting").fadeIn();
-		$("#wiz_login").css("display", "none");
-		$("#wiz_clip_detail").css("display", "none");
+		$("#waiting-label").html("正在登陆");
+		$("#wiz_login").hide();
+		//css("display", "none");
+		$("#wiz_clip_detail").hide();
+		//css("display", "none");
 		var loginParam = new Object();
 		loginParam.client_type = "web3";
 		loginParam.api_version = 3;
@@ -118,7 +124,7 @@ function WIZPlugin() {
 		var keycode = e.keyCode;
 		var opCmd = getNudgeOp(keycode, e);
 		console.log(opCmd);
-		if(opCmd && opCmd !== null) {
+		if (opCmd && opCmd !== null) {
 			port.postMessage(opCmd);
 		}
 		if (13 == keycode) {
@@ -157,6 +163,15 @@ function WIZPlugin() {
 	}
 
 
+	chrome.extension.onConnect.addListener(messageListener);
+	function messageListener(port) {
+		var name = port.name;
+		if(name && name == "contentVeilShow") {
+			$("#waiting").hide();
+			$("#wiz_clip_detail").fadeIn();
+		}
+	}
+
 	this.getCookies = getCookies;
 	this.autoLogin = autoLogin;
 }
@@ -172,15 +187,15 @@ window.onload = function() {
 	});
 
 	function showByCookies(cookies) {
+
 		if (cookies) {
-			$("#wiz_login").hide();
-			$("#wiz_clip_detail").fadeIn();
 			plugin.autoLogin(cookies);
 		} else {
-			$("#wiz_login").fadeIn();
+			$("#waiting").hide();
+			//cookie中未保存或已过期
+			$("#wiz_login").show();
 			$("#wiz_clip_detail").hide();
 		}
-		$("#waiting").hide();
 	}
 
 	function initPopupPage() {
