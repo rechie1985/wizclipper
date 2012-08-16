@@ -9,13 +9,13 @@
 		"message": "\u7b49\u5f85\u9875\u9762..."
 	},
 	"user_id_tip": {
-		"message": " \u8d26\u53f7: "
+		"message": "\u8d26\u53f7: "
 	},
 	"user_id_help": {
 		"message": "(Email\u6216\u624b\u673a\u53f7)"
 	},
 	"password_tip": {
-		"message": " \u5bc6\u7801: "
+		"message": "\u5bc6\u7801: "
 	},
 	"keep_password_tip": {
 		"message": "\u8bb0\u4f4f\u5bc6\u7801"
@@ -24,16 +24,16 @@
 		"message": "   \u767b\u5f55   "
 	},
 	"note_title_tip": {
-		"message": " \u6807\u9898: "
+		"message": "\u6807\u9898: "
 	},
 	"category_tip": {
-		"message": " \u6587\u4ef6\u5939: "
+		"message": "\u6587\u4ef6\u5939: "
 	},
 	"tag_tip": {
-		"message": " \u6807\u7b7e: "
+		"message": "\u6807\u7b7e: "
 	},
 	"tag_input": {
-		"message": " \u8f93\u5165\u6807\u7b7e: "
+		"message": "\u8f93\u5165\u6807\u7b7e: "
 	},
 	"note_submit": {
 		"message": "   \u4fdd\u5b58   "

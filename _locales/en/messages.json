@@ -9,13 +9,13 @@
 		"message": "waiting page..."
 	},
 	"user_id_tip": {
-		"message": " account: "
+		"message": "account: "
 	},
 	"user_id_help": {
 		"message": "(email or mobile)"
 	},
 	"password_tip": {
-		"message": " password: "
+		"message": "password: "
 	},
 	"keep_password_tip": {
 		"message": "keep password"
@@ -24,16 +24,16 @@
 		"message": "   login   "
 	},
 	"note_title_tip": {
-		"message": " title: "
+		"message": "title: "
 	},
 	"category_tip": {
-		"message": " category: "
+		"message": "category: "
 	},
 	"tag_tip": {
-		"message": " tag: "
+		"message": "tag: "
 	},
 	"tag_input": {
-		"message": " input tag: "
+		"message": "input tag: "
 	},
 	"note_submit": {
 		"message": "   commit   "

@@ -116,7 +116,7 @@ function WIZPlugin() {
 	}
 
 	//add click listener to login button
-	$("#login").bind("click", doLogin);
+	$("#login_button").bind("click", doLogin);
 	$("#note_submit").live("click", noteSubmit);
 
 	$("body").bind("keydown", keyDownHandler);
@@ -210,7 +210,7 @@ window.onload = function() {
 		$("#user_id_tip").html(chrome.i18n.getMessage("user_id_tip"));
 		$("#password_tip").html(chrome.i18n.getMessage("password_tip"));
 		$("#keep_password_tip").html(chrome.i18n.getMessage("keep_password_tip"));
-		$("#login").val(chrome.i18n.getMessage("login_msg"));
+		$("#login_button").html("&nbsp;" + chrome.i18n.getMessage("login_msg") + "&nbsp;");
 
 		//note info page
 		$("#note_title_tip").html(chrome.i18n.getMessage("note_title_tip"));

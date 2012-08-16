@@ -32,53 +32,41 @@
 				<progress indeterminate></progress>
 			</div>
 		</div>
-		<div class="wiz_login" id="wiz_login" style="display : none;">
+		<div class="wiz_login" id="wiz_login" style="display: none;">
 			<div id="container">
 				<div class="account_login_div">
-					<input type="hidden" value="login" name="m">
-					<input type="hidden" name="ui" value="">
-					<table cellpadding="3">
-						<tr>
-							<td colspan="2"><div id="div_error_validator" style="color:red"></div></td>
-						</tr>
-					</table>
-					<table border="0" cellspacing="2" cellpadding="3">
-						<tbody>
-							<tr>
-								<td nowrap="nowrap" valign="top"><font id="user_id_tip"> </font></td>
-								<td>
-								<input type="text" name="user_id" size="30" value="" style="width:13em" id="user_id">
-								<font class="required_error_font"> &nbsp;&nbsp; </font></td>
-							</tr>
-							<tr>
-								<td nowrap="nowrap" valign="top"><font id="password_tip"></font></td>
-								<td>
-								<input type="password" name="password" size="30" value="" style="width:13em" id="password">
-								<font class="required_error_font"> &nbsp;&nbsp; </font></td>
-							</tr>
-							<tr>
-								<!-- <td width="20%" nowrap="nowrap" valign="top"><font> &nbsp; </font></td> -->
-								<td>
-								<input type="checkbox" name="keep_password" id="keep_passoword">
-								<font color="#6f6f6f" id="keep_password_tip"></font></td>
-							</tr>
-							<tr>
-								<!-- <td> &nbsp; </td> -->
-								<td nowrap="nowrap" align="left" style="padding-top: 3px;">
-								<input type="button" id="login" name="submitBtn" style="font-weight:bold; margin-bottom:3px;">
-								<div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;"></div></td>
-							</tr>
-						</tbody>
-					</table>
+					<div id="div_error_validator" style="color:red"></div>
+					<div>
+						<label id="user_id_tip" for="user_id"> </label>
+						<input type="text" name="user_id" size="30" value="" id="user_id">
+						<div>
+							<label class="required_error_font"></label>
+						</div>
+					</div>
+					<div>
+						<label id="password_tip"></label>
+						<input type="password" name="password" size="30" value="" id="password">
+						<div>
+							<font class="required_error_font"> &nbsp;&nbsp; </font>
+						</div>
+					</div>
+					<div class="keep_password_div">
+						<input type="checkbox" name="keep_password" id="keep_passoword">
+						<font id="keep_password_tip"></font>
+					</div>
+					<div>
+						<button id="login_button" name="login_button" class="btn btn-primary"> </button>
+						<div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;"></div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="wiz_clip_detail" id="wiz_clip_detail" style="display:none">
+		<div class="wiz_clip_detail" id="wiz_clip_detail" style="display: none;">
 			<div id="wiz_clip_select">
 				<ul id="wiz_note_detail">
 					<li>
-						<label for="title" id="note_title_tip"></label>
-						<input type="text" id="wiz_note_title" />
+						<label for="wiz_note_title" id="note_title_tip"></label>
+						<input type="text" id="wiz_note_title" />s
 					</li>
 					<li>
 						<label for="note-category" id="category_tip"></label>
