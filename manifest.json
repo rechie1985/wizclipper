@@ -14,7 +14,7 @@
 		"page": "background.html"
     },
     "content_scripts": [{
-        "js": [ "scripts/ClientClipper.js", "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PreviewController.js", "scripts/pageInfo.js", "scripts/hatena-extract-content/extract-content-all.js" , "scripts/lib/md5.js", "scripts/lib/jquery.min.js", "scripts/lib/xmlrpc.js"],
+        "js": [ "scripts/ClientClipper.js",  "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PreviewController.js", "scripts/pageInfo.js", "scripts/hatena-extract-content/extract-content-all.js"],
         "css": [ "css/contentpreview.css" ],
         "matches": [ "*://*/*" ]
    }],

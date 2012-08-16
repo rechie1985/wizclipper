@@ -30,6 +30,7 @@ body.popup {
 	-webkit-border-radius: 4px;
 	-webkit-user-select: none;
 	width: 400px;
+	overflow: hidden;
 }
 
 .wiz_login {
