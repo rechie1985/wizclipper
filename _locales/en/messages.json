@@ -40,6 +40,18 @@
 	},
 	"logining": {
 		"message": "logining"
+	},
+	"article_save": {
+		"message": "save article"
+	},
+	"fullpage_save": {
+		"message": "save fullpage"
+	},
+	"select_save": {
+		"message": "save selected"
+	},
+	"url_save": {
+		"message": "save url"
 	}
 }
 

@@ -40,5 +40,17 @@
 	},
 	"logining": {
 		"message": "\u6b63\u5728\u767b\u5f55"
+	},
+	"article_save": {
+		"message": "\u4fdd\u5b58\u6587\u7ae0"
+	},
+	"fullpage_save": {
+		"message": "\u4fdd\u5b58\u6574\u9875"
+	},
+	"select_save": {
+		"message": "\u4fdd\u5b58\u9009\u62e9"
+	},
+	"url_save": {
+		"message": "\u4fdd\u5b58URL"
 	}
 }

@@ -93,8 +93,8 @@ function wizExecuteSave(info) {
 	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") + "&body=" + encodeURIComponent(body).replace(regexp, "+");
 	$.ajax({
 		type : "POST",
-		url : "http://127.0.0.1:8800/wizkm/a/web/post?",
-		// url : "http://service.wiz.cn/wizkm/a/web/post?",
+		// url : "http://127.0.0.1:8800/wizkm/a/web/post?",
+		url : "http://service.wiz.cn/wizkm/a/web/post?",
 		data : requestData,
 
 		success : function(res) {
@@ -103,10 +103,8 @@ function wizExecuteSave(info) {
 				alert(json.return_message);
 				return;
 			}
-			alert("ok");
 		},
 		error : function(res) {
-			alert("error");
 		}
 	});
 }

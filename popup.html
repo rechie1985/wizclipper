@@ -16,6 +16,7 @@
 		<script type="text/javascript" src="scripts/lib/xmlrpc.js"></script>
 		<script type="text/javascript" src="scripts/Popup.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/popup/popup.css" />
+		<link rel="stylesheet" type="text/css" href="bookstrap/bootstrap.css" />
 	</head>
 	<body class="popup" id="popup">
 		<!-- head -->
@@ -33,7 +34,7 @@
 			</div>
 		</div>
 		<div class="wiz_login" id="wiz_login" style="display: none;">
-			<div id="container">
+			<div class="container">
 				<div class="account_login_div">
 					<div id="div_error_validator" style="color:red"></div>
 					<div>
@@ -55,27 +56,39 @@
 						<font id="keep_password_tip"></font>
 					</div>
 					<div>
-						<button id="login_button" name="login_button" class="btn btn-primary"> </button>
+						<button id="login_button" name="login_button" class="btn btn-primary"></button>
 						<div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="wiz_clip_detail" id="wiz_clip_detail" style="display: none;">
-			<div id="wiz_clip_select">
-				<ul id="wiz_note_detail">
-					<li>
+			<div class="container">
+				<form action="#" class="note_info">
+					<div class="note_title_div">
 						<label for="wiz_note_title" id="note_title_tip"></label>
-						<input type="text" id="wiz_note_title" />s
-					</li>
-					<li>
+						<span>
+							<input type="text" id="wiz_note_title" />
+						</span>
+					</div>
+					<div class="note_category_div">
 						<label for="note-category" id="category_tip"></label>
-					</li>
-					<li class="wiz_note_btns">
-						<input type=button id="note_submit">
-						<label id="note_submit_message" style="color:red"></label>
-					</li>
-				</ul>
+						<input type="text" id="wiz_note_category" />
+						</span>
+					</div>
+				</form>
+				<div>
+					<label id="note_submit_message" style="color:red"></label>
+					<div class="submit-group">
+						<button type=button id="note_submit" class="btn btn-primary submit-button"> </button>
+						<select class="btn btn-primary submit-type">
+							<option id="article_save" data=""> </option>
+							<option id="fullpage_save" data=""> </option>
+							<option id="select_save" data=""> </option>
+							<option id="url_save" data=""> </option>
+						</select>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
