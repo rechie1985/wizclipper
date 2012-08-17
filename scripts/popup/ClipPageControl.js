@@ -7,7 +7,11 @@ function ClipPageControl() {
 	$("#note_submit").click(noteSubmit);
 	$("body").bind("keydown", keyDownHandler);
 	$("#submit-type").change(changeTypehandler);
-	$("#submit-type").keydown(function(){});
+	
+	$('#wiz_note_category').bind('keydown' , categoryChangeHandler);
+	
+	$("#submit-type").keydown(function() {
+	});
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
@@ -99,6 +103,15 @@ function ClipPageControl() {
 				});
 			});
 		});
+	}
+
+
+	function categoryChangeHandler(evt) {
+		var inputCategory = this.value;
+		if(!inputCategory || inputCategory.length < 1 || inputCategory == '/' || inputCategory == '*') {
+			return;
+		}
+		console.log(categoryMap.fuzzySearch(inputCategory));
 	}
 
 }

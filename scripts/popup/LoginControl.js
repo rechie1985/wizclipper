@@ -2,6 +2,7 @@
  * @author rechie
  */
 var mainUrl = "http://service.wiz.cn/web";
+var categoryMap = new HashMap();
 
 function LoginControl() {
 	var isAutoLogin = false;
@@ -40,11 +41,6 @@ function LoginControl() {
 				if (keep_passoword.checked) {
 					expiredays = 14 * 24 * 60 * 60;
 				}
-				//登陆成功后隐藏登陆页面，并显示等待页面
-				// $("#wiz_login").hide();
-				// $("#waiting").fadeIn();
-				// $("#waiting-label").html(chrome.i18n.getMessage("popup_wating"));
-				//css("display", "none");
 				if (!isAutoLogin) {
 					setCookies(url, name, value, expiredays);
 				}
@@ -69,9 +65,7 @@ function LoginControl() {
 		$("#waiting").fadeIn();
 		$("#waiting-label").html(chrome.i18n.getMessage("logining"));
 		$("#wiz_login").hide();
-		//css("display", "none");
 		$("#wiz_clip_detail").hide();
-		//css("display", "none");
 		var loginParam = new Object();
 		loginParam.client_type = "web3";
 		loginParam.api_version = 3;
@@ -140,19 +134,53 @@ function LoginControl() {
 
 	function setTitle(title) {
 		$("#wiz_note_title").val(title);
-		// requestCategory();
+		requestCategory();
 	}
 
 	/**
 	 *加载文件夹信息
 	 */
 	function requestCategory() {
+		$('#wiz_note_category').attr("placeholder", "loading category...");
 		var port = chrome.extension.connect({
 			name : "requestCategory"
 		});
 		port.onMessage.addListener(function(msg) {
-			alert(msg);
+			$('#wiz_note_category').attr("placeholder", "input category");
+			var value = $('#wiz_note_category').val();
+			parseWizCategory(msg.categories);
 		});
+	}
+
+	/**
+	 *对目录信息进行处理
+	 * @param {Object} categoryStr
+	 */
+	function parseWizCategory(categoryStr) {
+		if (!categoryStr || categoryStr.length < 1) {
+			return;
+		}
+		var array = categoryStr.split('*');
+
+		saveCategory(array);
+	}
+
+	function saveCategory(categoryArray) {
+		if (!categoryArray) {
+			//TODO
+			return;
+		}
+		var length = categoryArray.length;
+		if (length < 1) {
+			//TODO
+			return;
+		}
+		for ( i = 0; i < length; i++) {
+			var category = categoryArray[i];
+			var categoryInfo = new Category();
+			categoryInfo.setLocation(category);
+			categoryMap.put(category, categoryInfo);
+		}
 	}
 
 

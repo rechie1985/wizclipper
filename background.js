@@ -70,7 +70,7 @@ chrome.extension.onConnect.addListener(function(port) {
 			var params = new Object();
 			params.client_type = "web3";
 			params.api_version = 3;
-			params.token_guid = token;
+			params.token = token;
 			var sending = xmlrpc.writeCall("category.getAll", [params]);
 			$.ajax({
 				type : "POST",
@@ -84,8 +84,7 @@ chrome.extension.onConnect.addListener(function(port) {
 						port.postMessage(err);
 						return;
 					}
-					token = ret.token;
-					port.postMessage(res);
+					port.postMessage(ret);
 				},
 				error : function(res) {
 					port.postMessage(false);
