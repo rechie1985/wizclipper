@@ -1,6 +1,6 @@
 html, body, div, table {
-	font-family: "微软雅黑", Helvetica, Arial, sans-serif;
-	font-size: 15px;
+	font-family: "宋体", Helvetica, Arial, sans-serif;
+	font-size: 10.5pt;
 }
 
 input, textarea, select, button{
@@ -111,7 +111,7 @@ body.popup {
 }
 
 .btn {
-	font-size: 15px;
+	font-size: 10.5pt;
 	padding: 4px 10px 4px;
 	margin-bottom: 0;
 	line-height: 18px;
@@ -204,5 +204,5 @@ body.popup {
 .submit-type, .submit-type:hover, .submit-type:active {
 	background-image: url(../../images/menu.gif);
 	background-repeat: no-repeat;
-	background-position: 89% 50%;
+	background-position: 95% 50%;
 }
