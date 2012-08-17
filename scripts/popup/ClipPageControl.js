@@ -3,18 +3,32 @@
  */
 
 function ClipPageControl() {
-	$("#note_submit").live("click", noteSubmit);
-
+	var typeMap = {
+		
+	};
+	$("#note_submit").click(noteSubmit);
+	$("body").bind("keydown", keyDownHandler);
+	$("#submit-type").change(changeTypehandler);
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
 	 */
-	function changeClipModel(model) {
-
+	function changeTypehandler(evt) {
+		var selectedOption = $('option:selected', '#submit-type');
+		var cmd = selectedOption.attr("id");
+		var port = chrome.extension.connect({
+			name : "preview"
+		});
+		port.postMessage(cmd);
+		
+		//改变页面显示
+		var type = $("#submit-type").val();
+		changeType(type);
 	}
-
-
-	$("body").bind("keydown", keyDownHandler);
+	
+	function changeType(type) {
+		$("#note_submit").html(type);
+	}
 	function keyDownHandler(e) {
 		var port = chrome.extension.connect({
 			name : "onkeydown"
@@ -22,7 +36,6 @@ function ClipPageControl() {
 
 		var keycode = e.keyCode;
 		var opCmd = getNudgeOp(keycode, e);
-		console.log(opCmd);
 		if (opCmd && opCmd !== null) {
 			port.postMessage(opCmd);
 		}
@@ -74,4 +87,5 @@ function ClipPageControl() {
 		//save and close
 		window.close();
 	}
+
 }

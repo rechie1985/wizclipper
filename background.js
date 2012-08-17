@@ -47,9 +47,17 @@ chrome.extension.onConnect.addListener(function(port) {
 				getTab(bindKeyDownHandler, msg);
 			}
 		});
-	} else if (port.name === "popupClosed") {
+	} else if (port.name == "popupClosed") {
 		port.onDisconnect.addListener(function() {
 			getTab(hideContentVeil);
+		});
+	} else if (port.name == "preview") {
+		port.onMessage.addListener(function(msg) {
+			if(!msg) {
+				//TODO 
+				return;
+			}
+			getTab(wizSaveToWiz, msg);
 		});
 	}
 
@@ -109,10 +117,14 @@ function wizExecuteSave(info) {
 	});
 }
 
-function wizSaveToWiz(tab) {
+function wizSaveToWiz(tab, op) {
+	if(!op) {
+		//默认为整夜
+		op = "fullPage";
+	}
 	chrome.tabs.sendRequest(tab.id, {
 		name : "preview",
-		op : "article"
+		op : op
 	});
 	//chrome.tabs.executeScript(null, { file: "content_script.js" });
 }

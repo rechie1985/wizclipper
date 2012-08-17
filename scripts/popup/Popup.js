@@ -37,10 +37,10 @@ window.onload = function() {
 		$("#category_tip").html(chrome.i18n.getMessage("category_tip"));
 		$("#tag_tip").html(chrome.i18n.getMessage("tag_tip"));
 		$("#tag_input").html(chrome.i18n.getMessage("tag_input"));
-		$("#note_submit").html("&nbsp;" + chrome.i18n.getMessage("note_submit") + "&nbsp;");
-		$("#article_save").html(chrome.i18n.getMessage("article_save"));
-		$("#fullpage_save").html(chrome.i18n.getMessage("fullpage_save"));
-		$("#select_save").html(chrome.i18n.getMessage("select_save"));
-		$("#url_save").html(chrome.i18n.getMessage("url_save"));
+		$("#note_submit").html(chrome.i18n.getMessage("fullpage_save"));
+		$("#article").html(chrome.i18n.getMessage("article_save"));
+		$("#fullPage").html(chrome.i18n.getMessage("fullpage_save"));
+		$("#selection").html(chrome.i18n.getMessage("select_save"));
+		$("#url").html(chrome.i18n.getMessage("url_save"));
 	}
 }
