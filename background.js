@@ -46,7 +46,7 @@ chrome.extension.onConnect.addListener(function(port) {
 			} else {
 				var direction = msg.direction;
 				// if ("enter" == direction && "article" != type) {
-					// getTab(submitNoteByType, msg);
+				// getTab(submitNoteByType, msg);
 				// }
 				getTab(bindKeyDownHandler, direction);
 			}
@@ -63,12 +63,41 @@ chrome.extension.onConnect.addListener(function(port) {
 			}
 			getTab(wizSaveToWiz, msg);
 		});
+	} else if ("requestCategory" == port.name) {
+		// port.onMessage.addListener(function(msg) {
+			// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
+			var url = "http://service.wiz.cn/wizkm/xmlrpc";
+			var params = new Object();
+			params.client_type = "web3";
+			params.api_version = 3;
+			params.token_guid = token;
+			var sending = xmlrpc.writeCall("category.getAll", [params]);
+			$.ajax({
+				type : "POST",
+				url : url,
+				data : sending,
+				success : function(res) {
+					var xmldoc = xmlrpc.createXml(res);
+					try {
+						var ret = xmlrpc.parseResponse(xmldoc);
+					} catch (err) {
+						port.postMessage(err);
+						return;
+					}
+					token = ret.token;
+					port.postMessage(res);
+				},
+				error : function(res) {
+					port.postMessage(false);
+				}
+			});
+		// });
 	}
 
 	// This will get called by the content script we execute in
 	// the tab as a result of the user pressing the browser action.
 	port.onMessage.addListener(function(info) {
-		
+
 		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
 			return;
 		}

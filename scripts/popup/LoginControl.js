@@ -115,30 +115,44 @@ function LoginControl() {
 		var name = port.name;
 		if (name && name == "contentVeilShow") {
 			$("#waiting").hide();
-			$("#wiz_clip_detail").show(requestTitle);
+			$("#wiz_clip_detail").show(showClipHandler);
 		}
 	}
 
+	function showClipHandler(evt) {
+		requestTitle();
+	}
+
+	/**
+	 *加载标题
+	 */
 	function requestTitle() {
 		chrome.windows.getCurrent(function(win) {
 			chrome.tabs.getSelected(win.id, function(tab) {
 				var title = tab.title;
-				if(!title) {
+				if (!title) {
 					return;
 				}
 				setTitle(title);
 			});
 		});
-		// var port = chrome.extension.connect({
-		// name : "requestTitle"
-		// });
-		// port.onMessage.addListener(function(msg) {
-		// setTitle(msg);
-		// });
 	}
 
 	function setTitle(title) {
 		$("#wiz_note_title").val(title);
+		// requestCategory();
+	}
+
+	/**
+	 *加载文件夹信息
+	 */
+	function requestCategory() {
+		var port = chrome.extension.connect({
+			name : "requestCategory"
+		});
+		port.onMessage.addListener(function(msg) {
+			alert(msg);
+		});
 	}
 
 
