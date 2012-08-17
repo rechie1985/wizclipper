@@ -3,12 +3,11 @@
  */
 
 function ClipPageControl() {
-	var typeMap = {
-		
-	};
+
 	$("#note_submit").click(noteSubmit);
 	$("body").bind("keydown", keyDownHandler);
 	$("#submit-type").change(changeTypehandler);
+	$("#submit-type").keydown(function(){});
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
@@ -20,35 +19,38 @@ function ClipPageControl() {
 			name : "preview"
 		});
 		port.postMessage(cmd);
-		
+
 		//改变页面显示
 		var type = $("#submit-type").val();
 		changeType(type);
 	}
-	
+
 	function changeType(type) {
 		$("#note_submit").html(type);
 	}
+
 	function keyDownHandler(e) {
+		var keycode = e.keyCode;
+		if (13 == keycode) {
+			doSubmit();
+			return;
+		}
+		//其他按键处理
 		var port = chrome.extension.connect({
 			name : "onkeydown"
 		});
 
-		var keycode = e.keyCode;
 		var opCmd = getNudgeOp(keycode, e);
-		if (opCmd && opCmd !== null) {
-			port.postMessage(opCmd);
-		}
-		if (13 == keycode) {
-			window.close();
-		}
+		var info = {
+			direction : opCmd
+		};
+		port.postMessage(info);
 	}
 
 	function getNudgeOp(key, evt) {
 		var returnValue = null;
 		var KEY_ALT = 18, KEY_CTRL = 17;
 		var keyMap = {
-			13 : "enter",
 			27 : "cancle",
 			38 : "expand", // up
 			40 : "shrink", // down
@@ -79,13 +81,24 @@ function ClipPageControl() {
 	 * @param {Event} e
 	 */
 	function noteSubmit(e) {
-		var port = chrome.extension.connect({
-			name : "onkeydown"
+		doSubmit();
+	}
+
+	function doSubmit() {
+		var type = $('option:selected', '#submit-type').attr("id");
+		var title = $("#wiz_note_title").val();
+		chrome.windows.getCurrent(function(win) {
+			chrome.tabs.getSelected(win.id, function(tab) {
+				chrome.tabs.sendRequest(tab.id, {
+					name : "preview",
+					op : "submit",
+					title : title,
+					type : type
+				}, function(params) {
+					window.close();
+				});
+			});
 		});
-		var opCmd = "enter";
-		port.postMessage(opCmd);
-		//save and close
-		window.close();
 	}
 
 }

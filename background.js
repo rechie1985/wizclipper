@@ -44,7 +44,12 @@ chrome.extension.onConnect.addListener(function(port) {
 			if (!token || token == null) {
 				return;
 			} else {
-				getTab(bindKeyDownHandler, msg);
+				var direction = msg.direction;
+				var type = msg.type;
+				// if ("enter" == direction && "article" != type) {
+					// getTab(submitNoteByType, msg);
+				// }
+				getTab(bindKeyDownHandler, msg.direction);
 			}
 		});
 	} else if (port.name == "popupClosed") {
@@ -53,8 +58,8 @@ chrome.extension.onConnect.addListener(function(port) {
 		});
 	} else if (port.name == "preview") {
 		port.onMessage.addListener(function(msg) {
-			if(!msg) {
-				//TODO 
+			if (!msg) {
+				//TODO
 				return;
 			}
 			getTab(wizSaveToWiz, msg);
@@ -64,6 +69,7 @@ chrome.extension.onConnect.addListener(function(port) {
 	// This will get called by the content script we execute in
 	// the tab as a result of the user pressing the browser action.
 	port.onMessage.addListener(function(info) {
+		
 		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
 			return;
 		}
@@ -118,7 +124,7 @@ function wizExecuteSave(info) {
 }
 
 function wizSaveToWiz(tab, op) {
-	if(!op) {
+	if (!op) {
 		//默认为整夜
 		op = "fullPage";
 	}

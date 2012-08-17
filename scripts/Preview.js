@@ -212,7 +212,7 @@ function ContentPreview() {"use strict";
 
 	function nudgePreview(direction) {
 		if (!previewElement) {
-			return;
+			// return;
 		}
 		var oldPreview = previewElement;
 		switch (direction) {
@@ -619,7 +619,7 @@ function ContentPreview() {"use strict";
 			return;
 			// Not an appropriate message.
 		}
-
+		console.log(request.op);
 		switch (request.op) {
 			case "clear":
 				clear();
@@ -657,10 +657,34 @@ function ContentPreview() {"use strict";
 			case "keydown" :
 				nudgePreview(request.opCmd);
 				break;
+			case "submit" :
+				noteSubmitByType(request.type, request.title);
+				break;
 			default:
 				console.warn("Received invalid Preview message with 'op=" + request.op + "'.");
 		}
 		sendResponse({});
+	}
+
+	function noteSubmitByType(type, title) {
+		switch(type) {
+			case "article" :
+				launchClientClipper(title);
+				clear();
+				break;
+			case "fullPage" :
+				launchClientClipperFullPage(title);
+				clear();
+				break;
+			case "selection" :
+				launchClientClipperSelection(title);
+				clear();
+				break;
+			case "url" :
+				launchClientClipperUrl(title);
+				clear();
+				break;
+		}
 	}
 
 

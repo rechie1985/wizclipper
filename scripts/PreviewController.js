@@ -122,7 +122,6 @@ function getNudgeOp(key, evt) {
 	var returnValue = null;
 	var KEY_ALT = 18, KEY_CTRL = 17;
     var keyMap = {
-      13: "enter",
       27: "cancle",
       38: "expand", // up
       40: "shrink", // down
