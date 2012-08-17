@@ -71,6 +71,7 @@ body.popup {
 .note_title_div input, .note_category_div input {
 	border: 0;
 	padding: 0;
+	width: 85%;
 }
 .note_title_div {
 	-webkit-border-top-left-radius: 4px;
@@ -199,4 +200,9 @@ body.popup {
 	z-index: 201;
 	-webkit-border-bottom-right-radius: 0px;
 	-webkit-border-top-right-radius: 0px;
+}
+.submit-type, .submit-type:hover, .submit-type:active {
+	background-image: url(../../images/menu.gif);
+	background-repeat: no-repeat;
+	background-position: 89% 50%;
 }

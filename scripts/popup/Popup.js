@@ -1,12 +1,12 @@
 window.onload = function() {
 	initPopupPage();
 	var clipPageControl = new ClipPageControl();
-	var plugin = new LoginControl();
+	var loginControl = new LoginControl();
 	
-	plugin.getCookies(mainUrl, "wiz-clip-auth", showByCookies);
+	loginControl.getCookies(mainUrl, "wiz-clip-auth", showByCookies);
 	
 	
-	// We need this so the extension knows when this window's been dismissed (by virtue of this conenction dying).
+	//保证popup页面和preview页面同时关闭
 	chrome.extension.connect({
 		name : "popupClosed"
 	});
@@ -14,7 +14,7 @@ window.onload = function() {
 	function showByCookies(cookies) {
 
 		if (cookies) {
-			plugin.autoLogin(cookies);
+			loginControl.autoLogin(cookies);
 		} else {
 			$("#waiting").hide();
 			//cookie中未保存或已过期
