@@ -45,11 +45,10 @@ chrome.extension.onConnect.addListener(function(port) {
 				return;
 			} else {
 				var direction = msg.direction;
-				var type = msg.type;
 				// if ("enter" == direction && "article" != type) {
 					// getTab(submitNoteByType, msg);
 				// }
-				getTab(bindKeyDownHandler, msg.direction);
+				getTab(bindKeyDownHandler, direction);
 			}
 		});
 	} else if (port.name == "popupClosed") {

@@ -212,7 +212,7 @@ function ContentPreview() {"use strict";
 
 	function nudgePreview(direction) {
 		if (!previewElement) {
-			// return;
+			return;
 		}
 		var oldPreview = previewElement;
 		switch (direction) {
@@ -619,7 +619,6 @@ function ContentPreview() {"use strict";
 			return;
 			// Not an appropriate message.
 		}
-		console.log(request.op);
 		switch (request.op) {
 			case "clear":
 				clear();
@@ -661,7 +660,7 @@ function ContentPreview() {"use strict";
 				noteSubmitByType(request.type, request.title);
 				break;
 			default:
-				console.warn("Received invalid Preview message with 'op=" + request.op + "'.");
+				// console.warn("Received invalid Preview message with 'op=" + request.op + "'.");
 		}
 		sendResponse({});
 	}
@@ -673,10 +672,18 @@ function ContentPreview() {"use strict";
 				clear();
 				break;
 			case "fullPage" :
+				if (previewElement) {
+					launchClientClipper(title);
+					break;
+				}
 				launchClientClipperFullPage(title);
 				clear();
 				break;
 			case "selection" :
+				if (previewElement) {
+					launchClientClipper(title);
+					break;
+				}
 				launchClientClipperSelection(title);
 				clear();
 				break;
