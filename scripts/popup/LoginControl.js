@@ -2,7 +2,6 @@
  * @author rechie
  */
 var mainUrl = "http://service.wiz.cn/web";
-var categoryMap = new HashMap();
 
 function LoginControl() {
 	var isAutoLogin = false;
@@ -165,6 +164,10 @@ function LoginControl() {
 	 * @param {Object} categoryStr
 	 */
 	function parseWizCategory(categoryStr) {
+		var ztreeControl = new ZtreeController();
+		var zData = ztreeControl.parseDate(categoryStr);
+		ztreeControl.setNodes(zData);
+		ztreeControl.show();
 		if (!categoryStr || categoryStr.length < 1) {
 			return;
 		}
@@ -183,6 +186,7 @@ function LoginControl() {
 			//TODO
 			return;
 		}
+		var categoryMap = new HashMap();
 		for ( i = 0; i < length; i++) {
 			var category = categoryArray[i];
 			var categoryInfo = new Category();

@@ -139,7 +139,7 @@ function wizExecuteSave(info) {
 		data : requestData,
 
 		success : function(res) {
-			var json = eval('(' + res + ')');
+			var json = JSON.parse(res);
 			if (json.return_code != 200) {
 				alert(json.return_message);
 				return;
