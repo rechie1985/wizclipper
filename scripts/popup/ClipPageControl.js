@@ -7,9 +7,9 @@ function ClipPageControl() {
 	$("#note_submit").click(noteSubmit);
 	$("body").bind("keydown", keyDownHandler);
 	$("#submit-type").change(changeTypehandler);
-	
-	$('#wiz_note_category').bind('keydown' , categoryChangeHandler);
-	
+
+	$('#wiz_note_category').bind('keydown', categoryChangeHandler);
+
 	$("#submit-type").keydown(function() {
 	});
 	/**
@@ -34,6 +34,11 @@ function ClipPageControl() {
 	}
 
 	function keyDownHandler(e) {
+		var target = e.target;
+		if ('INPUT' == target.tagName) {
+			$(target).trigger('focusout');
+			return;
+		}
 		var keycode = e.keyCode;
 		if (13 == keycode) {
 			doSubmit();
@@ -105,13 +110,45 @@ function ClipPageControl() {
 		});
 	}
 
-
 	function categoryChangeHandler(evt) {
 		var inputCategory = this.value;
-		if(!inputCategory || inputCategory.length < 1 || inputCategory == '/' || inputCategory == '*') {
+		console.log(inputCategory);
+		if (!inputCategory || inputCategory.length < 1 || inputCategory == '/' || inputCategory == '*') {
+			$("#auto_category").hide().html('');
 			return;
 		}
-		console.log(categoryMap.fuzzySearch(inputCategory));
+		console.log("last:" + inputCategory);
+		var categoryCollection = categoryMap.fuzzySearch(inputCategory);
+		if (categoryCollection.length < 1) {
+			$("#auto_category").hide();
+			return;
+		}
+		var innerHTML = '';
+		$.each(categoryCollection, function(index, value) {
+			var categoryStr;
+			if ( value instanceof Category) {
+				categoryStr = value.getLocation();
+			} else {
+				console.log("wrong category location" + value);
+				return;
+			}
+			if (index % 2 == 0) {
+				innerHTML += '<div id="auto_complete" class="auto-complete-category">' + categoryStr + '</div>';
+			}else {
+				innerHTML += '<div id="auto_complete" class="auto-complete-category striped">' + categoryStr + '</div>';
+			}
+			console.log(index + ': ' + value.getLocation());
+		});
+		$("#auto_category").show().html(innerHTML);
+		
+		//绑定自动完成事件
+		$("#auto_complete").live("click" , autoCompleteHandler);
+	}
+	
+	function autoCompleteHandler(evt) {
+		var autoText = $(this).html();
+		$("#wiz_note_category").val(autoText);
+		$("#auto_category").hide().html("");
 	}
 
 }

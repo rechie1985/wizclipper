@@ -326,9 +326,10 @@ function PageInfo() {
   // We pass it our URL so that it's less likely to get confused and think that we're ready to go when some other page
   // finishes loading. This is still heuristic, though, as the browser could be loading two separate copies of the same
   // URL. We'd send our own tab ID, but content scripts don't have access to that API call.
-  readyRequestHandler();
+  
 
   // Public API:
+  // this.readyRequestHandler = readyRequestHandler
   this.getDefaultArticle = getDefaultArticle;
   this.getSelection = getSelection;
   this.getSelectionFrame = getSelectionFrame;

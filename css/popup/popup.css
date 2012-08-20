@@ -4,10 +4,10 @@ html, body, div, table {
 }
 
 html, body {
-	height : 0px;
+	height: 0px;
 }
 
-input, textarea, select, button{
+input, textarea, select, button {
 	margin: 0;
 	font: -webkit-small-control;
 	color: initial;
@@ -25,6 +25,10 @@ input, button, select, textarea {
 	outline: none;
 }
 
+.waiting {
+	height: 55px;
+}
+
 body.popup {
 	background-color: #F0F0F0;
 	min-width: 100px;
@@ -33,7 +37,7 @@ body.popup {
 	min-height: 10px;
 	-webkit-border-radius: 4px;
 	-webkit-user-select: none;
-	width: 400px;
+	width: 500px;
 	overflow: hidden;
 }
 
@@ -44,7 +48,7 @@ body.popup {
 	position: relative;
 }
 
-.wiz_login .container {
+.wiz_login .container, .waiting {
 	margin-left: 32px;
 }
 
@@ -69,7 +73,7 @@ body.popup {
 
 .note_title_div, .note_category_div {
 	border: 1px solid #B1B1B1;
-	padding: 4px;
+	padding: 8px;
 	background-color: white;
 }
 .note_title_div input, .note_category_div input {
@@ -95,7 +99,8 @@ body.popup {
 
 .submit-group {
 	float: right;
-	height : 38px;
+	height: 55px;
+	padding-top: 15px;
 }
 
 .submit-type {
@@ -161,11 +166,11 @@ body.popup {
 	transition: background-position 0.1s linear;
 }
 /*
-.btn:focus {
-	outline: thin dotted #333;
-	outline: 5px auto -webkit-focus-ring-color;
-	outline-offset: -2px;
-}*/
+ .btn:focus {
+ outline: thin dotted #333;
+ outline: 5px auto -webkit-focus-ring-color;
+ outline-offset: -2px;
+ }*/
 
 .btn.active, .btn:active {
 	background-image: none;
@@ -210,4 +215,37 @@ body.popup {
 	background-image: url(../../images/menu.gif);
 	background-repeat: no-repeat;
 	background-position: 95% 50%;
+}
+
+.auto-category-container {
+	cursor:pointer;
+	margin-left: 60px;
+	margin-top: 5px;
+	height: 175px;
+	overflow:visible;
+	position: absolute;
+	-webkit-box-shadow: 1px 1px 7px 0px #222222;
+	background-color: #FFFFFF;
+	border: 1px solid #333333;
+	-webkit-border-radius: 3px;
+	display: none;
+}
+
+.auto-complete-category {
+	line-height: 1.5;
+	z-index: 9999;
+	height: 15px;
+	padding: 2px 0 2px 0;
+	text-overflow: ellipsis;
+	text-align: left;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.auto-complete-category:hover {
+	background-color: #0088CC;
+}
+
+.striped {
+	background-color: #F0F0F0;
 }

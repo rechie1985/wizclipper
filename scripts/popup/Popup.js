@@ -10,7 +10,7 @@ window.onload = function() {
 	chrome.extension.connect({
 		name : "popupClosed"
 	});
-
+	
 	function showByCookies(cookies) {
 
 		if (cookies) {

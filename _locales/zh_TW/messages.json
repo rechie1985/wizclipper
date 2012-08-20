@@ -52,6 +52,9 @@
 	},
 	"url_save": {
 		"message": "\u4fdd\u5b58URL"
+	},
+	"network_wrong" : {
+		"message" : "\u7db2\u7d61\u4e0d\u53ef\u7528\uff0c\u8acb\u6aa2\u67e5\u5f8c\u91cd\u8a66"
 	}
 	
 }

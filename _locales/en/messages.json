@@ -52,7 +52,11 @@
 	},
 	"url_save": {
 		"message": "save url"
+	},
+	"network_wrong" : {
+		"message" : "The network is not available. Please try again after checking"
 	}
+	
 }
 
 

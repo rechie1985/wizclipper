@@ -11,7 +11,7 @@ function LoginControl() {
 	 */
 	function autoLogin(cookie) {
 		isAutoLogin = true;
-		$("#waiting").fadeIn();
+		$("#waiting").show();
 
 		var info = cookie.value;
 		var split_count = info.indexOf("*md5");
@@ -47,22 +47,30 @@ function LoginControl() {
 			}
 			//返回错误
 			else {
-				$("#waiting").hide();
 				if (msg == false) {
-					$("#wiz_login").fadeIn();
+					//如果自动登陆情况下，不需要弹出登陆对话框来提示用户，在当前页面提示即可
+					if (isAutoLogin == true) {
+						$("#waiting progress").hide();
+						$("#waiting-label").html(chrome.i18n.getMessage("network_wrong")).css("color", "#FF0000");
+						return;
+					}
+					$("#wiz_login").show();
 					$("#wiz_clip_detail").hide();
-					document.getElementById("div_error_validator").innerText = "network is wrong"
+					$("#div_error_validator").html(chrome.i18n.getMessage("network_wrong"));
+					// document.getElementById("div_error_validator").innerText = chrome.i18n.getMessage("network_wrong");
 				} else {
-					$("#wiz_login").fadeIn();
+					$("#wiz_login").show();
 					$("#wiz_clip_detail").hide();
-					document.getElementById("div_error_validator").innerText = msg;
+					$("#div_error_validator").html(msg);
+					// document.getElementById("div_error_validator").innerText = msg;
 				}
+				$("#waiting").hide();
 			}
 		});
 	}
 
 	function doLogin() {
-		$("#waiting").fadeIn();
+		$("#waiting").show();
 		$("#waiting-label").html(chrome.i18n.getMessage("logining"));
 		$("#wiz_login").hide();
 		$("#wiz_clip_detail").hide();
