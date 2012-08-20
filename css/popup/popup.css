@@ -71,15 +71,15 @@ body.popup {
 	margin: 20px 5px 20px 5px;
 }
 
-.note_title_div, .note_category_div {
+.note_title_div, .note_category_div, .note_tag_div {
 	border: 1px solid #B1B1B1;
 	padding: 8px;
 	background-color: white;
 }
-.note_title_div input, .note_category_div input {
+.note_title_div input, .note_category_div input, .note_tag_div input {
 	border: 0;
 	padding: 0;
-	width: 85%;
+	width: 80 %;
 }
 .note_title_div {
 	-webkit-border-top-left-radius: 4px;
@@ -87,12 +87,14 @@ body.popup {
 }
 
 .note_category_div {
+	border-top: 0px;
+	border-bottom: 0px;
+}
+.note_tag_div {
 	-webkit-border-bottom-left-radius: 4px;
 	-webkit-border-bottom-right-radius: 4px;
-	border-top: 0px;
 }
-
-.note_title_div label, .note_category_div label {
+.note_title_div label, .note_category_div label, .note_tag_div label {
 	text-align: right;
 	width: 20%;
 }
@@ -218,11 +220,11 @@ body.popup {
 }
 
 .auto-category-container {
-	cursor:pointer;
+	cursor: pointer;
 	margin-left: 60px;
 	margin-top: 5px;
 	height: 175px;
-	overflow:visible;
+	overflow: visible;
 	position: absolute;
 	-webkit-box-shadow: 1px 1px 7px 0px #222222;
 	background-color: #FFFFFF;
@@ -248,4 +250,24 @@ body.popup {
 
 .striped {
 	background-color: #F0F0F0;
+}
+
+.ztree-container {
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.ztree-container {
+
+	cursor: pointer;
+	margin-left: 60px;
+	margin-top: 5px;
+	height: 175px;
+	position: absolute;
+	-webkit-box-shadow: 1px 1px 7px 0px #222222;
+	background-color: #FFFFFF;
+	border: 1px solid #333333;
+	-webkit-border-radius: 3px;
+	display: none;
 }

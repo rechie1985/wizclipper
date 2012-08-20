@@ -2,7 +2,7 @@
  * @author rechie
  */
 var mainUrl = "http://service.wiz.cn/web";
-
+var ztreeControl = new ZtreeController();
 function LoginControl() {
 	var isAutoLogin = false;
 	/**
@@ -159,40 +159,44 @@ function LoginControl() {
 		});
 	}
 
+	var categoryString;
 	/**
 	 *对目录信息进行处理
 	 * @param {Object} categoryStr
 	 */
 	function parseWizCategory(categoryStr) {
-		var ztreeControl = new ZtreeController();
-		var zData = ztreeControl.parseDate(categoryStr);
-		ztreeControl.setNodes(zData);
-		ztreeControl.show();
-		if (!categoryStr || categoryStr.length < 1) {
-			return;
-		}
-		var array = categoryStr.split('*');
-
-		saveCategory(array);
+		categoryString = categoryStr;
+		initZtree();
+		$("#category_tree_button").click(showCategoryTree);
+		// var ztreeControl = new ZtreeController();
+		// var zData = ztreeControl.parseDate(categoryStr);
+		// ztreeControl.setNodes(zData);
+		// ztreeControl.show();
+		// if (!categoryStr || categoryStr.length < 1) {
+		// return;
+		// }
+		// var array = categoryStr.split('*');
+		//
+		// saveCategory(array);
 	}
 
-	function saveCategory(categoryArray) {
-		if (!categoryArray) {
-			//TODO
-			return;
+	function initZtree() {
+		var zData = ztreeControl.parseDate(categoryString);
+		ztreeControl.setNodes(zData);
+		ztreeControl.show();
+	}
+
+	/**
+	 *显示树
+	 */
+	function showCategoryTree() {
+		var display = $("#ztree_container").css("display");
+		if (display == 'none') {
+			$("#ztree_container").show();
+		} else {
+			$("#ztree_container").hide();
 		}
-		var length = categoryArray.length;
-		if (length < 1) {
-			//TODO
-			return;
-		}
-		var categoryMap = new HashMap();
-		for ( i = 0; i < length; i++) {
-			var category = categoryArray[i];
-			var categoryInfo = new Category();
-			categoryInfo.setLocation(category);
-			categoryMap.put(category, categoryInfo);
-		}
+		return false;
 	}
 
 

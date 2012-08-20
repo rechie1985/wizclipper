@@ -6,7 +6,7 @@ function ClipPageControl() {
 
 	$("#note_submit").click(noteSubmit);
 	$("body").bind("keydown", keyDownHandler);
-	$("#submit-type").change(changeTypehandler);
+	// $("#submit-type").change(changeTypehandler);
 
 	$('#wiz_note_category').bind('keydown', categoryChangeHandler);
 
@@ -110,6 +110,10 @@ function ClipPageControl() {
 		});
 	}
 
+	/**
+	 *监听change事件，完成自动提示并填充
+	 * @param {Object} evt
+	 */
 	function categoryChangeHandler(evt) {
 		var inputCategory = this.value;
 		console.log(inputCategory);
@@ -134,17 +138,17 @@ function ClipPageControl() {
 			}
 			if (index % 2 == 0) {
 				innerHTML += '<div id="auto_complete" class="auto-complete-category">' + categoryStr + '</div>';
-			}else {
+			} else {
 				innerHTML += '<div id="auto_complete" class="auto-complete-category striped">' + categoryStr + '</div>';
 			}
 			console.log(index + ': ' + value.getLocation());
 		});
 		$("#auto_category").show().html(innerHTML);
-		
+
 		//绑定自动完成事件
-		$("#auto_complete").live("click" , autoCompleteHandler);
+		$("#auto_complete").live("click", autoCompleteHandler);
 	}
-	
+
 	function autoCompleteHandler(evt) {
 		var autoText = $(this).html();
 		$("#wiz_note_category").val(autoText);
