@@ -65,31 +65,31 @@ chrome.extension.onConnect.addListener(function(port) {
 		});
 	} else if ("requestCategory" == port.name) {
 		// port.onMessage.addListener(function(msg) {
-			// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
-			var url = "http://service.wiz.cn/wizkm/xmlrpc";
-			var params = new Object();
-			params.client_type = "web3";
-			params.api_version = 3;
-			params.token = token;
-			var sending = xmlrpc.writeCall("category.getAll", [params]);
-			$.ajax({
-				type : "POST",
-				url : url,
-				data : sending,
-				success : function(res) {
-					var xmldoc = xmlrpc.createXml(res);
-					try {
-						var ret = xmlrpc.parseResponse(xmldoc);
-					} catch (err) {
-						port.postMessage(err);
-						return;
-					}
-					port.postMessage(ret);
-				},
-				error : function(res) {
-					port.postMessage(false);
+		// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
+		var url = "http://service.wiz.cn/wizkm/xmlrpc";
+		var params = new Object();
+		params.client_type = "web3";
+		params.api_version = 3;
+		params.token = token;
+		var sending = xmlrpc.writeCall("category.getAll", [params]);
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : sending,
+			success : function(res) {
+				var xmldoc = xmlrpc.createXml(res);
+				try {
+					var ret = xmlrpc.parseResponse(xmldoc);
+				} catch (err) {
+					port.postMessage(err);
+					return;
 				}
-			});
+				port.postMessage(ret);
+			},
+			error : function(res) {
+				port.postMessage(false);
+			}
+		});
 		// });
 	}
 
@@ -168,6 +168,33 @@ function wizOnSaveToWizContextMenuClick(info, tab) {
 	} else {
 		wizSaveToWiz(tab);
 	}
+}
+
+/**
+ *延长token时间
+ */
+function refreshToken() {
+	var url = "http://service.wiz.cn/wizkm/xmlrpc";
+	var params = new Object();
+	params.client_type = "web3";
+	params.api_version = 3;
+	params.token = token;
+	var sending = xmlrpc.writeCall("accounts.keepAlive", [params]);
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : sending,
+		success : function(res) {
+			var xmldoc = xmlrpc.createXml(res);
+			try {
+				var ret = xmlrpc.parseResponse(xmldoc);
+			} catch (err) {
+				return;
+			}
+		},
+		error : function(res) {
+		}
+	});
 }
 
 var menuTitle = chrome.i18n.getMessage("actionName");

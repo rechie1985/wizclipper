@@ -4,12 +4,11 @@
 var mainUrl = "http://service.wiz.cn/web";
 var ztreeControl = new ZtreeController();
 function LoginControl() {
-	var isAutoLogin = false;
+	var logged = false;
 	/**
 	 *自动登陆，使用cookies
 	 */
 	function autoLogin(cookie) {
-		isAutoLogin = true;
 		$("#waiting").show();
 
 		var info = cookie.value;
@@ -32,6 +31,9 @@ function LoginControl() {
 		port.postMessage(sending);
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
+				//记录已登录状态
+				logged = true;
+				
 				var name = "wiz-clip-auth";
 				var value = user_id.value + "*md5." + hex_md5(password.value);
 				//cookie保存时间  (秒)
@@ -40,19 +42,18 @@ function LoginControl() {
 				if (keep_passoword.checked) {
 					expiredays = 14 * 24 * 60 * 60;
 				}
-				if (!isAutoLogin) {
-					setCookies(url, name, value, expiredays);
-				}
+				//每次自动登录都把cookie时间延长
+				setCookies(url, name, value, expiredays);
 			}
 			//返回错误
 			else {
 				if (msg == false) {
 					//如果自动登陆情况下，不需要弹出登陆对话框来提示用户，在当前页面提示即可
-					if (isAutoLogin == true) {
-						$("#waiting progress").hide();
-						$("#waiting-label").html(chrome.i18n.getMessage("network_wrong")).css("color", "#FF0000");
-						return;
-					}
+					// if (isAutoLogin == true) {
+						// $("#waiting progress").hide();
+						// $("#waiting-label").html(chrome.i18n.getMessage("network_wrong")).css("color", "#FF0000");
+						// return;
+					// }
 					$("#wiz_login").show();
 					$("#wiz_clip_detail").hide();
 					$("#div_error_validator").html(chrome.i18n.getMessage("network_wrong"));
@@ -168,16 +169,6 @@ function LoginControl() {
 		categoryString = categoryStr;
 		initZtree();
 		$("#category_tree_button").click(showCategoryTree);
-		// var ztreeControl = new ZtreeController();
-		// var zData = ztreeControl.parseDate(categoryStr);
-		// ztreeControl.setNodes(zData);
-		// ztreeControl.show();
-		// if (!categoryStr || categoryStr.length < 1) {
-		// return;
-		// }
-		// var array = categoryStr.split('*');
-		//
-		// saveCategory(array);
 	}
 
 	function initZtree() {
@@ -202,5 +193,6 @@ function LoginControl() {
 
 	this.getCookies = getCookies;
 	this.autoLogin = autoLogin;
+	this.logged = logged;
 
 }
