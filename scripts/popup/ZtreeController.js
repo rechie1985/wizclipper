@@ -26,7 +26,6 @@ function ZtreeController() {
 	 * @param {Object} obj
 	 */
 	function parseDate(obj) {
-		console.log(obj);
 		//用来存放 category-name的map
 		var categoryMap = new HashMap();
 		var array = obj.split('*');
@@ -34,24 +33,38 @@ function ZtreeController() {
 		var index = 0;
 		// console.log(array);
 		var ztreeData = [];
-		$.each(array, function(pid, location) {
+
+		$.each(array, function(firstIndex, location) {
 			var tempLocation = '/';
 			var length = location.length;
 			//把头尾的空串去掉
 			var nameArr = location.substr(1, length - 2).split('/');
-			$.each(nameArr, function(id, name) {
+			$.each(nameArr, function(levelIndex, name) {
 				//记录路径
+				var parentLocation = tempLocation;
 				tempLocation += name + '/';
 				var nodeData = {};
-				var mapId = categoryMap.get(tempLocation);
-				if (!mapId) {
-					categoryMap.put(tempLocation, name);
-					nodeData.id = pid * 100 + id + 1;
-					nodeData.pId = pid;
-					nodeData.name = name;
-					nodeData.location = tempLocation;
-					ztreeData[index] = nodeData;
-					index++;
+				var mapNodeObj = categoryMap.get(tempLocation);
+				if (!mapNodeObj) {
+					//根节点特殊处理
+					var nodeObj = {};
+					nodeObj.children = [];
+					nodeObj.open = true;
+					nodeObj.name = name;
+					nodeObj.location = tempLocation;
+					nodeObj.level = levelIndex;
+					categoryMap.put(tempLocation, nodeObj);
+					//非根节点
+					if (levelIndex == 0) {
+						ztreeData[index] = nodeObj;
+						index++;
+					}
+					var parentNode = categoryMap.get(parentLocation);
+					if (parentNode) {
+						var length = parentNode.children.length;
+						parentNode.children[length] = nodeObj;
+
+					}
 				}
 			});
 		});
