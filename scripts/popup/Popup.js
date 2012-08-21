@@ -12,7 +12,21 @@ window.onload = function() {
 
 	function showByCookies(cookies) {
 		if (cookies) {
-			loginControl.autoLogin(cookies);
+			var port = chrome.extension.connect({
+				name : "initRequest"
+			});
+			port.onMessage.addListener(function(msg) {
+				if (msg == false) {
+					//第一次打开浏览器未登录
+					loginControl.autoLogin(cookies);
+				} else {
+					//打开浏览器后已经登陆过
+					$("#waiting").hide();
+					//cookie中未保存或已过期
+					$("#wiz_login").hide();
+					$("#wiz_clip_detail").show();
+				}
+			});
 		} else {
 			$("#waiting").hide();
 			//cookie中未保存或已过期

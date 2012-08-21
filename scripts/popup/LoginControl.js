@@ -48,21 +48,13 @@ function LoginControl() {
 			//返回错误
 			else {
 				if (msg == false) {
-					//如果自动登陆情况下，不需要弹出登陆对话框来提示用户，在当前页面提示即可
-					// if (isAutoLogin == true) {
-					// $("#waiting progress").hide();
-					// $("#waiting-label").html(chrome.i18n.getMessage("network_wrong")).css("color", "#FF0000");
-					// return;
-					// }
 					$("#wiz_login").show();
 					$("#wiz_clip_detail").hide();
 					$("#div_error_validator").html(chrome.i18n.getMessage("network_wrong"));
-					// document.getElementById("div_error_validator").innerText = chrome.i18n.getMessage("network_wrong");
 				} else {
 					$("#wiz_login").show();
 					$("#wiz_clip_detail").hide();
 					$("#div_error_validator").html(msg);
-					// document.getElementById("div_error_validator").innerText = msg;
 				}
 				$("#waiting").hide();
 			}
@@ -121,6 +113,13 @@ function LoginControl() {
 
 	function showClipHandler(evt) {
 		requestTitle();
+		var categoryStr = localStorage["category"];
+		//如果本地未保存文件夹信息，需要发送请求加载
+		if (categoryStr) {
+			parseWizCategory(categoryStr);
+		} else {
+			requestCategory();
+		}
 	}
 
 	/**
@@ -140,7 +139,6 @@ function LoginControl() {
 
 	function setTitle(title) {
 		$("#wiz_note_title").val(title);
-		parseWizCategory(localStorage["category"]);
 	}
 
 	/**
@@ -158,7 +156,6 @@ function LoginControl() {
 		});
 	}
 
-	var categoryString;
 	/**
 	 *对目录信息进行处理
 	 * @param {Object} categoryStr
@@ -173,6 +170,7 @@ function LoginControl() {
 		var zData = ztreeControl.parseDate(categoryString);
 		ztreeControl.setNodes(zData);
 		ztreeControl.show();
+		$("#category_tree_button").show();
 	}
 
 	/**
@@ -185,6 +183,8 @@ function LoginControl() {
 		} else {
 			$("#ztree_container").show();
 		}
+		
+		var treeObj = $.fn.zTree.getZTreeObj("ztree");
 		return false;
 	}
 

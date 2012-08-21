@@ -96,6 +96,15 @@ chrome.extension.onConnect.addListener(function(port) {
 			}
 			wizExecuteSave(info);
 		});
+	} else if ("initRequest" == port.name) {
+		//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
+		//TODO 返回是否可获取文章、是否可获取选择信息
+		if (token) {
+			getTab(wizSaveToWiz);
+			port.postMessage(true);
+		} else {
+			port.postMessage(false);
+		}
 	}
 });
 

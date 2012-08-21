@@ -11,15 +11,23 @@ function ZtreeController() {
 		},
 		data : {
 			simpleData : {
-				enable : true,
-				idKey : "id",
-				pIdKey : "pId",
-				rootPId : ""
+				enable : false
 			}
+		},
+		callback : {
+			onClick : zTreeOnClick
 		}
+
 	};
 
 	var zNodesObj;
+
+	function zTreeOnClick(event, treeId, treeNode) {
+		var nodeLocation = treeNode.location;
+		console.log(nodeLocation);
+		$("#category_info").html(nodeLocation);
+		$("#ztree_container").hide();
+	};
 
 	/**
 	 * 将获取到的json object处理成ztree需要的格式
@@ -49,7 +57,6 @@ function ZtreeController() {
 					//根节点特殊处理
 					var nodeObj = {};
 					nodeObj.children = [];
-					nodeObj.open = true;
 					nodeObj.name = name;
 					nodeObj.location = tempLocation;
 					nodeObj.level = levelIndex;
@@ -77,7 +84,7 @@ function ZtreeController() {
 	}
 
 	function show() {
-		$.fn.zTree.init($("#ztree_container"), setting, zNodesObj);
+		$.fn.zTree.init($("#ztree"), setting, zNodesObj);
 	};
 	this.show = show;
 	this.setNodes = setNodes;
