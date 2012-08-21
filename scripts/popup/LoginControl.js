@@ -4,7 +4,9 @@
 var mainUrl = "http://service.wiz.cn/web";
 var ztreeControl = new ZtreeController();
 function LoginControl() {
-	var logged = false;
+	
+	//add click listener to login button
+	$("#login_button").bind("click", doLogin);
 	/**
 	 *自动登陆，使用cookies
 	 */
@@ -31,11 +33,9 @@ function LoginControl() {
 		port.postMessage(sending);
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
-				//记录已登录状态
-				logged = true;
-				
+
 				var name = "wiz-clip-auth";
-				var value = user_id.value + "*md5." + hex_md5(password.value);
+				var value = loginParam.user_id + "*" + loginParam.password;
 				//cookie保存时间  (秒)
 				var url = mainUrl;
 				var expiredays;
@@ -50,9 +50,9 @@ function LoginControl() {
 				if (msg == false) {
 					//如果自动登陆情况下，不需要弹出登陆对话框来提示用户，在当前页面提示即可
 					// if (isAutoLogin == true) {
-						// $("#waiting progress").hide();
-						// $("#waiting-label").html(chrome.i18n.getMessage("network_wrong")).css("color", "#FF0000");
-						// return;
+					// $("#waiting progress").hide();
+					// $("#waiting-label").html(chrome.i18n.getMessage("network_wrong")).css("color", "#FF0000");
+					// return;
 					// }
 					$("#wiz_login").show();
 					$("#wiz_clip_detail").hide();
@@ -109,8 +109,6 @@ function LoginControl() {
 		}, callback);
 	}
 
-	//add click listener to login button
-	$("#login_button").bind("click", doLogin);
 
 	chrome.extension.onConnect.addListener(messageListener);
 	function messageListener(port) {
@@ -143,6 +141,7 @@ function LoginControl() {
 	function setTitle(title) {
 		$("#wiz_note_title").val(title);
 		requestCategory();
+		requestTag();
 	}
 
 	/**
@@ -173,6 +172,8 @@ function LoginControl() {
 
 	function initZtree() {
 		var zData = ztreeControl.parseDate(categoryString);
+		var categoryStr = localStorage["category"];
+		var tagStr = localStorage["tag"];
 		ztreeControl.setNodes(zData);
 		ztreeControl.show();
 	}
@@ -190,9 +191,35 @@ function LoginControl() {
 		return false;
 	}
 
+	/**
+	 *加载文件夹信息
+	 */
+	function requestCategory() {
+		$('#wiz_note_category').attr("placeholder", "loading category...");
+		var port = chrome.extension.connect({
+			name : "requestCategory"
+		});
+		port.onMessage.addListener(function(msg) {
+			$('#wiz_note_category').attr("placeholder", "input category");
+			var value = $('#wiz_note_category').val();
+			parseWizCategory(msg.categories);
+			localStorage["category"] = msg.categories;
+		});
+	}
+
+	function requestTag() {
+		var port = chrome.extension.connect({
+			name : "requestTag"
+		});
+		port.onMessage.addListener(function(msg) {
+			if (msg) {
+				localStorage["tag"] = JSON.stringify(msg);
+				clipPageControl.initTagHandler();
+			}
+		});
+	}
+
 
 	this.getCookies = getCookies;
 	this.autoLogin = autoLogin;
-	this.logged = logged;
-
 }

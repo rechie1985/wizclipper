@@ -280,7 +280,9 @@ function launchClientClipperFullPage(title) {
 		"params" : params
 	};
 
-	chrome.extension.connect().postMessage(additionalInfo);
+	chrome.extension.connect({
+		name : "save"
+	}).postMessage(additionalInfo);
 }
 
 function launchClientClipperSelection(title) {
@@ -289,7 +291,9 @@ function launchClientClipperSelection(title) {
 		title : title,
 		"params" : params
 	};
-	chrome.extension.connect().postMessage(additionalInfo);
+	chrome.extension.connect({
+		name : "save"
+	}).postMessage(additionalInfo);
 }
 
 function launchClientClipperUrl(title) {
@@ -299,7 +303,9 @@ function launchClientClipperUrl(title) {
 		title : title,
 		"params" : params
 	};
-	chrome.extension.connect().postMessage(additionalInfo);
+	chrome.extension.connect({
+		name : "save"
+	}).postMessage(additionalInfo);
 }
 
 function getSelectedHTML() {

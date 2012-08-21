@@ -6,12 +6,20 @@ function ClipPageControl() {
 
 	$("#note_submit").click(noteSubmit);
 	$("body").bind("keydown", keyDownHandler);
-	// $("#submit-type").change(changeTypehandler);
+	$("#wiz_note_tag").bind("keydown", renderTag).bind("blur", renderTag)
+	this.initTagHandler = function() {
+		$("#wiz_note_tag").bind('input', autoFillTag);
+	}
+	/**
+	 *输入框内回车或者选择的时候
+	 */
+	function renderTag() {
+		
+	}
 
-	$('#wiz_note_category').bind('keydown', categoryChangeHandler);
+	function fillTagInput(evt) {
+	}
 
-	$("#submit-type").keydown(function() {
-	});
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
@@ -91,6 +99,7 @@ function ClipPageControl() {
 	 */
 	function noteSubmit(e) {
 		doSubmit();
+		return false;
 	}
 
 	function doSubmit() {
@@ -110,49 +119,41 @@ function ClipPageControl() {
 		});
 	}
 
+	function autoFillTag(evt) {
+		console.log(evt);
+		var tagList = JSON.parse(localStorage["tag"]);
+		var inputStr = this.value;
+		var reg = new RegExp("^" + inputStr);
+		var filterArray = tagList.filter(function(obj) {
+			return reg.test(obj.tag_name);
+		});
+		console.log(filterArray);
+		autoComplete("tag-tip-container", filterArray, "tag_name");
+	}
+
 	/**
-	 *监听change事件，完成自动提示并填充
-	 * @param {Object} evt
+	 *自动匹配
+	 * @param {Object} id
+	 * @param {Object} dataArray
+	 * @param {Object} name
 	 */
-	function categoryChangeHandler(evt) {
-		var inputCategory = this.value;
-		console.log(inputCategory);
-		if (!inputCategory || inputCategory.length < 1 || inputCategory == '/' || inputCategory == '*') {
-			$("#auto_category").hide().html('');
-			return;
-		}
-		console.log("last:" + inputCategory);
-		var categoryCollection = categoryMap.fuzzySearch(inputCategory);
-		if (categoryCollection.length < 1) {
-			$("#auto_category").hide();
-			return;
-		}
+	function autoComplete(id, dataArray, name) {
 		var innerHTML = '';
-		$.each(categoryCollection, function(index, value) {
+		$.each(dataArray, function(index, value) {
 			var categoryStr;
-			if ( value instanceof Category) {
-				categoryStr = value.getLocation();
-			} else {
-				console.log("wrong category location" + value);
+			if (!value) {
 				return;
 			}
 			if (index % 2 == 0) {
-				innerHTML += '<div id="auto_complete" class="auto-complete-category">' + categoryStr + '</div>';
+				innerHTML += '<div id="auto_complete" class="' + id + '_tip">' + value[name] + '</div>';
 			} else {
-				innerHTML += '<div id="auto_complete" class="auto-complete-category striped">' + categoryStr + '</div>';
+				innerHTML += '<div id="auto_complete" class="' + id + '_tip striped">' + value[name] + '</div>';
 			}
-			console.log(index + ': ' + value.getLocation());
 		});
-		$("#auto_category").show().html(innerHTML);
+		$("#" + id).html(innerHTML).show();
 
 		//绑定自动完成事件
-		$("#auto_complete").live("click", autoCompleteHandler);
-	}
-
-	function autoCompleteHandler(evt) {
-		var autoText = $(this).html();
-		$("#wiz_note_category").val(autoText);
-		$("#auto_category").hide().html("");
+		$('#auto_complete').live("click", renderTag);
 	}
 
 }

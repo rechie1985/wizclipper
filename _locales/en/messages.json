@@ -55,6 +55,9 @@
 	},
 	"network_wrong" : {
 		"message" : "The network is not available. Please try again after checking"
+	},
+	"add_tag" : {
+		"message" : "add tag"
 	}
 	
 }

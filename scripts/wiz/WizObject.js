@@ -1,15 +1,32 @@
 /**
  * @author rechie
  */
+
+function BaseItem() {
+	
+}
+/**
+ * 文件夹信息
+ */
 function Category() {
 	var location;
+	var name;
 
 	this.getLocation = function() {
 		return this.location;
 	}
 	this.setLocation = function(location) {
-		this.location = location;
+		this._location = location;
 	}
+}
+
+/**
+ * 标签信息
+ */
+function Tag() {
+	this.name = null;
+	this.tagGuid = null;
+	this.parentGuid = null;
 }
 
 function HashMap() {

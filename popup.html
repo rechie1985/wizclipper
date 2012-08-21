@@ -13,12 +13,12 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<script type="text/javascript" src="scripts/lib/jquery.min.js"></script>
 		<script type="text/javascript" src="scripts/lib/zTree/zTreeJs/jquery.ztree.core-3.3.min.js"></script>
+		<script type="text/javascript" src="scripts/wiz/WizObject.js"></script>
 		<script type="text/javascript" src="scripts/popup/ZtreeController.js"></script>
-		<script type="text/javascript" src="scripts/wiz/Category.js"></script>
 		<script type="text/javascript" src="scripts/lib/md5.js"></script>
 		<script type="text/javascript" src="scripts/lib/xmlrpc.js"></script>
-		<script type="text/javascript" src="scripts/popup/LoginControl.js"></script>
 		<script type="text/javascript" src="scripts/popup/ClipPageControl.js"></script>
+		<script type="text/javascript" src="scripts/popup/LoginControl.js"></script>
 		<script type="text/javascript" src="scripts/popup/Popup.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/popup/popup.css" />
 		<link rel="stylesheet" type="text/css" href="css/zTreeStyle/zTreeStyle.css" />
@@ -69,7 +69,7 @@
 		</div>
 		<div class="wiz_clip_detail" id="wiz_clip_detail" style="display: none;">
 			<div class="container">
-				<form action="#" class="note_info">
+				<div action="#" class="note_info">
 					<div class="note_title_div">
 						<label for="wiz_note_title" id="note_title_tip"></label>
 						<span>
@@ -78,15 +78,16 @@
 					</div>
 					<div class="note_category_div">
 						<label for="note-category" id="category_tip"></label>
-						<input type="text" id="wiz_note_category" />
+						<label id="note-category" class="note-category"></label>
 						<span><button id="category_tree_button"></button></span>
 					</div>
 					<div id="ztree_container" class="ztree-container" style="display: none;"></div>
 					<div class="note_tag_div">
 						<label for="note-tag" id="tag_tip"></label>
 						<input type="text" id="wiz_note_tag" />
+						<div id="tag-tip-container" class="tag-tip-container"></div>
 					</div>
-				</form>
+				</div>
 				<div>
 					<label id="note_submit_message" style="color:red"></label>
 					<div class="submit-group">

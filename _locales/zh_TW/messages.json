@@ -55,6 +55,9 @@
 	},
 	"network_wrong" : {
 		"message" : "\u7db2\u7d61\u4e0d\u53ef\u7528\uff0c\u8acb\u6aa2\u67e5\u5f8c\u91cd\u8a66"
+	},
+	"add_tag" : {
+		"message" : "\u8f38\u5165\u6a19\u7c3d"
 	}
 	
 }

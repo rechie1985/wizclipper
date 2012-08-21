@@ -1,11 +1,9 @@
 window.onload = function() {
 	initPopupPage();
-	var clipPageControl = new ClipPageControl();
-	var loginControl = new LoginControl();
+	window.clipPageControl = new ClipPageControl();
+	window.loginControl = new LoginControl();
 
-	if (!loginControl.logged) {
-		loginControl.getCookies(mainUrl, "wiz-clip-auth", showByCookies);
-	}
+	loginControl.getCookies(mainUrl, "wiz-clip-auth", showByCookies);
 
 	//保证popup页面和preview页面同时关闭
 	chrome.extension.connect({
@@ -42,6 +40,7 @@ window.onload = function() {
 		$("#fullPage").html(chrome.i18n.getMessage("fullpage_save"));
 		$("#selection").html(chrome.i18n.getMessage("select_save"));
 		$("#url").html(chrome.i18n.getMessage("url_save"));
+		$("#wiz_note_tag").attr("placeholder", chrome.i18n.getMessage("add_tag"));
 	}
 
 }

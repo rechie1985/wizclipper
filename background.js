@@ -4,8 +4,7 @@ $.ajaxSetup({
 });
 var token = null;
 chrome.extension.onConnect.addListener(function(port) {
-	var tab = port.sender.tab;
-	if (port.name && port.name == "login") {
+	if ("login" == port.name) {
 		port.onMessage.addListener(function(msg) {
 			// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
 			var url = "http://service.wiz.cn/wizkm/xmlrpc";
@@ -22,6 +21,8 @@ chrome.extension.onConnect.addListener(function(port) {
 						return;
 					}
 					token = ret.token;
+					var time = 10 * 1000;
+					setInterval(refreshToken, time);
 					port.postMessage(true);
 					getTab(wizSaveToWiz);
 				},
@@ -30,7 +31,7 @@ chrome.extension.onConnect.addListener(function(port) {
 				}
 			});
 		});
-	} else if (port.name && port.name == "checkLogin") {
+	} else if ("checkLogin" == port.name) {
 		port.onMessage.addListener(function(msg) {
 			if (token != null) {
 				getTab(wizSaveToWiz);
@@ -39,7 +40,7 @@ chrome.extension.onConnect.addListener(function(port) {
 				port.postMessage(false);
 			}
 		});
-	} else if (port.name && port.name == "onkeydown") {
+	} else if ("onkeydown" == port.name) {
 		port.onMessage.addListener(function(msg) {
 			if (!token || token == null) {
 				return;
@@ -51,11 +52,11 @@ chrome.extension.onConnect.addListener(function(port) {
 				getTab(bindKeyDownHandler, direction);
 			}
 		});
-	} else if (port.name == "popupClosed") {
+	} else if ("popupClosed" == port.name) {
 		port.onDisconnect.addListener(function() {
 			getTab(hideContentVeil);
 		});
-	} else if (port.name == "preview") {
+	} else if ("preview" == port.name) {
 		port.onMessage.addListener(function(msg) {
 			if (!msg) {
 				//TODO
@@ -64,8 +65,6 @@ chrome.extension.onConnect.addListener(function(port) {
 			getTab(wizSaveToWiz, msg);
 		});
 	} else if ("requestCategory" == port.name) {
-		// port.onMessage.addListener(function(msg) {
-		// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
 		var url = "http://service.wiz.cn/wizkm/xmlrpc";
 		var params = new Object();
 		params.client_type = "web3";
@@ -90,18 +89,42 @@ chrome.extension.onConnect.addListener(function(port) {
 				port.postMessage(false);
 			}
 		});
-		// });
+	} else if ("requestTag" == port.name) {
+		// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
+		var url = "http://service.wiz.cn/wizkm/xmlrpc";
+		var params = new Object();
+		params.client_type = "web3";
+		params.api_version = 3;
+		params.token = token;
+		params.version = 0;
+		params.count = 2000;
+		var sending = xmlrpc.writeCall("tag.getList", [params]);
+		$.ajax({
+			type : "POST",
+			url : url,
+			data : sending,
+			success : function(res) {
+				var xmldoc = xmlrpc.createXml(res);
+				try {
+					var ret = xmlrpc.parseResponse(xmldoc);
+				} catch (err) {
+					port.postMessage(err);
+					return;
+				}
+				port.postMessage(ret);
+			},
+			error : function(res) {
+				port.postMessage(false);
+			}
+		});
+	} else if ("save" == port.name) {
+		port.onMessage.addListener(function(info) {
+			if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
+				return;
+			}
+			wizExecuteSave(info);
+		});
 	}
-
-	// This will get called by the content script we execute in
-	// the tab as a result of the user pressing the browser action.
-	port.onMessage.addListener(function(info) {
-
-		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
-			return;
-		}
-		wizExecuteSave(info);
-	});
 });
 
 function getTab(callback, direction) {
@@ -159,7 +182,6 @@ function wizSaveToWiz(tab, op) {
 		name : "preview",
 		op : op
 	});
-	//chrome.tabs.executeScript(null, { file: "content_script.js" });
 }
 
 function wizOnSaveToWizContextMenuClick(info, tab) {
