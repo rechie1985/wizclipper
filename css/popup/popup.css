@@ -87,14 +87,11 @@ body.popup {
 }
 
 .note_category_div {
-	border-top: 0px;
-	border-bottom: 0px;
-}
-.note_tag_div {
+	border-top: 0;
 	-webkit-border-bottom-left-radius: 4px;
 	-webkit-border-bottom-right-radius: 4px;
 }
-.note_title_div label, .note_category_div label, .note_tag_div label {
+.note_title_div label, .note_category_div label {
 	text-align: right;
 	width: 20%;
 }
@@ -217,35 +214,6 @@ body.popup {
 	background-image: url(../../images/menu.gif);
 	background-repeat: no-repeat;
 	background-position: 95% 50%;
-}
-
-.tag-tip-container {
-	cursor: pointer;
-	margin-left: 60px;
-	margin-top: 5px;
-	height: 175px;
-	overflow: visible;
-	position: absolute;
-	-webkit-box-shadow: 1px 1px 7px 0px #222222;
-	background-color: #FFFFFF;
-	border: 1px solid #333333;
-	-webkit-border-radius: 3px;
-	display: none;
-}
-
-.auto-complete-category {
-	line-height: 1.5;
-	z-index: 9999;
-	height: 15px;
-	padding: 2px 0 2px 0;
-	text-overflow: ellipsis;
-	text-align: left;
-	vertical-align: middle;
-	white-space: nowrap;
-}
-
-.auto-complete-category:hover {
-	background-color: #0088CC;
 }
 
 .striped {

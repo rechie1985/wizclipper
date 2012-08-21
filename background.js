@@ -89,34 +89,6 @@ chrome.extension.onConnect.addListener(function(port) {
 				port.postMessage(false);
 			}
 		});
-	} else if ("requestTag" == port.name) {
-		// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
-		var url = "http://service.wiz.cn/wizkm/xmlrpc";
-		var params = new Object();
-		params.client_type = "web3";
-		params.api_version = 3;
-		params.token = token;
-		params.version = 0;
-		params.count = 2000;
-		var sending = xmlrpc.writeCall("tag.getList", [params]);
-		$.ajax({
-			type : "POST",
-			url : url,
-			data : sending,
-			success : function(res) {
-				var xmldoc = xmlrpc.createXml(res);
-				try {
-					var ret = xmlrpc.parseResponse(xmldoc);
-				} catch (err) {
-					port.postMessage(err);
-					return;
-				}
-				port.postMessage(ret);
-			},
-			error : function(res) {
-				port.postMessage(false);
-			}
-		});
 	} else if ("save" == port.name) {
 		port.onMessage.addListener(function(info) {
 			if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {

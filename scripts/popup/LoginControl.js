@@ -4,7 +4,7 @@
 var mainUrl = "http://service.wiz.cn/web";
 var ztreeControl = new ZtreeController();
 function LoginControl() {
-	
+
 	//add click listener to login button
 	$("#login_button").bind("click", doLogin);
 	/**
@@ -140,8 +140,7 @@ function LoginControl() {
 
 	function setTitle(title) {
 		$("#wiz_note_title").val(title);
-		requestCategory();
-		requestTag();
+		parseWizCategory(localStorage["category"]);
 	}
 
 	/**
@@ -172,8 +171,6 @@ function LoginControl() {
 
 	function initZtree() {
 		var zData = ztreeControl.parseDate(categoryString);
-		var categoryStr = localStorage["category"];
-		var tagStr = localStorage["tag"];
 		ztreeControl.setNodes(zData);
 		ztreeControl.show();
 	}
@@ -182,11 +179,11 @@ function LoginControl() {
 	 *显示树
 	 */
 	function showCategoryTree() {
-		var display = $("#ztree_container").css("display");
-		if (display == 'none') {
-			$("#ztree_container").show();
-		} else {
+		var visible = $("#ztree_container").is(":visible");
+		if (visible) {
 			$("#ztree_container").hide();
+		} else {
+			$("#ztree_container").show();
 		}
 		return false;
 	}
@@ -204,18 +201,6 @@ function LoginControl() {
 			var value = $('#wiz_note_category').val();
 			parseWizCategory(msg.categories);
 			localStorage["category"] = msg.categories;
-		});
-	}
-
-	function requestTag() {
-		var port = chrome.extension.connect({
-			name : "requestTag"
-		});
-		port.onMessage.addListener(function(msg) {
-			if (msg) {
-				localStorage["tag"] = JSON.stringify(msg);
-				clipPageControl.initTagHandler();
-			}
 		});
 	}
 

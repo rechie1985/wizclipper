@@ -6,20 +6,7 @@ function ClipPageControl() {
 
 	$("#note_submit").click(noteSubmit);
 	$("body").bind("keydown", keyDownHandler);
-	$("#wiz_note_tag").bind("keydown", renderTag).bind("blur", renderTag)
-	this.initTagHandler = function() {
-		$("#wiz_note_tag").bind('input', autoFillTag);
-	}
-	/**
-	 *输入框内回车或者选择的时候
-	 */
-	function renderTag() {
-		
-	}
-
-	function fillTagInput(evt) {
-	}
-
+	
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
@@ -99,7 +86,6 @@ function ClipPageControl() {
 	 */
 	function noteSubmit(e) {
 		doSubmit();
-		return false;
 	}
 
 	function doSubmit() {
@@ -119,41 +105,6 @@ function ClipPageControl() {
 		});
 	}
 
-	function autoFillTag(evt) {
-		console.log(evt);
-		var tagList = JSON.parse(localStorage["tag"]);
-		var inputStr = this.value;
-		var reg = new RegExp("^" + inputStr);
-		var filterArray = tagList.filter(function(obj) {
-			return reg.test(obj.tag_name);
-		});
-		console.log(filterArray);
-		autoComplete("tag-tip-container", filterArray, "tag_name");
-	}
-
-	/**
-	 *自动匹配
-	 * @param {Object} id
-	 * @param {Object} dataArray
-	 * @param {Object} name
-	 */
-	function autoComplete(id, dataArray, name) {
-		var innerHTML = '';
-		$.each(dataArray, function(index, value) {
-			var categoryStr;
-			if (!value) {
-				return;
-			}
-			if (index % 2 == 0) {
-				innerHTML += '<div id="auto_complete" class="' + id + '_tip">' + value[name] + '</div>';
-			} else {
-				innerHTML += '<div id="auto_complete" class="' + id + '_tip striped">' + value[name] + '</div>';
-			}
-		});
-		$("#" + id).html(innerHTML).show();
-
-		//绑定自动完成事件
-		$('#auto_complete').live("click", renderTag);
-	}
+	
 
 }
