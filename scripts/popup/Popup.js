@@ -49,12 +49,15 @@ window.onload = function() {
 		$("#category_tip").html(chrome.i18n.getMessage("category_tip"));
 		$("#tag_tip").html(chrome.i18n.getMessage("tag_tip"));
 		$("#tag_input").html(chrome.i18n.getMessage("tag_input"));
-		$("#note_submit").html(chrome.i18n.getMessage("fullpage_save"));
 		$("#article").html(chrome.i18n.getMessage("article_save"));
 		$("#fullPage").html(chrome.i18n.getMessage("fullpage_save"));
 		$("#selection").html(chrome.i18n.getMessage("select_save"));
 		$("#url").html(chrome.i18n.getMessage("url_save"));
-		$("#wiz_note_tag").attr("placeholder", chrome.i18n.getMessage("add_tag"));
+		$("#comment_tip").html(chrome.i18n.getMessage("comment_tip"));
+		$("#comment-info").attr("placeholder", chrome.i18n.getMessage("add_comment"));
+		
+		$("#category_info").html("/我的笔记/");
 	}
+
 
 }

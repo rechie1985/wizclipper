@@ -14,6 +14,9 @@
 	"user_id_help": {
 		"message": "(email or mobile)"
 	},
+	"userid_error": {
+		"message": "User name input error"
+	},
 	"password_tip": {
 		"message": "password: "
 	},
@@ -58,6 +61,15 @@
 	},
 	"add_tag" : {
 		"message" : "add tag"
+	},
+	"comment_tip" : {
+		"message" : "comment: "
+	},
+	"password_error" : {
+		"message" : "password error"
+	},
+	"add_comment" : {
+		"message" : "add comment"
 	}
 	
 }

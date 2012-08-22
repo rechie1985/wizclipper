@@ -5,8 +5,13 @@
 function ClipPageControl() {
 
 	$("#note_submit").click(noteSubmit);
-	$("body").bind("keydown", keyDownHandler);
+	$("#submit-type").change(changeTypehandler);
+	$("body").bind("keyup", keyDownHandler);
+	$("#comment-info").focus(resizeComment);
 	
+	function resizeComment() {
+		$("#comment-info").animate({height : "80px"}, 500);
+	}
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
@@ -30,9 +35,11 @@ function ClipPageControl() {
 
 	function keyDownHandler(e) {
 		var target = e.target;
-		if ('INPUT' == target.tagName) {
-			$(target).trigger('focusout');
-			return;
+		var skipTypes = ["input", "select", "textarea"];
+		for (var i = 0; i < skipTypes.length; i++) {
+			if (e.srcElement.nodeName.toLowerCase() == skipTypes[i]) {
+				return;
+			}
 		}
 		var keycode = e.keyCode;
 		if (13 == keycode) {
@@ -104,7 +111,5 @@ function ClipPageControl() {
 			});
 		});
 	}
-
-	
 
 }

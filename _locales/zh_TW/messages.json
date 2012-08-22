@@ -14,6 +14,9 @@
 	"user_id_help": {
 		"message": "(Email\u6216\u624b\u6a5f\u865f)"
 	},
+	"userid_error": {
+		"message": "\u7528\u6236\u540d\u8f38\u5165\u932f\u8aa4"
+	},
 	"password_tip": {
 		"message": "\u5bc6\u78bc: "
 	},
@@ -58,6 +61,16 @@
 	},
 	"add_tag" : {
 		"message" : "\u8f38\u5165\u6a19\u7c3d"
+	},
+	"comment_tip" : {
+		"message" : "\u8a55\u8ad6: "
+	},
+	"password_error" : {
+		"message" : "\u5bc6\u78bc\u932f\u8aa4"
+	},
+	"add_comment" : {
+		"message" : "\u6dfb\u52a0\u8a55\u8ad6"
 	}
+	
 	
 }

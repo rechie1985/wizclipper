@@ -6,7 +6,12 @@ var ztreeControl = new ZtreeController();
 function LoginControl() {
 
 	//add click listener to login button
-	$("#login_button").bind("click", doLogin);
+	$("#login_button").bind("click", loginSubmit);
+
+	$("#user_id").blur(checkEmail);
+	$("#password").blur(checkPassword);
+
+
 	/**
 	 *自动登陆，使用cookies
 	 */
@@ -72,6 +77,15 @@ function LoginControl() {
 		loginParam.user_id = user_id.value;
 		loginParam.password = "md5." + hex_md5(password.value);
 		login(loginParam);
+	}
+
+	/**
+	 * 点击登陆按钮触发事件 
+	 */
+	function loginSubmit() {
+		if(checkEmail() && checkPassword()) {
+			doLogin();
+		}
 	}
 
 	/**
@@ -163,7 +177,7 @@ function LoginControl() {
 	function parseWizCategory(categoryStr) {
 		categoryString = categoryStr;
 		initZtree();
-		$("#category_tree_button").click(showCategoryTree);
+		$("#category_info").click(showCategoryTree);
 	}
 
 	function initZtree() {
@@ -179,11 +193,11 @@ function LoginControl() {
 	function showCategoryTree() {
 		var visible = $("#ztree_container").is(":visible");
 		if (visible) {
-			$("#ztree_container").hide();
+			$("#ztree_container").hide(500);
 		} else {
-			$("#ztree_container").show();
+			$("#ztree_container").show(500);
 		}
-		
+
 		var treeObj = $.fn.zTree.getZTreeObj("ztree");
 		return false;
 	}
@@ -202,6 +216,36 @@ function LoginControl() {
 			parseWizCategory(msg.categories);
 			localStorage["category"] = msg.categories;
 		});
+	}
+
+	function checkEmail() {
+		$("#userid_error_tip").hide();
+		var email = $("#user_id").val();
+		var valid = verifyEmail(email);
+		if (!valid) {
+			$("#userid_error_tip").html(chrome.i18n.getMessage("userid_error")).show(100);
+		}
+		return valid;
+
+	}
+
+	function verifyEmail(str_email) {
+		var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+		if (myreg.test(str_email)) {
+			return true;
+		}
+		return false;
+	}
+
+	function checkPassword() {
+		$("#password_error_tip").hide();
+		var password = $("#password").val();
+		if (password.trim().length < 1) {
+			$("#password_error_tip").html(chrome.i18n.getMessage("password_error")).show(100);
+			return false;
+		}
+		return true;
+
 	}
 
 
