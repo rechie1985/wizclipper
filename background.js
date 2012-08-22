@@ -89,13 +89,6 @@ chrome.extension.onConnect.addListener(function(port) {
 				port.postMessage(false);
 			}
 		});
-	} else if ("save" == port.name) {
-		port.onMessage.addListener(function(info) {
-			if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
-				return;
-			}
-			wizExecuteSave(info);
-		});
 	} else if ("initRequest" == port.name) {
 		//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
 		//TODO 返回是否可获取文章、是否可获取选择信息
@@ -106,6 +99,12 @@ chrome.extension.onConnect.addListener(function(port) {
 			port.postMessage(false);
 		}
 	}
+	port.onMessage.addListener(function(info) {
+		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
+			return;
+		}
+		wizExecuteSave(info);
+	});
 });
 
 function getTab(callback, direction) {
@@ -134,8 +133,17 @@ function bindKeyDownHandler(tab, direction) {
 function wizExecuteSave(info) {
 	var regexp = /%20/g;
 	var title = info.title;
+	var category = info.category;
+	var comment = info.comment;
 	var body = info.params;
+	if(comment && comment.trim() != "") {
+		body = comment + "<hr>" + body;
+	}
+	
 	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") + "&body=" + encodeURIComponent(body).replace(regexp, "+");
+	if(category && category.length > 2) {
+		requestData = requestData + "&category=" + encodeURIComponent(category).replace(regexp, "+")
+	}
 	$.ajax({
 		type : "POST",
 		// url : "http://127.0.0.1:8800/wizkm/a/web/post?",
@@ -156,8 +164,8 @@ function wizExecuteSave(info) {
 
 function wizSaveToWiz(tab, op) {
 	if (!op) {
-		//默认为整夜
-		op = "fullPage";
+		//默认为文章
+		op = "article";
 	}
 	chrome.tabs.sendRequest(tab.id, {
 		name : "preview",

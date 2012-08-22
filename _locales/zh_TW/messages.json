@@ -56,21 +56,58 @@
 	"url_save": {
 		"message": "\u4fdd\u5b58URL"
 	},
-	"network_wrong" : {
-		"message" : "\u7db2\u7d61\u4e0d\u53ef\u7528\uff0c\u8acb\u6aa2\u67e5\u5f8c\u91cd\u8a66"
+	"network_wrong": {
+		"message": "\u7db2\u7d61\u4e0d\u53ef\u7528\uff0c\u8acb\u6aa2\u67e5\u5f8c\u91cd\u8a66"
 	},
-	"add_tag" : {
-		"message" : "\u8f38\u5165\u6a19\u7c3d"
+	"add_tag": {
+		"message": "\u8f38\u5165\u6a19\u7c3d"
 	},
-	"comment_tip" : {
-		"message" : "\u8a55\u8ad6: "
+	"comment_tip": {
+		"message": "\u8a55\u8ad6: "
 	},
-	"password_error" : {
-		"message" : "\u5bc6\u78bc\u932f\u8aa4"
+	"password_error": {
+		"message": "\u5bc6\u78bc\u932f\u8aa4"
 	},
-	"add_comment" : {
-		"message" : "\u6dfb\u52a0\u8a55\u8ad6"
+	"add_comment": {
+		"message": "\u6dfb\u52a0\u8a55\u8ad6"
+	},
+	"My Notes": {
+		"message": "/My Notes/"
+	},
+	"My Mobiles": {
+		"message": "/My Mobiles/"
+	},
+	"My Drafts": {
+		"message": "/My Drafts/"
+	},
+	"My Journals": {
+		"message": "/My Journals/"
+	},
+	"My Events": {
+		"message": "/My Events/"
+	},
+	"My Contacts": {
+		"message": "/My Contacts/"
+	},
+	"My Tasks": {
+		"message": "/My Tasks/"
+	},
+	"Deleted Items": {
+		"message": "/Deleted Items/"
+	},
+	"My Sticky Notes": {
+		"message": "/My Sticky Notes/"
+	},
+	"Inbox": {
+		"message": "/Inbox/"
+	},
+	"Completed": {
+		"message": "/Completed/"
+	},
+	"My Photos": {
+		"message": "/My Photos/"
+	},
+	"My Emails": {
+		"message": "/My Emails/"
 	}
-	
-	
 }

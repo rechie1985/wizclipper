@@ -24,9 +24,9 @@ function ZtreeController() {
 
 	function zTreeOnClick(event, treeId, treeNode) {
 		var nodeLocation = treeNode.location;
-		console.log(nodeLocation);
 		$("#category_info").html(nodeLocation);
-		$("#ztree_container").hide();
+		$("#category_info").attr("location", nodeLocation);
+		$("#ztree_container").hide(500);
 	};
 
 	/**
@@ -70,7 +70,6 @@ function ZtreeController() {
 					if (parentNode) {
 						var length = parentNode.children.length;
 						parentNode.children[length] = nodeObj;
-
 					}
 				}
 			});

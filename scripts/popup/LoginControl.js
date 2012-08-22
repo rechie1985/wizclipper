@@ -11,7 +11,6 @@ function LoginControl() {
 	$("#user_id").blur(checkEmail);
 	$("#password").blur(checkPassword);
 
-
 	/**
 	 *自动登陆，使用cookies
 	 */
@@ -80,10 +79,10 @@ function LoginControl() {
 	}
 
 	/**
-	 * 点击登陆按钮触发事件 
+	 * 点击登陆按钮触发事件
 	 */
 	function loginSubmit() {
-		if(checkEmail() && checkPassword()) {
+		if (checkEmail() && checkPassword()) {
 			doLogin();
 		}
 	}
@@ -121,11 +120,46 @@ function LoginControl() {
 		var name = port.name;
 		if (name && name == "contentVeilShow") {
 			$("#waiting").hide();
-			$("#wiz_clip_detail").show(showClipHandler);
+			if ($("#wiz_clip_detail").is(":hidden")) {
+				$("#wiz_clip_detail").show(showClipHandler);
+			}
 		}
 	}
 
+	/**
+	 *初始化选择保存类型的方法，通过当前页面的返回情况
+	 */
+	function initClipSelect() {
+		chrome.windows.getCurrent(function(win) {
+			chrome.tabs.getSelected(win.id, function(tab) {
+				chrome.tabs.sendMessage(tab.id, {
+					name : 'getInfo'
+				}, function(params) {
+					var clipArticle = params.article;
+					var clipSelection = params.selection;
+					if (clipSelection == true) {
+						$("#submit-type")[0].options[1].selected = true;
+					} else if (clipArticle == true) {
+						$("#submit-type")[0].options[0].selected = true;
+					} else {
+						$("#submit-type")[0].options[2].selected = true;
+					}
+
+					if (clipSelection == false) {
+						$('#submit-type option[id="selection"]').attr("disabled", "");
+					}
+					if (clipArticle == false) {
+						$('#submit-type option[id="article"]').attr("disabled", "");
+					}
+					var type = $("#submit-type").val();
+					$("#note_submit").html(type);
+				});
+			});
+		});
+	}
+
 	function showClipHandler(evt) {
+		initClipSelect();
 		requestTitle();
 		var categoryStr = localStorage["category"];
 		//如果本地未保存文件夹信息，需要发送请求加载

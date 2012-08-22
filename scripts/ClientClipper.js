@@ -256,56 +256,38 @@ function wiz_getSelected(win) {
 	return params;
 }
 
-function launchClientClipper(title) {
+function launchClientClipper(info) {
 	var params = wiz_collectAllFrames(window);
 	//params = params + wiz_getSelected(window);
 
 	params = wiz_getSelected(window);
-	var additionalInfo = {
-		title : title,
-		"params" : params
-	};
+	info.params = params;
 
-	chrome.extension.connect().postMessage(additionalInfo);
+	chrome.extension.connect().postMessage(info);
 }
 
-function launchClientClipperFullPage(title) {
+function launchClientClipperFullPage(info) {
 	var base = "<base href='" + window.location.protocol + "//" + window.location.host + "'/>";
 	var page_content = document.getElementsByTagName("html")[0];
 	page_content = $(page_content).clone().find("script").remove().end().html();
 	var index = page_content.indexOf("<head>");
 	var params = page_content.substring(0, index + 6) + base + page_content.substring(index + 6);
-	var additionalInfo = {
-		title : title,
-		"params" : params
-	};
+	info.params = params;
 
-	chrome.extension.connect({
-		name : "save"
-	}).postMessage(additionalInfo);
+	chrome.extension.connect().postMessage(info);
 }
 
-function launchClientClipperSelection(title) {
+function launchClientClipperSelection(info) {
 	var params = getSelectedHTML();
-	var additionalInfo = {
-		title : title,
-		"params" : params
-	};
-	chrome.extension.connect({
-		name : "save"
-	}).postMessage(additionalInfo);
+	info.params = params;
+	chrome.extension.connect().postMessage(info);
 }
 
-function launchClientClipperUrl(title) {
+function launchClientClipperUrl(info) {
 	var url = '<a href="' + window.location.href + '">' + window.location.href + '</a>';
 	var params = url;
-	var additionalInfo = {
-		title : title,
-		"params" : params
-	};
-	chrome.extension.connect({
-		name : "save"
-	}).postMessage(additionalInfo);
+	info.params = params;
+	chrome.extension.connect().postMessage(info);
 }
 
 function getSelectedHTML() {

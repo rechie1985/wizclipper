@@ -151,6 +151,7 @@ function ContentPreview() {"use strict";
 				//setTimeout(hidePreviewLegend, 6000);
 			}
 		} else {
+			previewFullPage();
 			console.warn("Couldn't find a preview element. We need switch to 'full page' mode.");
 		}
 	}
@@ -657,7 +658,7 @@ function ContentPreview() {"use strict";
 				nudgePreview(request.opCmd);
 				break;
 			case "submit" :
-				noteSubmitByType(request.type, request.title);
+				noteSubmitByType(request.type, request.info);
 				break;
 			default:
 				// console.warn("Received invalid Preview message with 'op=" + request.op + "'.");
@@ -665,30 +666,30 @@ function ContentPreview() {"use strict";
 		sendResponse({});
 	}
 
-	function noteSubmitByType(type, title) {
+	function noteSubmitByType(type, info) {
 		switch(type) {
 			case "article" :
-				launchClientClipper(title);
+				launchClientClipper(info);
 				clear();
 				break;
 			case "fullPage" :
 				if (previewElement) {
-					launchClientClipper(title);
+					launchClientClipper(info);
 					break;
 				}
-				launchClientClipperFullPage(title);
+				launchClientClipperFullPage(info);
 				clear();
 				break;
 			case "selection" :
-				if (previewElement) {
-					launchClientClipper(title);
-					break;
-				}
-				launchClientClipperSelection(title);
+				// if (previewElement) {
+					// launchClientClipper(info);
+					// break;
+				// }
+				launchClientClipperSelection(info);
 				clear();
 				break;
 			case "url" :
-				launchClientClipperUrl(title);
+				launchClientClipperUrl(info);
 				clear();
 				break;
 		}

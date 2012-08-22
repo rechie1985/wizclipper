@@ -98,12 +98,19 @@ function ClipPageControl() {
 	function doSubmit() {
 		var type = $('option:selected', '#submit-type').attr("id");
 		var title = $("#wiz_note_title").val();
+		var category = $("#category_info").attr('location');
+		var comment = $("#comment-info").val();
+		console.log($("#comment-info"));
+		var info = {};
+		info.title = title;
+		info.category = category;
+		info.comment = comment;
 		chrome.windows.getCurrent(function(win) {
 			chrome.tabs.getSelected(win.id, function(tab) {
 				chrome.tabs.sendRequest(tab.id, {
 					name : "preview",
 					op : "submit",
-					title : title,
+					info : info,
 					type : type
 				}, function(params) {
 					window.close();
