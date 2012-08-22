@@ -24,7 +24,8 @@ function ZtreeController() {
 
 	function zTreeOnClick(event, treeId, treeNode) {
 		var nodeLocation = treeNode.location;
-		$("#category_info").html(nodeLocation);
+		var displayLocation = treeNode.displayLocation;
+		$("#category_info").html(displayLocation);
 		$("#category_info").attr("location", nodeLocation);
 		$("#ztree_container").hide(500);
 	};
@@ -57,7 +58,8 @@ function ZtreeController() {
 					//根节点特殊处理
 					var nodeObj = {};
 					nodeObj.children = [];
-					nodeObj.name = name;
+					nodeObj.name = changeSpecilaLoction(name);
+					nodeObj.displayLocation = changeSpecilaLoction(tempLocation);
 					nodeObj.location = tempLocation;
 					nodeObj.level = levelIndex;
 					categoryMap.put(tempLocation, nodeObj);
@@ -74,7 +76,6 @@ function ZtreeController() {
 				}
 			});
 		});
-		console.log(ztreeData);
 		return ztreeData;
 	}
 
@@ -88,4 +89,36 @@ function ZtreeController() {
 	this.show = show;
 	this.setNodes = setNodes;
 	this.parseDate = parseDate;
+}
+
+var specialLocation = {
+	"My Notes" : chrome.i18n.getMessage("MyNotes"),
+	"My Mobiles" : chrome.i18n.getMessage("MyMobiles"),
+	"My Drafts" : chrome.i18n.getMessage("MyDrafts"),
+	"My Journals" : chrome.i18n.getMessage("MyJournals"),
+	"My Events" : chrome.i18n.getMessage("MyEvents"),
+	"My Contacts" : chrome.i18n.getMessage("MyContacts"),
+	"My Tasks" : chrome.i18n.getMessage("MyTasks"),
+	"Deleted Items" : chrome.i18n.getMessage("DeletedItems"),
+	"My Sticky Notes" : chrome.i18n.getMessage("MyStickyNotes"),
+	"Inbox" : chrome.i18n.getMessage("Inbox"),
+	"Completed" : chrome.i18n.getMessage("Completed"),
+	"My Photos" : chrome.i18n.getMessage("MyPhotos"),
+	"My Emails" : chrome.i18n.getMessage("MyEmails")
+}
+
+function changeSpecilaLoction(location) {
+	$.each(specialLocation, function(key, value) {
+		var index = location.indexOf(key);
+
+		if(index === 0 && location == key) {
+			location = value;
+			return false;			
+		}
+		if(index === 1 && location.indexOf("/") === 0) {
+			location = "/" + value + location.substr(key.length + 1);
+			return false;
+		}
+	});
+	return location;
 }

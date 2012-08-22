@@ -71,44 +71,47 @@
 	"add_comment" : {
 		"message" : "add comment"
 	},
-	"My Notes": {
-		"message": "/My Notes/"
+	"MyNotes": {
+		"message": "My Notes"
 	},
-	"My Mobiles": {
-		"message": "/My Mobiles/"
+	"MyMobiles": {
+		"message": "My Mobiles"
 	},
-	"My Drafts": {
-		"message": "/My Drafts/"
+	"MyDrafts": {
+		"message": "My Drafts"
 	},
-	"My Journals" : {
-		"message" : "/My Journals/"
+	"MyJournals" : {
+		"message" : "My Journals"
 	},
-	"My Events" : {
-		"message" : "/My Events/"
+	"MyEvents" : {
+		"message" : "My Events"
 	},
-	"My Contacts" : {
-		"message" : "/My Contacts/"
+	"MyContacts" : {
+		"message" : "My Contacts"
 	},
-	"My Tasks" : {
-		"message" : "/My Tasks/"
+	"MyTasks" : {
+		"message" : "My Tasks"
 	},
-	"Deleted Items" : {
-		"message" : "/Deleted Items/"
+	"DeletedItems" : {
+		"message" : "Deleted Items"
 	},
-	"My Sticky Notes" : {
-		"message" : "/My Sticky Notes/"
+	"MyStickyNotes" : {
+		"message" : "My Sticky Notes"
 	},
 	"Inbox": {
-		"message" : "/Inbox/"
+		"message" : "Inbox"
 	},
 	"Completed" : {
-		"message" : "/Completed/"
+		"message" : "Completed"
 	},
-	"My Photos" : {
-		"message" : "/My Photos/"
+	"MyPhotos" : {
+		"message" : "My Photos"
 	},
-	"My Emails": {
-		"message" : "/My Emails/"
+	"MyEmails": {
+		"message" : "My Emails"
+	},
+	"logout": {
+		"message" : "Log Out"
 	}
 }
 

@@ -1,5 +1,5 @@
 html, body, div, table {
-	font-family: "宋体", Helvetica, Arial, sans-serif;
+	font-family: "微软雅黑", "宋体", Helvetica, Arial, sans-serif;
 	font-size: 10.5pt;
 }
 
@@ -229,7 +229,7 @@ body.popup {
 .submit-type, .submit-type:hover, .submit-type:active {
 	background-image: url(../../images/menu.gif);
 	background-repeat: no-repeat;
-	background-position: 95% 50%;
+	background-position: 90% 55%;
 }
 
 .striped {
@@ -250,9 +250,24 @@ body.popup {
 	padding : 0;
 }
 
-
-
 .required_error {
 	color: rgb(255, 0, 0);
+}
+
+.header{
+	height : 50px;
+}
+
+.header_logo{
+	float: left;
+}
+.header-links {
+	float :right;
+	padding : 8px 20px 8px 8px;
+	color: rgb(0, 10, 253);
+}
+.header-links span:hover {
+	cursor : pointer;
+	border-bottom : 1px solid rgb(0, 10, 253);
 }
 

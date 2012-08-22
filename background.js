@@ -94,10 +94,12 @@ chrome.extension.onConnect.addListener(function(port) {
 		//TODO 返回是否可获取文章、是否可获取选择信息
 		if (token) {
 			getTab(wizSaveToWiz);
-			port.postMessage(true);
+			port.postMessage(token);
 		} else {
 			port.postMessage(false);
 		}
+	} else if ("logout" == port.name) {
+		token = null;
 	}
 	port.onMessage.addListener(function(info) {
 		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {

@@ -25,9 +25,13 @@
 	</head>
 	<body class="popup" id="popup">
 		<!-- head -->
-		<div class="header_div">
+		<div class="header">
 			<div class="header_logo">
 				<img alt="Wiz" src="images/logo.png"/>
+			</div>
+			<div id="header_user" class="header-links" style="display: block; ">
+				<span id="logout_control" tabindex="100"></span>
+				<span id="header_username"></span>
 			</div>
 		</div>
 		<div class="waiting" id="waiting">
@@ -41,7 +45,7 @@
 		<div class="wiz_login" id="wiz_login" style="display: none;">
 			<div class="container">
 				<div class="account_login_div">
-					<div id="div_error_validator" style="color:red"> </div>
+					<div id="div_error_validator" style="color:red"></div>
 					<div>
 						<label id="user_id_tip" for="user_id"> </label>
 						<input type="text" name="user_id" size="30" value="" id="user_id">
@@ -61,8 +65,8 @@
 						<font id="keep_password_tip"> </font>
 					</div>
 					<div>
-						<button id="login_button" name="login_button" class="btn btn-primary"> </button>
-						<div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;"> </div>
+						<button id="login_button" name="login_button" class="btn btn-primary"></button>
+						<div style="vertical-align: baseline; height:24px; padding-top:1px; display:inline;"></div>
 					</div>
 				</div>
 			</div>
@@ -80,7 +84,7 @@
 						<label for="note-category" id="category_tip"> </label>
 						<span><label id="category_info" class="category_info"> </label></span>
 						<div id="ztree_container" class="ztree-container" style="display: none;">
-							<div id="ztree" class="ztree"> </div>
+							<div id="ztree" class="ztree"></div>
 						</div>
 					</div>
 					<div class="note_comment_div radius-bottom">
@@ -91,12 +95,12 @@
 				<div>
 					<label id="note_submit_message" style="color:red"> </label>
 					<div class="submit-group">
-						<button id="note_submit" class="btn btn-primary submit-button"> </button> 
+						<button id="note_submit" class="btn btn-primary submit-button"></button>
 						<select id="submit-type" class="btn btn-primary submit-type">
-							<option id="article" > </option>
-							<option id="selection" > </option>
-							<option id="fullPage" > </option>
-							<option id="url" > </option>
+							<option id="article" ></option>
+							<option id="selection" ></option>
+							<option id="fullPage" ></option>
+							<option id="url" ></option>
 						</select>
 					</div>
 				</div>

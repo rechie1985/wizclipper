@@ -56,7 +56,8 @@ window.onload = function() {
 		$("#comment_tip").html(chrome.i18n.getMessage("comment_tip"));
 		$("#comment-info").attr("placeholder", chrome.i18n.getMessage("add_comment"));
 		
-		$("#category_info").html("/我的笔记/");
+		//默认文件夹
+		$("#category_info").html("/" + chrome.i18n.getMessage("MyNotes") + "/").attr("location", "/My Notes/");
 	}
 
 

@@ -71,43 +71,46 @@
 	"add_comment": {
 		"message": "\u6dfb\u52a0\u8a55\u8ad6"
 	},
-	"My Notes": {
-		"message": "/My Notes/"
+	"MyNotes": {
+		"message": "\u6211\u7684\u7b46\u8a18"
 	},
-	"My Mobiles": {
-		"message": "/My Mobiles/"
+	"MyMobiles": {
+		"message": "\u6211\u7684\u624b\u6a5f"
 	},
-	"My Drafts": {
-		"message": "/My Drafts/"
+	"MyDrafts": {
+		"message": "\u6211\u7684\u8349\u7a3f"
 	},
-	"My Journals": {
-		"message": "/My Journals/"
+	"MyJournals" : {
+		"message" : "\u6211\u7684\u65e5\u8a18"
 	},
-	"My Events": {
-		"message": "/My Events/"
+	"MyEvents" : {
+		"message" : "\u6211\u7684\u4e8b\u4ef6"
 	},
-	"My Contacts": {
-		"message": "/My Contacts/"
+	"MyContacts" : {
+		"message" : "\u6211\u7684\u806f\u7cfb\u4eba"
 	},
-	"My Tasks": {
-		"message": "/My Tasks/"
+	"MyTasks" : {
+		"message" : "\u6211\u7684\u4efb\u52d9"
 	},
-	"Deleted Items": {
-		"message": "/Deleted Items/"
+	"DeletedItems" : {
+		"message" : "\u5df2\u522a\u9664"
 	},
-	"My Sticky Notes": {
-		"message": "/My Sticky Notes/"
+	"MyStickyNotes" : {
+		"message" : "\u6211\u7684\u684c\u9762\u4fbf\u7b8b"
 	},
 	"Inbox": {
-		"message": "/Inbox/"
+		"message" : "\u6536\u96c6\u7bb1"
 	},
-	"Completed": {
-		"message": "/Completed/"
+	"Completed" : {
+		"message" : "\u5df2\u5b8c\u6210"
 	},
-	"My Photos": {
-		"message": "/My Photos/"
+	"MyPhotos" : {
+		"message" : "\u6211\u7684\u7167\u7247"
 	},
-	"My Emails": {
-		"message": "/My Emails/"
+	"MyEmails": {
+		"message" : "\u6211\u7684\u90f5\u4ef6"
+	},
+	"logout": {
+		"message" : "\u8a3b\u92b7"
 	}
 }

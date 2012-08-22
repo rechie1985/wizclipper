@@ -114,6 +114,13 @@ function LoginControl() {
 		}, callback);
 	}
 
+	function removeCookies(url, key, callback) {
+		chrome.cookies.remove({
+			url : url,
+			name : key
+		}, callback);
+	}
+
 
 	chrome.extension.onConnect.addListener(messageListener);
 	function messageListener(port) {
@@ -159,6 +166,7 @@ function LoginControl() {
 	}
 
 	function showClipHandler(evt) {
+		initLogoutLink();
 		initClipSelect();
 		requestTitle();
 		var categoryStr = localStorage["category"];
@@ -168,6 +176,21 @@ function LoginControl() {
 		} else {
 			requestCategory();
 		}
+	}
+
+	function initLogoutLink() {
+		var logoutText = chrome.i18n.getMessage("logout");
+		$("#header_user").show();
+		$("#logout_control").html(logoutText).click(logout);
+	}
+
+	function logout() {
+		removeCookies(mainUrl, "wiz-clip-auth", function() {
+			chrome.extension.connect({
+				name : "logout"
+			});
+		});
+		window.close();
 	}
 
 	/**

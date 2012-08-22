@@ -56,58 +56,61 @@
 	"url_save": {
 		"message": "\u4fdd\u5b58URL"
 	},
-	"network_wrong": {
-		"message": "\u7f51\u7edc\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u540e\u91cd\u8bd5"
+	"network_wrong" : {
+		"message" : "\u7f51\u7edc\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u540e\u91cd\u8bd5"
 	},
-	"add_tag": {
-		"message": "\u8f93\u5165\u6807\u7b7e"
+	"add_tag" : {
+		"message" : "\u8f93\u5165\u6807\u7b7e"
 	},
-	"comment_tip": {
-		"message": "\u8bc4\u8bba: "
+	"comment_tip" : {
+		"message" : "\u8bc4\u8bba: "
 	},
-	"password_error": {
-		"message": "\u5bc6\u7801\u9519\u8bef"
+	"password_error" : {
+		"message" : "\u5bc6\u7801\u9519\u8bef"
 	},
-	"add_comment": {
-		"message": "\u6dfb\u52a0\u8bc4\u8bba"
+	"add_comment" : {
+		"message" : "\u6dfb\u52a0\u8bc4\u8bba"
 	},
-	"My Notes": {
-		"message": "/My Notes/"
+	"MyNotes": {
+		"message": "\u6211\u7684\u7b14\u8bb0"
 	},
-	"My Mobiles": {
-		"message": "/My Mobiles/"
+	"MyMobiles": {
+		"message": "\u6211\u7684\u624b\u673a"
 	},
-	"My Drafts": {
-		"message": "/My Drafts/"
+	"MyDrafts": {
+		"message": "\u6211\u7684\u8349\u7a3f"
 	},
-	"My Journals": {
-		"message": "/My Journals/"
+	"MyJournals" : {
+		"message" : "\u6211\u7684\u65e5\u8bb0"
 	},
-	"My Events": {
-		"message": "/My Events/"
+	"MyEvents" : {
+		"message" : "\u6211\u7684\u4e8b\u4ef6"
 	},
-	"My Contacts": {
-		"message": "/My Contacts/"
+	"MyContacts" : {
+		"message" : "\u6211\u7684\u8054\u7cfb\u4eba"
 	},
-	"My Tasks": {
-		"message": "/My Tasks/"
+	"MyTasks" : {
+		"message" : "\u6211\u7684\u4efb\u52a1"
 	},
-	"Deleted Items": {
-		"message": "/Deleted Items/"
+	"DeletedItems" : {
+		"message" : "\u5df2\u5220\u9664"
 	},
-	"My Sticky Notes": {
-		"message": "/My Sticky Notes/"
+	"MyStickyNotes" : {
+		"message" : "\u6211\u7684\u684c\u9762\u4fbf\u7b3a"
 	},
 	"Inbox": {
-		"message": "/Inbox/"
+		"message" : "\u6536\u96c6\u7bb1"
 	},
-	"Completed": {
-		"message": "/Completed/"
+	"Completed" : {
+		"message" : "\u5df2\u5b8c\u6210"
 	},
-	"My Photos": {
-		"message": "/My Photos/"
+	"MyPhotos" : {
+		"message" : "\u6211\u7684\u7167\u7247"
 	},
-	"My Emails": {
-		"message": "/My Emails/"
+	"MyEmails": {
+		"message" : "\u6211\u7684\u90ae\u4ef6"
+	},
+	"logout": {
+		"message" : "\u6ce8\u9500"
 	}
 }
