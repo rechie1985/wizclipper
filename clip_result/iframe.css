@@ -5,7 +5,7 @@
   top: 12px;
   right: 12px;
   width: 466px;
-  height: 460px;
+  max-height: 200px;
   border: 0;
   position: fixed;
 }

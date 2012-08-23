@@ -10,6 +10,7 @@ function ClipResult() {
 				log.log("couldn't remove clip result iframe.");
 			}
 		}
+		document.body.removeEventListener("mousedown");
 	}
 
 	function startClip(_attrs) {
@@ -25,6 +26,7 @@ function ClipResult() {
 			} else {
 				document.body.insertBefore(iframe, null);
 			}
+			document.body.addEventListener("mousedown", removeIFrame);
 		} catch (e) {
 			console.log("Couldn't insert related notes iframe, got error: " + JSON.stringify(e));
 		}

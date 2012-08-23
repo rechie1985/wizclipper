@@ -3,6 +3,8 @@ $.ajaxSetup({
 	cache : false,
 });
 var token = null;
+
+var tab = null;
 chrome.extension.onConnect.addListener(function(port) {
 	if ("login" == port.name) {
 		port.onMessage.addListener(function(msg) {
@@ -105,6 +107,10 @@ chrome.extension.onConnect.addListener(function(port) {
 		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
 			return;
 		}
+		chrome.tabs.sendMessage(tab.id, {
+			name : "clip",
+			info : info
+		});
 		wizExecuteSave(info);
 	});
 });
@@ -112,6 +118,7 @@ chrome.extension.onConnect.addListener(function(port) {
 function getTab(callback, direction) {
 	chrome.windows.getCurrent(function(win) {
 		chrome.tabs.getSelected(win.id, function(tab) {
+			window.tab = tab;
 			callback(tab, direction);
 		});
 	});
@@ -133,33 +140,45 @@ function bindKeyDownHandler(tab, direction) {
 }
 
 function wizExecuteSave(info) {
+
 	var regexp = /%20/g;
 	var title = info.title;
 	var category = info.category;
 	var comment = info.comment;
 	var body = info.params;
-	if(comment && comment.trim() != "") {
+	if (comment && comment.trim() != "") {
 		body = comment + "<hr>" + body;
 	}
-	
+
 	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") + "&body=" + encodeURIComponent(body).replace(regexp, "+");
-	if(category && category.length > 2) {
+	if (category && category.length > 2) {
 		requestData = requestData + "&category=" + encodeURIComponent(category).replace(regexp, "+")
 	}
+	chrome.tabs.sendMessage(tab.id, {
+		name : "sync",
+		info : info
+	});
 	$.ajax({
 		type : "POST",
-		// url : "http://127.0.0.1:8800/wizkm/a/web/post?",
 		url : "http://service.wiz.cn/wizkm/a/web/post?",
 		data : requestData,
 
 		success : function(res) {
 			var json = JSON.parse(res);
 			if (json.return_code != 200) {
-				alert(json.return_message);
 				return;
 			}
+			chrome.tabs.sendMessage(tab.id, {
+				name : "saved",
+				info : info
+			});
 		},
 		error : function(res) {
+			var errorJSON = JSON.parse(res);
+			chrome.tabs.sendMessage(tab.id, {
+				name : "error",
+				info : info
+			});
 		}
 	});
 }

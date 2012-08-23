@@ -348,7 +348,7 @@ margin-left: -100%;
 #notificationMessage {
   font-size: 14px;
   display: inline-block;
-  max-width: 395px; /* Keeps this from falling onto a new line after the icon if the satatus message is long. */
+  max-width: 380px; /* Keeps this from falling onto a new line after the icon if the satatus message is long. */
   margin: 2px 0px;
 }
 

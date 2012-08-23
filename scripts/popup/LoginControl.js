@@ -45,6 +45,7 @@ function LoginControl() {
 				var expiredays;
 				if (keep_passoword.checked) {
 					expiredays = 14 * 24 * 60 * 60;
+					console.log(expiredays);
 				}
 				//每次自动登录都把cookie时间延长
 				setCookies(url, name, value, expiredays);

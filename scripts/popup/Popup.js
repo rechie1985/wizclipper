@@ -1,3 +1,5 @@
+
+var mainUrl = "http://service.wiz.cn/web";
 window.onload = function() {
 	initPopupPage();
 	window.clipPageControl = new ClipPageControl();
@@ -11,6 +13,7 @@ window.onload = function() {
 	});
 
 	function showByCookies(cookies) {
+		console.log(cookies);
 		if (cookies) {
 			var port = chrome.extension.connect({
 				name : "initRequest"
