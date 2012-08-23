@@ -239,7 +239,7 @@ function refreshToken() {
 
 function wizSavePageContextMenuClick(info, tab) {
 	if (isLogin()) {
-		info.title = tab.title
+		info.title = tab.title;
 		chrome.tabs.sendRequest(tab.id, {
 			name : "preview",
 			op : "submit",
@@ -250,23 +250,28 @@ function wizSavePageContextMenuClick(info, tab) {
 }
 
 function wizSaveSelectionContextMenuClick(info, tab) {
-	alert(tab.id);
 	if (isLogin()) {
-		var info = {
-			params : info.selectionText,
-			title : tab.title
-		}
-		wizExecuteSave(info);
+		info.params = info.selectionText,
+		info.title = tab.title;
+		chrome.tabs.sendRequest(tab.id, {
+			name : "preview",
+			op : "submit",
+			info : info,
+			type : "fullPage"
+		});
 	}
 }
 
 function wizSaveUrlContextMenuClick(info, tab) {
 	if (isLogin()) {
-		var info = {
-			params : tab.url,
-			title : tab.title
-		}
-		wizExecuteSave(info);
+		info.params = tab.url,
+		info.title = tab.title
+		chrome.tabs.sendRequest(tab.id, {
+			name : "preview",
+			op : "submit",
+			info : info,
+			type : "fullPage"
+		});
 	}
 }
 

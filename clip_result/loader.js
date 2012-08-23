@@ -14,7 +14,6 @@ function ClipResult() {
 	}
 
 	function startClip(_attrs) {
-
 		removeIFrame();
 		iframe = document.createElement("iframe");
 		iframe.src = chrome.extension.getURL("clip_result/clip_result.html");
