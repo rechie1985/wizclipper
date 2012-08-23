@@ -673,10 +673,6 @@ function ContentPreview() {"use strict";
 				clear();
 				break;
 			case "fullPage" :
-				if (previewElement) {
-					launchClientClipper(info);
-					break;
-				}
 				launchClientClipperFullPage(info);
 				clear();
 				break;

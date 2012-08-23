@@ -112,5 +112,29 @@
 	},
 	"logout": {
 		"message" : "\u8a3b\u92b7"
+	},
+	"clipResult_clipping" : {
+		"message" : "\u6b63\u5728\u526a\u8f2f"
+	},
+	"clipResult_sync" : {
+		"message" : "\u6b63\u5728\u540c\u6b65"
+	},
+	"clipResult_success": {
+		"message" : "\u5df2\u526a\u8f2f"
+	},
+	"clipResult_error": {
+		"message" : "\u4fdd\u5b58\u5931\u6557"
+	}, 
+	"AuthenticationFailure" : {
+		"message" : "\u5728\u4f60\u526a\u8f2f\u8a72\u9801\u9762\u4e4b\u524d\uff0c\u8acb\u5148\u9ede\u64ca\u4fdd\u5b58\u5230wiz\u5de5\u5177\u6b04\u6309\u9215\u767b\u9678"
+	},
+	"contextMenus_clipPage" : {
+		"message" : "\u526a\u8f2f\u9801\u9762"
+	},
+	"contextMenus_clipSelection": {
+		"message" : "\u526a\u8f2f\u9078\u64c7"
+	},
+	"contextMenus_clipUrl": {
+		"message" : "\u526a\u8f2f URL"
 	}
 }

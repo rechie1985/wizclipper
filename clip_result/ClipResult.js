@@ -9,6 +9,11 @@ var successIcon = "#successIcon";
 var errorIcon = "#errorIcon";
 var activeIcon = "#activeIcon";
 
+var clippingMsg = chrome.i18n.getMessage("clipResult_clipping");
+var syncMsg = chrome.i18n.getMessage("clipResult_sync");
+var successMsg = chrome.i18n.getMessage("clipResult_success");
+var errorMsg = chrome.i18n.getMessage("clipResult_error");
+
 function clear() {
 	$(notificationHeadline).empty();
 	$(notificationDetails).empty();
@@ -45,25 +50,25 @@ function showClippingIcon() {
 }
 
 function showSuccess(info) {
-	var msg = "已剪辑  " + info.title;
+	var msg = successMsg + info.title;
 	$(notificationDetails).html(msg);
 	showSuccessIcon();
 }
 
 function showError(info) {
-	var msg = "保存失败 " + info.title;
+	var msg = errorMsg + info.title;
 	$(notificationDetails).html(msg);
 	showErrorIcon();
 }
 
 function showSyncing(info) {
-	var msg = "同步 " + info.title;
+	var msg = syncMsg + info.title;
 	$(notificationDetails).html(msg);
 	showActiveIcon();
 }
 
 function showClipping(info) {
-	var msg = "剪辑  " + info.title;
+	var msg = clippingMsg+ info.title;
 	$(notificationDetails).html(msg);
 	showClippingIcon();
 

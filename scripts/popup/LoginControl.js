@@ -182,7 +182,7 @@ function LoginControl() {
 	function initLogoutLink() {
 		var logoutText = chrome.i18n.getMessage("logout");
 		$("#header_user").show();
-		$("#logout_control").html(logoutText).click(logout);
+		$("#logout_control").html(logoutText).bind("click", logout);
 	}
 
 	function logout() {

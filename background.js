@@ -194,11 +194,19 @@ function wizSaveToWiz(tab, op) {
 	});
 }
 
+var authenticationErrorMsg = chrome.i18n.getMessage('AuthenticationFailure');
 function wizOnSaveToWizContextMenuClick(info, tab) {
-	if (token == null) {
-		alert("在你剪辑该页面之前，请先点击\"保存到wiz\"工具栏按钮登陆");
-	} else {
+	if (isLogin()) {
 		wizSaveToWiz(tab);
+	}
+}
+
+function isLogin() {
+	if (token == null) {
+		alert(AuthenticationErrorMsg);
+		return false;
+	} else {
+		return true;
 	}
 }
 
@@ -229,10 +237,58 @@ function refreshToken() {
 	});
 }
 
-var menuTitle = chrome.i18n.getMessage("actionName");
-var contexts = ["page", "selection", "link", "editable", "image", "video", "audio"];
-chrome.contextMenus.create({
-	"title" : menuTitle,
-	"contexts" : contexts,
-	"onclick" : wizOnSaveToWizContextMenuClick
-});
+function wizSavePageContextMenuClick(info, tab) {
+	if (isLogin()) {
+		info.title = tab.title
+		chrome.tabs.sendRequest(tab.id, {
+			name : "preview",
+			op : "submit",
+			info : info,
+			type : "fullPage"
+		});
+	}
+}
+
+function wizSaveSelectionContextMenuClick(info, tab) {
+	alert(tab.id);
+	if (isLogin()) {
+		var info = {
+			params : info.selectionText,
+			title : tab.title
+		}
+		wizExecuteSave(info);
+	}
+}
+
+function wizSaveUrlContextMenuClick(info, tab) {
+	if (isLogin()) {
+		var info = {
+			params : tab.url,
+			title : tab.title
+		}
+		wizExecuteSave(info);
+	}
+}
+
+function initContextMenus() {
+	var clipPageContext = chrome.i18n.getMessage("contextMenus_clipPage");
+	var clipSelectionContext = chrome.i18n.getMessage("contextMenus_clipSelection");
+	var clipUrlContext = chrome.i18n.getMessage("contextMenus_clipUrl");
+	chrome.contextMenus.create({
+		"title" : clipPageContext,
+		"contexts" : ["page", "image"],
+		"onclick" : wizSavePageContextMenuClick
+	});
+	chrome.contextMenus.create({
+		"title" : clipSelectionContext,
+		"contexts" : ["selection"],
+		"onclick" : wizSaveSelectionContextMenuClick
+	});
+	chrome.contextMenus.create({
+		"title" : clipUrlContext,
+		"contexts" : ['all'],
+		"onclick" : wizSaveUrlContextMenuClick
+	});
+}
+
+initContextMenus();

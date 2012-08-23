@@ -112,6 +112,30 @@
 	},
 	"logout": {
 		"message" : "Log Out"
+	},
+	"clipResult_clipping" : {
+		"message" : "Clipping"
+	},
+	"clipResult_sync" : {
+		"message" : "Syncing"
+	},
+	"clipResult_success": {
+		"message" : "Clipped"
+	},
+	"clipResult_error": {
+		"message" : "Save Error"
+	}, 
+	"AuthenticationFailure" : {
+		"message" : "Before you clip the page. Please sign in using the toolbar button, and try again. "
+	},
+	"contextMenus_clipPage" : {
+		"message" : "Clip Page"
+	},
+	"contextMenus_clipSelection": {
+		"message" : "Clip Selection"
+	},
+	"contextMenus_clipUrl": {
+		"message" : "Clip URL"
 	}
 }
 
