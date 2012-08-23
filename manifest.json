@@ -14,8 +14,8 @@
 		"page": "background.html"
     },
     "content_scripts": [{
-        "js": [ "scripts/lib/jquery.min.js", "scripts/ClientClipper.js",  "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PreviewController.js", "scripts/pageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
-        "css": [ "css/contentpreview.css" ],
+        "js": [ "scripts/lib/jquery.min.js", "clip_result/loader.js" , "scripts/ClientClipper.js",  "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PreviewController.js", "scripts/pageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
+        "css": [ "css/contentpreview.css", "clip_result/iframe.css"  ],
         "matches": [ "*://*/*" ]
    }],
     "web_accessible_resources": [
@@ -24,5 +24,6 @@
       "images/nudge-icons/nudge-icon-arrow-lr.png",
       "images/nudge-icons/nudge-icon-return.png"
   ],
-   "permissions": [ "contextMenus", "cookies" ,"tabs", "unlimitedStorage", "http://*/*", "https://*/*" ]
+   "permissions": [ "contextMenus", "cookies" ,"tabs", "unlimitedStorage", "http://*/*", "https://*/*" ],
+   "web_accessible_resources": [ "clip_result/clip_result.css", "clip_result/clip_result.html", "clip_result/iframe.css", "clip_result/loader.js","clip_result/small_snippet.css","images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png", "images/check.png", "images/scissors.png", "images/sync.png", "images/warning.png" ]
 }

@@ -262,32 +262,34 @@ function launchClientClipper(info) {
 
 	params = wiz_getSelected(window);
 	info.params = params;
-
-	chrome.extension.connect().postMessage(info);
+	postClipInfo(info);
 }
 
 function launchClientClipperFullPage(info) {
-	var base = "<base href='" + window.location.protocol + "//" + window.location.host + "'/>";
-	var page_content = document.getElementsByTagName("html")[0];
-	page_content = $(page_content).clone().find("script").remove().end().html();
-	var index = page_content.indexOf("<head>");
-	var params = page_content.substring(0, index + 6) + base + page_content.substring(index + 6);
-	info.params = params;
-
-	chrome.extension.connect().postMessage(info);
+	info.params = getFullpageHTML();
+	postClipInfo(info);
 }
 
 function launchClientClipperSelection(info) {
 	var params = getSelectedHTML();
 	info.params = params;
-	chrome.extension.connect().postMessage(info);
+	postClipInfo(info);
 }
 
 function launchClientClipperUrl(info) {
 	var url = '<a href="' + window.location.href + '">' + window.location.href + '</a>';
 	var params = url;
 	info.params = params;
-	chrome.extension.connect().postMessage(info);
+	postClipInfo(info);
+}
+
+function getFullpageHTML() {
+	var base = "<base href='" + window.location.protocol + "//" + window.location.host + "'/>";
+	var page_content = document.getElementsByTagName("html")[0];
+	page_content = $(page_content).clone().find("script").remove().end().html();
+	var index = page_content.indexOf("<head>");
+	var fullpage = page_content.substring(0, index + 6) + base + page_content.substring(index + 6);
+	return fullpage;
 }
 
 function getSelectedHTML() {
@@ -299,5 +301,10 @@ function getSelectedHTML() {
 		return $(html).html();
 	} else
 		return "";
+}
+
+function postClipInfo(info) {
+	chrome.extension.connect().postMessage(info);
+	clipResult.startClip();
 }
 

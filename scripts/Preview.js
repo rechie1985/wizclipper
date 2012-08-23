@@ -661,7 +661,7 @@ function ContentPreview() {"use strict";
 				noteSubmitByType(request.type, request.info);
 				break;
 			default:
-				// console.warn("Received invalid Preview message with 'op=" + request.op + "'.");
+				console.warn("Received invalid Preview message with 'op=" + request.op + "'.");
 		}
 		sendResponse({});
 	}
