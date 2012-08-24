@@ -234,6 +234,7 @@ body.popup {
 }
 
 .submit-button {
+	margin-right:10px;
 	z-index: 201;
 	-webkit-border-bottom-right-radius: 0px;
 	-webkit-border-top-right-radius: 0px;
