@@ -186,7 +186,6 @@ function LoginControl() {
 			parseWizCategory(categoryStr);
 		} else {
 			requestCategory();
-			alert("loadCategory");
 		}
 	}
 
