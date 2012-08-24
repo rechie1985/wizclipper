@@ -111,10 +111,10 @@ chrome.extension.onConnect.addListener(function(port) {
 		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
 			return;
 		}
-		chrome.tabs.sendMessage(tab.id, {
-			name : "clip",
-			info : info
-		});
+		// chrome.tabs.sendMessage(tab.id, {
+			// name : "clip",
+			// info : info
+		// });
 		wizExecuteSave(info);
 	});
 });
