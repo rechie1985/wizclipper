@@ -138,9 +138,7 @@ function LoginControl() {
 		var name = port.name;
 		if (name && name == "contentVeilShow") {
 			$("#waiting").hide();
-			if ($("#wiz_clip_detail").is(":hidden")) {
-				$("#wiz_clip_detail").show(showClipHandler);
-			}
+			$("#wiz_clip_detail").show(showClipHandler);
 		}
 	}
 
@@ -199,10 +197,7 @@ function LoginControl() {
 		}
 		chrome.cookies.get(param, function(cookies) {
 			if (cookies) {
-				var value = cookies.value,
-					array = value.split("*"),
-					displayName = array[0],
-					location = array[1];
+				var value = cookies.value, array = value.split("*"), displayName = array[0], location = array[1];
 				$("#category_info").html(displayName).attr("location", location);
 
 			}
