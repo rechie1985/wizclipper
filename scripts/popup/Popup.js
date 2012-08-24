@@ -24,7 +24,7 @@ window.onload = function() {
 					$("#waiting").hide();
 					//cookie中未保存或已过期
 					$("#wiz_login").hide();
-					// $("#wiz_clip_detail").show();
+					$("#wiz_clip_detail").show();
 				}
 				var token = loginControl.requestToken();
 			});
