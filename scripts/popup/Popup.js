@@ -34,6 +34,7 @@ window.onload = function() {
 			//cookie中未保存或已过期
 			$("#wiz_login").show();
 			$("#wiz_clip_detail").hide();
+			loginControl.initLogoffLink();
 		}
 	}
 

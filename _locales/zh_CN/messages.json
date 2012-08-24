@@ -136,5 +136,8 @@
 	},
 	"contextMenus_clipUrl": {
 		"message" : "\u526a\u8f91 URL"
+	},
+	"create_account_link": {
+		"message" : "\u521b\u5efa\u4e3a\u77e5\u7b14\u8bb0\u8d26\u53f7"
 	}
 }

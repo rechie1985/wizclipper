@@ -136,6 +136,9 @@
 	},
 	"contextMenus_clipUrl": {
 		"message" : "Clip URL"
+	},
+	"create_account_link": {
+		"message" : "Create Wiz Account"
 	}
 }
 
