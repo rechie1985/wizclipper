@@ -1,9 +1,9 @@
 {
 	"actionName": {
-		"message": "Save to Wiz..."
+		"message": "Wiz Note Web Clipper"
 	},
 	"extName": {
-		"message": "Save to Wiz"
+		"message": "Wiz Note Web Clipper"
 	},
 	"popup_wating": {
 		"message": "waiting page..."

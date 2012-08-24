@@ -3,7 +3,6 @@
 	"description": "This extension adds an save button to the toolbar which allows you to save the page to Wiz.",
 	"version": "1.1",
 	"manifest_version": 2,
-	"key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDUXgWb0t1zf1GnNvi5QunMBFuFtN5LD3S5m6JcXalE9EtMecSb3Zd8jQX1VnS3V+8rbDAKAe2VinmQG4NSe4540FYmaRVA4KajpXZr01BremNLkZEVkQ+LC50Yo6we7MenAilCU4ec9oYfJ+J22hy99+GCzaxpKUhlcRJkPzWYrQIDAQAB",
 	"default_locale": "en",
 	"browser_action": {
 		"default_icon": "images/wiz_16x16.png",
