@@ -69,9 +69,6 @@ function ZtreeController() {
 					nodeObj.displayLocation = changeSpecilaLoction(tempLocation);
 					nodeObj.location = tempLocation;
 					nodeObj.level = levelIndex;
-					nodeObj.icon = chrome.extension.getURL("images/folder-close.png");
-					nodeObj.iconClose = chrome.extension.getURL("images/folder-close.png");
-					nodeObj.iconOpen = chrome.extension.getURL("images/folder-open.png");
 					categoryMap.put(tempLocation, nodeObj);
 					//非根节点
 					if (levelIndex == 0) {
