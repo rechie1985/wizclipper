@@ -50,25 +50,25 @@ function showClippingIcon() {
 }
 
 function showSuccess(info) {
-	var msg = successMsg + info.title;
+	var msg = successMsg + " : " + info.title;
 	$(notificationDetails).html(msg);
 	showSuccessIcon();
 }
 
 function showError(info) {
-	var msg = errorMsg + info.title;
+	var msg = errorMsg + " : " + info.title;
 	$(notificationDetails).html(msg);
 	showErrorIcon();
 }
 
 function showSyncing(info) {
-	var msg = syncMsg + info.title;
+	var msg = syncMsg + " : " + info.title;
 	$(notificationDetails).html(msg);
 	showActiveIcon();
 }
 
 function showClipping(info) {
-	var msg = clippingMsg+ info.title;
+	var msg = clippingMsg + " : " + info.title;
 	$(notificationDetails).html(msg);
 	showClippingIcon();
 
