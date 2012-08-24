@@ -72,7 +72,7 @@ function PreviewController() {
 };
 
 // register shortcut keys
-document.querySelector("body").addEventListener("keydown", nudge);
+// document.querySelector("body").addEventListener("keydown", nudge);
 
 function nudge(evt) {
     // We won't do anything unless we're pretty sure we're correct.
