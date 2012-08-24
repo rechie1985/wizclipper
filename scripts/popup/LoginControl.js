@@ -202,7 +202,6 @@ function LoginControl() {
 					array = value.split("*"),
 					displayName = array[0],
 					location = array[1];
-					alert(value);
 				$("#category_info").html(displayName).attr("location", location);
 
 			}
