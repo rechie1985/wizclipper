@@ -184,10 +184,11 @@ function LoginControl() {
 		initDefaultCategory();
 		var categoryStr = localStorage["category"];
 		//如果本地未保存文件夹信息，需要发送请求加载
-		if (categoryStr) {
+		if (categoryStr && !isAutoLogin) {
 			parseWizCategory(categoryStr);
 		} else {
 			requestCategory();
+			alert("loadCategory");
 		}
 	}
 
