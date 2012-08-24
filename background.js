@@ -203,7 +203,7 @@ function wizOnSaveToWizContextMenuClick(info, tab) {
 
 function isLogin() {
 	if (token == null) {
-		alert(AuthenticationErrorMsg);
+		alert(authenticationErrorMsg);
 		return false;
 	} else {
 		return true;
@@ -257,7 +257,7 @@ function wizSaveSelectionContextMenuClick(info, tab) {
 			name : "preview",
 			op : "submit",
 			info : info,
-			type : "fullPage"
+			type : "selection"
 		});
 	}
 }
@@ -270,7 +270,7 @@ function wizSaveUrlContextMenuClick(info, tab) {
 			name : "preview",
 			op : "submit",
 			info : info,
-			type : "fullPage"
+			type : "url"
 		});
 	}
 }
