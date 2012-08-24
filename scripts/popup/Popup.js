@@ -1,9 +1,8 @@
 var mainUrl = "http://service.wiz.cn/web";
 window.onload = function() {
 	initPopupPage();
-	window.clipPageControl = new ClipPageControl();
-	window.loginControl = new LoginControl();
 
+	var loginControl = new LoginControl();
 	loginControl.getCookies(mainUrl, "wiz-clip-auth", showByCookies);
 
 	//保证popup页面和preview页面同时关闭
@@ -27,8 +26,9 @@ window.onload = function() {
 					$("#wiz_login").hide();
 					// $("#wiz_clip_detail").show();
 				}
-				var token = requestToken();
+				var token = loginControl.requestToken();
 			});
+
 		} else {
 			$("#waiting").hide();
 			//cookie中未保存或已过期
@@ -36,15 +36,6 @@ window.onload = function() {
 			$("#wiz_clip_detail").hide();
 			loginControl.initLogoffLink();
 		}
-	}
-
-	function requestToken() {
-		var port = chrome.extension.connect({
-			name : "requestToken"
-		});
-		port.onMessage.addListener(function(token) {
-			clipPageControl.initUserLink(token);
-		});
 	}
 
 	function initPopupPage() {

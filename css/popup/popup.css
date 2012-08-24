@@ -29,12 +29,8 @@ ul, li {
 	list-style-type: none;
 }
 
-.waiting {
-	height: 55px;
-}
-
 body.popup {
-	background-color: #F0F0F0;
+	background-color: #F5F6F7;
 	min-width: 100px;
 	padding-bottom: 8px;
 	margin: 5px;
@@ -45,6 +41,17 @@ body.popup {
 	overflow: hidden;
 }
 
+.waiting {
+	height: 55px;
+	padding-left: 15px;
+}
+.waiting label {
+	color : #0F8EEB;
+}
+.waiting progress {
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
 .wiz_login {
 	height: 200px;
 	width: 360px;
@@ -54,33 +61,39 @@ body.popup {
 
 .wiz_login .container, .waiting {
 	margin-left: 32px;
+	margin-top: -10px;
+}
+.wiz_login input, .note_title_div input ,.note_comment_div textarea {
+	font-family: "微软雅黑", "宋体", Helvetica, Arial, sans-serif;
+	font-size: 10.5pt;
 }
 
 .wiz_login input[type="password"], .wiz_login input[type="text"] {
 	-webkit-border-radius: 4px;
-	border: 1px solid #B1B1B1;
+	border: 1px solid #B6B6B6;
 	padding: 3px 0 3px 5px;
 	margin-left: 2px;
-	width: 95%;
+	width: 395px;
+	height: 28px;
 }
 .wiz_login label {
 	display: block;
-	padding: 3px;
+	padding: 5px;
 }
 .wiz_login .keep_password_div {
-	padding-bottom: 15px;
+	padding: 15px 0 15px 0;
 }
 
 .wiz_clip_detail .container {
 	margin: 20px 5px 20px 5px;
 }
 
-.note_title_div, .note_category_div, .note_comment_div{
+.note_title_div, .note_category_div, .note_comment_div {
 	border: 1px solid #B1B1B1;
 	padding: 8px;
 	background-color: white;
 }
-.note_title_div input, .note_category_div label.category_info, .note_comment_div textarea{
+.note_title_div input, .note_category_div label.category_info, .note_comment_div textarea {
 	border: 0;
 	padding: 0;
 	width: 430px;
@@ -90,11 +103,10 @@ body.popup {
 	cursor: pointer;
 }
 
-
-.note_comment_div textarea{
+.note_comment_div textarea {
 	vertical-align: top;
 	max-width: 430px;
-	max-height : 80px;
+	max-height: 80px;
 }
 .radius-top {
 	-webkit-border-top-left-radius: 4px;
@@ -155,10 +167,10 @@ body.popup {
 	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 	border: 1px solid #cccccc;
 	border-bottom-color: #b3b3b3;
-	-webkit-border-bottom-left-radius: 4px;
-	-webkit-border-bottom-right-radius: 4px;
-	-webkit-border-top-left-radius: 4px;
-	-webkit-border-top-right-radius: 4px;
+	-webkit-border-bottom-left-radius: 12px;
+	-webkit-border-bottom-right-radius: 12px;
+	-webkit-border-top-left-radius: 12px;
+	-webkit-border-top-right-radius: 12px;
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 	cursor: pointer;
 	position: relative;
@@ -227,7 +239,7 @@ body.popup {
 	-webkit-border-top-right-radius: 0px;
 }
 .submit-type, .submit-type:hover, .submit-type:active {
-	background-image: url(../../images/menu.gif);
+	background-image: url(../../images/button-dropdown.png);
 	background-repeat: no-repeat;
 	background-position: 90% 55%;
 }
@@ -247,27 +259,27 @@ body.popup {
 	display: none;
 }
 .ztree-container .ztree {
-	padding : 0;
+	padding: 0;
 }
 
 .required_error {
 	color: rgb(255, 0, 0);
 }
 
-.header{
-	height : 50px;
+.header {
+	height: 50px;
 }
 
-.header_logo{
+.header_logo {
 	float: left;
 }
 .header-links {
-	float :right;
-	padding : 8px 20px 8px 8px;
-	color: rgb(0, 10, 253);
+	float: right;
+	padding: 8px 20px 8px 8px;
+	color: #0F8EEB;
 }
 .header-links span:hover {
-	cursor : pointer;
-	border-bottom : 1px solid rgb(0, 10, 253);
+	cursor: pointer;
+	border-bottom: 1px solid #0F8EEB;
 }
 

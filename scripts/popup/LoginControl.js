@@ -4,6 +4,7 @@
 var ztreeControl = new ZtreeController();
 function LoginControl() {
 
+	var isAutoLogin = false;
 	//add click listener to login button
 	$("#login_button").bind("click", loginSubmit);
 
@@ -14,6 +15,7 @@ function LoginControl() {
 	 *自动登陆，使用cookies
 	 */
 	function autoLogin(cookie) {
+		isAutoLogin = true;
 		$("#waiting").show();
 
 		var info = cookie.value;
@@ -36,7 +38,6 @@ function LoginControl() {
 		port.postMessage(sending);
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
-
 				var name = "wiz-clip-auth";
 				var value = loginParam.user_id + "*" + loginParam.password;
 				//cookie保存时间  (秒)
@@ -44,9 +45,12 @@ function LoginControl() {
 				var expiredays;
 				if (keep_passoword.checked) {
 					expiredays = 14 * 24 * 60 * 60;
-					//每次自动登录都把cookie时间延长
+				}
+				if (!isAutoLogin) {
+					//自动登陆不需要再次设置token
 					setCookies(url, name, value, expiredays);
 				}
+				$("#loginoff_div").hide();
 				localStorage["wiz-clip-auth"] = loginParam.user_id;
 			}
 			//返回错误
@@ -175,7 +179,9 @@ function LoginControl() {
 	function showClipHandler(evt) {
 		initLogoutLink();
 		initClipSelect();
+		requestToken();
 		requestTitle();
+		initDefaultCategory();
 		var categoryStr = localStorage["category"];
 		//如果本地未保存文件夹信息，需要发送请求加载
 		if (categoryStr) {
@@ -183,6 +189,24 @@ function LoginControl() {
 		} else {
 			requestCategory();
 		}
+	}
+
+	function initDefaultCategory() {
+		var param = {
+			url : "http://service.wiz.cn/web",
+			name : "last-category"
+		}
+		chrome.cookies.get(param, function(cookies) {
+			if (cookies) {
+				var value = cookies.value,
+					array = value.split("*"),
+					displayName = array[0],
+					location = array[1];
+					alert(value);
+				$("#category_info").html(displayName).attr("location", location);
+
+			}
+		});
 	}
 
 	function initLogoutLink() {
@@ -311,13 +335,24 @@ function LoginControl() {
 		return true;
 
 	}
-	
+
 	function initLogoffLink() {
-		$("#create_aacount").html(chrome.i18n.getMessage("create_account_link")).bind("click" , function(evt) {
+		$("#create_aacount").html(chrome.i18n.getMessage("create_account_link")).bind("click", function(evt) {
 			window.open("http://service.wiz.cn/wizkm/a/signup");
 		});
 	}
 
+	function requestToken() {
+		var port = chrome.extension.connect({
+			name : "requestToken"
+		});
+		port.onMessage.addListener(function(token) {
+			clipPageControl.initUserLink(token);
+		});
+	}
+
+
+	this.requestToken = requestToken;
 	this.initLogoffLink = initLogoffLink;
 	this.getCookies = getCookies;
 	this.autoLogin = autoLogin;

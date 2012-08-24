@@ -23,7 +23,7 @@ chrome.extension.onConnect.addListener(function(port) {
 						return;
 					}
 					token = ret.token;
-					var time = 10 * 1000;
+					var time = 4 * 60 * 1000;
 					setInterval(refreshToken, time);
 					port.postMessage(true);
 					getTab(wizSaveToWiz);
@@ -112,8 +112,8 @@ chrome.extension.onConnect.addListener(function(port) {
 			return;
 		}
 		// chrome.tabs.sendMessage(tab.id, {
-			// name : "clip",
-			// info : info
+		// name : "clip",
+		// info : info
 		// });
 		wizExecuteSave(info);
 	});
@@ -155,9 +155,10 @@ function wizExecuteSave(info) {
 	}
 
 	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") + "&body=" + encodeURIComponent(body).replace(regexp, "+");
-	if (category && category.length > 2) {
-		requestData = requestData + "&category=" + encodeURIComponent(category).replace(regexp, "+")
+	if (!category) {
+		category = "/My Notes/";
 	}
+	requestData = requestData + "&category=" + encodeURIComponent(category).replace(regexp, "+")
 	chrome.tabs.sendMessage(tab.id, {
 		name : "sync",
 		info : info
@@ -250,7 +251,8 @@ function wizSavePageContextMenuClick(info, tab) {
 
 function wizSaveSelectionContextMenuClick(info, tab) {
 	if (isLogin()) {
-		info.params = info.selectionText, info.title = tab.title;
+		info.params = info.selectionText;
+		info.title = tab.title;
 		chrome.tabs.sendRequest(tab.id, {
 			name : "preview",
 			op : "submit",
@@ -262,7 +264,8 @@ function wizSaveSelectionContextMenuClick(info, tab) {
 
 function wizSaveUrlContextMenuClick(info, tab) {
 	if (isLogin()) {
-		info.params = tab.url, info.title = tab.title
+		info.params = tab.url;
+		info.title = tab.title
 		chrome.tabs.sendRequest(tab.id, {
 			name : "preview",
 			op : "submit",

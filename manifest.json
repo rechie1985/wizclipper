@@ -1,29 +1,31 @@
 {
-    "name": "__MSG_extName__",
-    "description": "This extension adds an save button to the toolbar which allows you to save the page to Wiz.",
-    "version": "1.1",
-    "manifest_version": 2,
-    "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDUXgWb0t1zf1GnNvi5QunMBFuFtN5LD3S5m6JcXalE9EtMecSb3Zd8jQX1VnS3V+8rbDAKAe2VinmQG4NSe4540FYmaRVA4KajpXZr01BremNLkZEVkQ+LC50Yo6we7MenAilCU4ec9oYfJ+J22hy99+GCzaxpKUhlcRJkPzWYrQIDAQAB",
-    "default_locale": "en",
-    "browser_action": {
-        "default_icon": "images/wiz_16x16.png",
-        "default_title": "__MSG_actionName__",
-		"default_popup" : "popup.html"
-    },
-    "background": {
+	"name": "__MSG_extName__",
+	"description": "This extension adds an save button to the toolbar which allows you to save the page to Wiz.",
+	"version": "1.1",
+	"manifest_version": 2,
+	"key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDUXgWb0t1zf1GnNvi5QunMBFuFtN5LD3S5m6JcXalE9EtMecSb3Zd8jQX1VnS3V+8rbDAKAe2VinmQG4NSe4540FYmaRVA4KajpXZr01BremNLkZEVkQ+LC50Yo6we7MenAilCU4ec9oYfJ+J22hy99+GCzaxpKUhlcRJkPzWYrQIDAQAB",
+	"default_locale": "en",
+	"browser_action": {
+		"default_icon": "images/wiz_16x16.png",
+		"default_title": "__MSG_actionName__",
+		"default_popup": "popup.html"
+	},
+	"background": {
 		"page": "background.html"
-    },
-    "content_scripts": [{
-        "js": [ "scripts/lib/jquery.min.js", "clip_result/loader.js" , "scripts/ClientClipper.js",  "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PreviewController.js", "scripts/pageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
-        "css": [ "css/contentpreview.css", "clip_result/iframe.css"  ],
-        "matches": [ "*://*/*" ]
-   }],
-    "web_accessible_resources": [
-      "images/nudge-icons/nudge-icon-arrow-up.png",
-      "images/nudge-icons/nudge-icon-arrow-down.png",
-      "images/nudge-icons/nudge-icon-arrow-lr.png",
-      "images/nudge-icons/nudge-icon-return.png"
-  ],
-   "permissions": [ "contextMenus", "cookies" ,"tabs", "unlimitedStorage", "http://*/*", "https://*/*" ],
-   "web_accessible_resources": [ "clip_result/clip_result.css", "clip_result/clip_result.html", "clip_result/iframe.css", "clip_result/loader.js","clip_result/small_snippet.css","images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png", "images/check.png", "images/scissors.png", "images/sync.png", "images/warning.png" ]
+	},
+	"content_scripts": [
+		{
+			"js": ["scripts/lib/jquery.min.js", "clip_result/loader.js" , "scripts/ClientClipper.js", "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PreviewController.js", "scripts/pageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
+			"css": ["css/contentpreview.css", "clip_result/iframe.css"],
+			"matches": ["*://*/*"]
+		}
+	],
+	"icons": {
+		"16": "images/wiz_16x16.png",
+		"48": "images/wiz_48x48.png",
+		"128": "images/wiz_128x128.png"
+	},
+	"web_accessible_resources": ["images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png"],
+	"permissions": ["contextMenus", "cookies" , "tabs", "unlimitedStorage", "http://*/*", "https://*/*"],
+	"web_accessible_resources": ["clip_result/clip_result.css", "clip_result/clip_result.html", "clip_result/iframe.css", "clip_result/loader.js", "clip_result/small_snippet.css", "images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png", "images/check.png", "images/scissors.png", "images/sync.png", "images/warning.png"]
 }

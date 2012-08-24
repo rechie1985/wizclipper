@@ -9,10 +9,13 @@ function ClipPageControl() {
 	$("#submit-type").change(changeTypehandler);
 	$("body").bind("keyup", keyDownHandler);
 	$("#comment-info").focus(resizeComment);
-	
+
 	function resizeComment() {
-		$("#comment-info").animate({height : "80px"}, 500);
+		$("#comment-info").animate({
+			height : "80px"
+		}, 500);
 	}
+
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
@@ -101,7 +104,6 @@ function ClipPageControl() {
 		var title = $("#wiz_note_title").val();
 		var category = $("#category_info").attr('location');
 		var comment = $("#comment-info").val();
-		console.log($("#comment-info"));
 		var info = {};
 		info.title = title;
 		info.category = category;
@@ -119,14 +121,19 @@ function ClipPageControl() {
 			});
 		});
 	}
-	
+
 	var initUserLink = function(token) {
 		var user_id = localStorage["wiz-clip-auth"];
 		$("#header_username").html('(' + user_id + ')').bind("click", function(evt) {
 			window.open(mainUrl + '/?t=' + token);
 		});
 	}
-	
+
 	this.initUserLink = initUserLink;
-	
+
+}
+
+
+document.ready = function() {
+	window.clipPageControl = new ClipPageControl();
 }
