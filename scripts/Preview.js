@@ -7,7 +7,7 @@ function ContentPreview() {"use strict";
 
 	function buildPreviewLegend() {
 		var legend = document.createElement("div");
-		legend.id = "evernotePreviewLegend";
+		legend.id = "wizPreviewLegend";
 
 		var nudgeImgs = [
 		// Image name                 Message identifier
@@ -39,11 +39,11 @@ function ContentPreview() {"use strict";
 		if (!previewLegend.parentNode) {
 			document.documentElement.appendChild(previewLegend);
 		}
-		previewLegend.className = "evernotePreviewLegendVisible";
+		previewLegend.className = "wizPreviewLegendVisible";
 	}
 
 	function hidePreviewLegend() {
-		previewLegend.className = "evernotePreviewLegendHidden";
+		previewLegend.className = "wizPreviewLegendHidden";
 	}
 
 	function removePreviewLegend() {
@@ -54,8 +54,8 @@ function ContentPreview() {"use strict";
 
 	function buildUrlElement() {
 		var urlEl = document.createElement("div");
-		urlEl.id = "evernotePreviewContainer";
-		urlEl.className = "evernotePreviewContainer evernotePreviewUrlContainer";
+		urlEl.id = "wizPreviewContainer";
+		urlEl.className = "wizPreviewContainer wizPreviewUrlContainer";
 		return urlEl;
 	}
 

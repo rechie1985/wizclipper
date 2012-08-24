@@ -1,4 +1,4 @@
-.evernoteContentVeil {
+.wizContentVeil {
     margin: 0px;
     padding: 0px;
     border: none;
@@ -11,7 +11,7 @@
     left: "0px";
 }
 
-.evernotePreviewContainer {
+.wizPreviewContainer {
     padding: 10px;
     font-family: Helvetica, sans-serif;
     font-size: 18px;
@@ -20,7 +20,7 @@
     z-index: 9999999999999998;
 }
 
-.evernotePreviewUrlContainer {
+.wizPreviewUrlContainer {
     padding: 20px;
     position: fixed;
     top: 50%;
@@ -30,16 +30,16 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
-.evernotePreviewUrlContainer {
+.wizPreviewUrlContainer {
   color: #7ebe40;
   -webkit-border-radius: 4px; 
   padding: 8px; 
   background: white;
 }
-.evernotePreviewUrlContainer a,
-.evernotePreviewUrlContainer a:active,
-.evernotePreviewUrlContainer a:hover,
-.evernotePreviewUrlContainer a:visited {
+.wizPreviewUrlContainer a,
+.wizPreviewUrlContainer a:active,
+.wizPreviewUrlContainer a:hover,
+.wizPreviewUrlContainer a:visited {
     color: #7ebe40;
     text-decoration: none;
     white-space: nowrap;
@@ -47,11 +47,11 @@
     text-overflow: ellipsis;
 }
 
-.evernotePreviewUrlContainer span {
+.wizPreviewUrlContainer span {
   display: inline;
 }
 
-#evernotePreviewLegend {
+#wizPreviewLegend {
     display: inline-block !important;
     float: none !important;
     background: rgba(0,0,0,0.6);
@@ -71,16 +71,16 @@
     -webkit-box-sizing: border-box;
 }
 
-.evernotePreviewLegendHidden {
+.wizPreviewLegendHidden {
     -webkit-transform: translatey(-145px) !important;
     -webkit-transition: -webkit-transform 500ms ease-in !important;
 }
-.evernotePreviewLegendVisible {
+.wizPreviewLegendVisible {
     -webkit-transform: translatey(145px) !important;
     -webkit-transition: -webkit-transform 500ms ease-in !important;
 }
 
-#evernotePreviewLegend ul {
+#wizPreviewLegend ul {
     display: block !important;
     margin: 0px !important;
     padding: 0px !important;
@@ -89,18 +89,18 @@
     color: white !important;
 }
 
-#evernotePreviewLegend ul li {
+#wizPreviewLegend ul li {
     margin: 0px 0px 5px 0px !important;
     list-style: none !important;
     background: none !important;
     color: white !important;
 }
-#evernotePreviewLegend ul li:last-of-type {
+#wizPreviewLegend ul li:last-of-type {
     margin-top: 10px !important;
     color: white !important;
 }
 
-#evernotePreviewLegend .keyIcon {
+#wizPreviewLegend .keyIcon {
     display: inline-block !important; 
     text-align: right !important;
     vertical-align: middle !important;
@@ -110,7 +110,7 @@
     border: none !important;
     margin-right: 6px !important; 
 }
-#evernotePreviewLegend .keyIcon img {
+#wizPreviewLegend .keyIcon img {
 /*    padding-top: 6px;*/
     display: inline-block !important;
     margin: 0px !important;
