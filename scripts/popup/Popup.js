@@ -1,4 +1,3 @@
-
 var mainUrl = "http://service.wiz.cn/web";
 window.onload = function() {
 	initPopupPage();
@@ -13,7 +12,6 @@ window.onload = function() {
 	});
 
 	function showByCookies(cookies) {
-		console.log(cookies);
 		if (cookies) {
 			var port = chrome.extension.connect({
 				name : "initRequest"
@@ -29,6 +27,7 @@ window.onload = function() {
 					$("#wiz_login").hide();
 					// $("#wiz_clip_detail").show();
 				}
+				var token = requestToken();
 			});
 		} else {
 			$("#waiting").hide();
@@ -36,6 +35,15 @@ window.onload = function() {
 			$("#wiz_login").show();
 			$("#wiz_clip_detail").hide();
 		}
+	}
+
+	function requestToken() {
+		var port = chrome.extension.connect({
+			name : "requestToken"
+		});
+		port.onMessage.addListener(function(token) {
+			clipPageControl.initUserLink(token);
+		});
 	}
 
 	function initPopupPage() {
@@ -58,10 +66,9 @@ window.onload = function() {
 		$("#url").html(chrome.i18n.getMessage("url_save"));
 		$("#comment_tip").html(chrome.i18n.getMessage("comment_tip"));
 		$("#comment-info").attr("placeholder", chrome.i18n.getMessage("add_comment"));
-		
+
 		//默认文件夹
 		$("#category_info").html("/" + chrome.i18n.getMessage("MyNotes") + "/").attr("location", "/My Notes/");
 	}
-
 
 }

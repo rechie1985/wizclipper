@@ -238,7 +238,7 @@ function ContentVeil() {"use strict";
 			revealRect(rect, true);
 		}
 	});
-
+	veil.addEventListener("click", hide);
 	// Public API:
 	this.reset = reset;
 	this.show = show;

@@ -102,6 +102,10 @@ chrome.extension.onConnect.addListener(function(port) {
 		}
 	} else if ("logout" == port.name) {
 		token = null;
+	} else if ("requestToken" == port.name) {
+		if (token) {
+			port.postMessage(token);
+		}
 	}
 	port.onMessage.addListener(function(info) {
 		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
@@ -225,12 +229,7 @@ function refreshToken() {
 		url : url,
 		data : sending,
 		success : function(res) {
-			var xmldoc = xmlrpc.createXml(res);
-			try {
-				var ret = xmlrpc.parseResponse(xmldoc);
-			} catch (err) {
-				return;
-			}
+			//自动保持，成功或者失败不需要进行处理
 		},
 		error : function(res) {
 		}
@@ -251,8 +250,7 @@ function wizSavePageContextMenuClick(info, tab) {
 
 function wizSaveSelectionContextMenuClick(info, tab) {
 	if (isLogin()) {
-		info.params = info.selectionText,
-		info.title = tab.title;
+		info.params = info.selectionText, info.title = tab.title;
 		chrome.tabs.sendRequest(tab.id, {
 			name : "preview",
 			op : "submit",
@@ -264,8 +262,7 @@ function wizSaveSelectionContextMenuClick(info, tab) {
 
 function wizSaveUrlContextMenuClick(info, tab) {
 	if (isLogin()) {
-		info.params = tab.url,
-		info.title = tab.title
+		info.params = tab.url, info.title = tab.title
 		chrome.tabs.sendRequest(tab.id, {
 			name : "preview",
 			op : "submit",

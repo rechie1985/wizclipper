@@ -1,7 +1,6 @@
 /**
  * @author rechie
  */
-var mainUrl = "http://service.wiz.cn/web";
 var ztreeControl = new ZtreeController();
 function LoginControl() {
 
@@ -45,10 +44,10 @@ function LoginControl() {
 				var expiredays;
 				if (keep_passoword.checked) {
 					expiredays = 14 * 24 * 60 * 60;
-					console.log(expiredays);
+					//每次自动登录都把cookie时间延长
+					setCookies(url, name, value, expiredays);
 				}
-				//每次自动登录都把cookie时间延长
-				setCookies(url, name, value, expiredays);
+				localStorage["wiz-clip-auth"] = loginParam.user_id;
 			}
 			//返回错误
 			else {
@@ -112,7 +111,15 @@ function LoginControl() {
 		chrome.cookies.get({
 			url : url,
 			name : key
-		}, callback);
+		}, function(cookies) {
+			if (cookies && cookies.value) {
+				//自动延长cookie时间
+				expiredays = 14 * 24 * 60 * 60;
+				setCookies(url, key, cookies.value, expiredays);
+			}
+			callback(cookies);
+		});
+
 	}
 
 	function removeCookies(url, key, callback) {
