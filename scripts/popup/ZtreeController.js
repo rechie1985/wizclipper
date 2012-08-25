@@ -29,13 +29,7 @@ function ZtreeController() {
 		$("#category_info").attr("location", nodeLocation);
 		$("#ztree_container").hide(500);
 		//把最后一次选择的文件夹保存起来，下次使用
-		var param = {
-			url : "http://service.wiz.cn/web",
-			name : "last-category",
-			value : displayLocation + "*" + nodeLocation
-		}
-		chrome.cookies.set(param, function(cookie) {
-		});
+		localStorage["last-category"] = displayLocation + "*" + nodeLocation;
 	};
 
 	/**

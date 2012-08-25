@@ -38,6 +38,8 @@ function LoginControl() {
 		port.postMessage(sending);
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
+				localStorage.clear()
+				
 				var name = "wiz-clip-auth";
 				var value = loginParam.user_id + "*" + loginParam.password;
 				//cookie保存时间  (秒)
@@ -182,25 +184,21 @@ function LoginControl() {
 		initDefaultCategory();
 		var categoryStr = localStorage["category"];
 		//如果本地未保存文件夹信息，需要发送请求加载
-		if (categoryStr && !isAutoLogin) {
+		if (categoryStr) {
 			parseWizCategory(categoryStr);
 		} else {
 			requestCategory();
 		}
 	}
+	
 
 	function initDefaultCategory() {
-		var param = {
-			url : "http://service.wiz.cn/web",
-			name : "last-category"
+		var lastCategory = localStorage["last-category"];
+		if (lastCategory) {
+			var array = lastCategory.split("*"), displayName = array[0], location = array[1];
+			$("#category_info").html(displayName).attr("location", location);
 		}
-		chrome.cookies.get(param, function(cookies) {
-			if (cookies) {
-				var value = cookies.value, array = value.split("*"), displayName = array[0], location = array[1];
-				$("#category_info").html(displayName).attr("location", location);
 
-			}
-		});
 	}
 
 	function initLogoutLink() {
@@ -238,21 +236,6 @@ function LoginControl() {
 	}
 
 	/**
-	 *加载文件夹信息
-	 */
-	function requestCategory() {
-		$('#wiz_note_category').attr("placeholder", "loading category...");
-		var port = chrome.extension.connect({
-			name : "requestCategory"
-		});
-		port.onMessage.addListener(function(msg) {
-			$('#wiz_note_category').attr("placeholder", "input category");
-			var value = $('#wiz_note_category').val();
-			parseWizCategory(msg.categories);
-		});
-	}
-
-	/**
 	 *对目录信息进行处理
 	 * @param {Object} categoryStr
 	 */
@@ -266,7 +249,6 @@ function LoginControl() {
 		var zData = ztreeControl.parseDate(categoryString);
 		ztreeControl.setNodes(zData);
 		ztreeControl.show();
-		$("#category_tree_button").show();
 	}
 
 	/**
@@ -279,8 +261,6 @@ function LoginControl() {
 		} else {
 			$("#ztree_container").show(500);
 		}
-
-		var treeObj = $.fn.zTree.getZTreeObj("ztree");
 		return false;
 	}
 
