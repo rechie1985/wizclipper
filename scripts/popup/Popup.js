@@ -26,7 +26,6 @@ window.onload = function() {
 					$("#wiz_login").hide();
 					$("#wiz_clip_detail").show();
 				}
-				var token = loginControl.requestToken();
 			});
 
 		} else {
