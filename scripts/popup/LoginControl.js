@@ -39,7 +39,7 @@ function LoginControl() {
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
 				localStorage.clear()
-				
+
 				var name = "wiz-clip-auth";
 				var value = loginParam.user_id + "*" + loginParam.password;
 				//cookie保存时间  (秒)
@@ -140,7 +140,9 @@ function LoginControl() {
 		var name = port.name;
 		if (name && name == "contentVeilShow") {
 			$("#waiting").hide();
-			$("#wiz_clip_detail").show(showClipHandler);
+			if ($("#wiz_clip_detail").is(":hidden")) {
+				$("#wiz_clip_detail").show(showClipHandler);
+			}
 		}
 	}
 
@@ -170,6 +172,7 @@ function LoginControl() {
 						$('#submit-type option[id="article"]').attr("disabled", "");
 					}
 					var type = $("#submit-type").val();
+					console.log(type);
 					$("#note_submit").html(type);
 				});
 			});
@@ -179,9 +182,9 @@ function LoginControl() {
 	function showClipHandler(evt) {
 		initLogoutLink();
 		initClipSelect();
-		requestToken();
 		requestTitle();
 		initDefaultCategory();
+		requestToken();
 		var categoryStr = localStorage["category"];
 		//如果本地未保存文件夹信息，需要发送请求加载
 		if (categoryStr) {
@@ -190,7 +193,6 @@ function LoginControl() {
 			requestCategory();
 		}
 	}
-	
 
 	function initDefaultCategory() {
 		var lastCategory = localStorage["last-category"];
