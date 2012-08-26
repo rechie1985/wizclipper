@@ -248,7 +248,7 @@ function LoginControl() {
 	function initZtree() {
 		var zData = ztreeControl.parseDate(categoryString);
 		ztreeControl.setNodes(zData);
-		ztreeControl.show();
+		ztreeControl.show("ztree");
 	}
 
 	/**

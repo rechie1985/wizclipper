@@ -2,34 +2,40 @@
  * @author rechie
  */
 
-function BaseItem() {
-	
-}
 /**
  * 文件夹信息
  */
-function Category() {
-	var location;
-	var name;
-
-	this.getLocation = function() {
-		return this.location;
-	}
-	this.setLocation = function(location) {
-		this._location = location;
-	}
+var Category = function(location, name) {
+	Category.prototype.location = location;
+	Category.prototype.name = name;
 }
 
+Category.prototype.getLocation = function() {
+	return this.location;
+}
+
+Category.prototype.getName = function() {
+	return this.name;
+}
+
+Category.prototype.setLocation = function() {
+	this._location = location;
+}
 /**
  * 标签信息
  */
-function Tag() {
-	this.name = null;
-	this.tagGuid = null;
-	this.parentGuid = null;
+var Tag = function(name) {
+	Tag.prototype.name = name;
+}
+Tag.prototype.setTagGuid = function(tagGuid) {
+	Tag.prototype.tagGuid = tagGuid;
+}
+Tag.prototype.setParentGuid = function(parentGuid) {
+	Tag.prototype.parentGuid = parentGuid;
 }
 
-function HashMap() {
+
+var HashMap = function() {
 	/** Map 大小 **/
 	var size = 0;
 	/** 对象 **/
