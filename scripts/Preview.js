@@ -615,7 +615,7 @@ function ContentPreview() {"use strict";
 
 	// This handles incoming requests from other extension pages.
 	function messageHandler(request, sender, sendResponse) {
-		//console.log("Msg Received: " + request.name + " " + request.op);
+		console.log("Msg Received: " + request.name + " " + request.op);
 		if (!request.name || !request.op || (request.name !== "preview")) {
 			return;
 			// Not an appropriate message.

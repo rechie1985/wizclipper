@@ -138,11 +138,18 @@ function LoginControl() {
 	chrome.extension.onConnect.addListener(messageListener);
 	function messageListener(port) {
 		var name = port.name;
-		if (name && name == "contentVeilShow") {
-			$("#waiting").hide();
-			if ($("#wiz_clip_detail").is(":hidden")) {
-				$("#wiz_clip_detail").show(showClipHandler);
-			}
+		switch(name) {
+			case "contentVeilShow" :
+				$("#waiting").hide();
+				if ($("#wiz_clip_detail").is(":hidden")) {
+					$("#wiz_clip_detail").show(showClipHandler);
+				}
+				break;
+			case "PageClipFailure" :
+				var pageClipFailure = chrome.i18n.getMessage("pageClipFailure");
+				$("#waiting_div").hide();
+				$("#errorpage_tip label").html(pageClipFailure);
+				$("#errorpage_tip").show();
 		}
 	}
 

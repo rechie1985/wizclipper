@@ -44,8 +44,6 @@ body.popup {
 .waiting {
 	height: 55px;
 	padding-left: 15px;
-}
-.waiting label {
 	color : #0F8EEB;
 }
 .waiting progress {
@@ -283,4 +281,3 @@ body.popup {
 	cursor: pointer;
 	border-bottom: 1px solid #0F8EEB;
 }
-

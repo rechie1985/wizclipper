@@ -205,8 +205,25 @@ function wizSaveToWiz(tab, op) {
 	chrome.tabs.sendRequest(tab.id, {
 		name : "preview",
 		op : op
-	});
+	}, sendTabRequestCallbackByBrowserAction);
 }
+
+/**
+ *请求剪辑页面回调函数 
+ */
+function sendTabRequestCallbackByBrowserAction(option) {
+	if(!option) {
+		//当前页面无法剪辑
+		chrome.extension.connect({"name" : "PageClipFailure"});
+	}
+}
+function sendTabRequestCallbackByContextMenu(option) {
+	if(!option) {
+		var pageClipFailure = chrome.i18n.getMessage("pageClipFailure");
+		alert(pageClipFailure);
+	}
+}
+
 
 var authenticationErrorMsg = chrome.i18n.getMessage('AuthenticationFailure');
 function wizOnSaveToWizContextMenuClick(info, tab) {
@@ -255,7 +272,7 @@ function wizSavePageContextMenuClick(info, tab) {
 			op : "submit",
 			info : info,
 			type : "fullPage"
-		});
+		}, sendTabRequestCallbackByContextMenu);
 	}
 }
 
@@ -268,7 +285,7 @@ function wizSaveSelectionContextMenuClick(info, tab) {
 			op : "submit",
 			info : info,
 			type : "selection"
-		});
+		}, sendTabRequestCallbackByContextMenu);
 	}
 }
 
@@ -281,7 +298,7 @@ function wizSaveUrlContextMenuClick(info, tab) {
 			op : "submit",
 			info : info,
 			type : "url"
-		});
+		}, sendTabRequestCallbackByContextMenu);
 	}
 }
 
@@ -289,19 +306,23 @@ function initContextMenus() {
 	var clipPageContext = chrome.i18n.getMessage("contextMenus_clipPage");
 	var clipSelectionContext = chrome.i18n.getMessage("contextMenus_clipSelection");
 	var clipUrlContext = chrome.i18n.getMessage("contextMenus_clipUrl");
+	var allowableUrls = ["http://*/*", "https://*/*"];
 	chrome.contextMenus.create({
 		"title" : clipPageContext,
 		"contexts" : ["page", "image"],
+      	"documentUrlPatterns" : allowableUrls,
 		"onclick" : wizSavePageContextMenuClick
 	});
 	chrome.contextMenus.create({
 		"title" : clipSelectionContext,
 		"contexts" : ["selection"],
+      	"documentUrlPatterns" : allowableUrls,
 		"onclick" : wizSaveSelectionContextMenuClick
 	});
 	chrome.contextMenus.create({
 		"title" : clipUrlContext,
 		"contexts" : ['all'],
+      	"documentUrlPatterns" : allowableUrls,
 		"onclick" : wizSaveUrlContextMenuClick
 	});
 }

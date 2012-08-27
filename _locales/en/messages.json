@@ -139,6 +139,9 @@
 	},
 	"create_account_link": {
 		"message" : "Create Wiz Account"
+	},
+	"pageClipFailure": {
+		"message" : "Can not clip this page"
 	}
 }
 

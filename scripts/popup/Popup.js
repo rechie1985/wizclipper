@@ -21,7 +21,7 @@ window.onload = function() {
 					loginControl.autoLogin(cookies);
 				} else {
 					//打开浏览器后已经登陆过
-					$("#waiting").hide();
+					// $("#waiting").hide();
 					//cookie中未保存或已过期
 					$("#wiz_login").hide();
 					// $("#wiz_clip_detail").show();
