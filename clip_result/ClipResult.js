@@ -76,6 +76,7 @@ function showClipping(info) {
 
 chrome.extension.onMessage.addListener(function(data, sender, sendResponse) {
 	var cmd = data.name;
+	console.log("documentInfo : " + data);
 	switch(cmd) {
 		case "clip" :
 			showClipping(data.info);

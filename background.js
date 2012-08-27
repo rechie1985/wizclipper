@@ -8,6 +8,7 @@ var tab = null;
 chrome.extension.onConnect.addListener(function(port) {
 	if ("login" == port.name) {
 		port.onMessage.addListener(function(msg) {
+			console.log(port.name + " : " + msg);
 			var url = "http://service.wiz.cn/wizkm/xmlrpc";
 			$.ajax({
 				type : "POST",
@@ -34,6 +35,7 @@ chrome.extension.onConnect.addListener(function(port) {
 		});
 	} else if ("checkLogin" == port.name) {
 		port.onMessage.addListener(function(msg) {
+			console.log(port.name + " : " + msg);
 			if (token != null) {
 				getTab(wizSaveToWiz);
 				port.postMessage(true);
@@ -43,13 +45,11 @@ chrome.extension.onConnect.addListener(function(port) {
 		});
 	} else if ("onkeydown" == port.name) {
 		port.onMessage.addListener(function(msg) {
+			console.log(port.name + " : " + msg);
 			if (!token || token == null) {
 				return;
 			} else {
 				var direction = msg.direction;
-				// if ("enter" == direction && "article" != type) {
-				// getTab(submitNoteByType, msg);
-				// }
 				getTab(bindKeyDownHandler, direction);
 			}
 		});
@@ -59,13 +59,14 @@ chrome.extension.onConnect.addListener(function(port) {
 		});
 	} else if ("preview" == port.name) {
 		port.onMessage.addListener(function(msg) {
+			console.log(port.name + " : " + msg);
 			if (!msg) {
-				//TODO
 				return;
 			}
 			getTab(wizSaveToWiz, msg);
 		});
 	} else if ("requestCategory" == port.name) {
+		console.log("start : " + port.name);
 		var url = "http://service.wiz.cn/wizkm/xmlrpc";
 		var params = new Object();
 		params.client_type = "web3";
@@ -84,9 +85,11 @@ chrome.extension.onConnect.addListener(function(port) {
 					port.postMessage(err);
 					return;
 				}
+				console.log("success : " + port.name);
 				port.postMessage(ret);
 			},
 			error : function(res) {
+				console.log("error : " + port.name);
 				port.postMessage(false);
 			}
 		});
@@ -107,7 +110,9 @@ chrome.extension.onConnect.addListener(function(port) {
 		}
 	} else if ("saveDocument" == port.name) {
 		port.onMessage.addListener(function(info) {
+			console.log("start : " + port.name);
 			if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
+				console.error(port.name + "error : " + info);
 				return;
 			}
 			wizExecuteSave(info);
@@ -172,9 +177,10 @@ function wizExecuteSave(info) {
 					name : "error",
 					info : info
 				});
-				alert(json.return_message);
+				console.error("error :" + json.return_message);
 				return;
 			}
+			console.log("success : saveDocument");
 			chrome.tabs.sendMessage(tab.id, {
 				name : "saved",
 				info : info
@@ -182,6 +188,7 @@ function wizExecuteSave(info) {
 		},
 		error : function(res) {
 			var errorJSON = JSON.parse(res);
+			console.error("error :" + errorJSON.return_message);
 			chrome.tabs.sendMessage(tab.id, {
 				name : "error",
 				info : info
@@ -235,6 +242,7 @@ function refreshToken() {
 			//自动保持，成功或者失败不需要进行处理
 		},
 		error : function(res) {
+			console.error("refreshToken error : " + res);
 		}
 	});
 }
