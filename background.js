@@ -7,143 +7,144 @@ var token = null;
 var tab = null;
 chrome.extension.onConnect.addListener(function(port) {
 	var name = port.name;
-	if(!name) {
+	if (!name) {
 		return;
 	}
 	switch(name) {
-		case "login" : 
+		case "login" :
+			port.onMessage.addListener(function(msg) {
+				portLogin(msg, port);
+			});
 			break;
-		case "requestCategory" : 
+		case "requestCategory" :
+			portRequestCategory(port);
 			break;
-		case "saveDocument" : 
+		case "saveDocument" :
+			port.onMessage.addListener(function(info) {
+				if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
+					return;
+				}
+				wizExecuteSave(info);
+			});
 			break;
-		case "checkLogin" : 
-			break;
-		case "initRequest" : 
-			break; 
-		case "onkeydown" : 
-			break;
-		case "popupClosed" : 
-			break;
-		case "preview" : 
-			break;
-		case "requestToken" : 
-			break;
-	}
-	if ("login" == port.name) {
-		port.onMessage.addListener(function(msg) {
-			console.log(port.name + " : " + msg);
-			var url = "http://service.wiz.cn/wizkm/xmlrpc";
-			$.ajax({
-				type : "POST",
-				url : url,
-				data : msg,
-				success : function(res) {
-					var xmldoc = xmlrpc.createXml(res);
-					try {
-						var ret = xmlrpc.parseResponse(xmldoc);
-					} catch (err) {
-						port.postMessage(err);
-						return;
-					}
-					token = ret.token;
-					var time = 4 * 60 * 1000;
-					setInterval(refreshToken, time);
-					port.postMessage(true);
+		case "checkLogin" :
+			port.onMessage.addListener(function(msg) {
+				if (token != null) {
 					getTab(wizSaveToWiz);
-				},
-				error : function(res) {
+					port.postMessage(true);
+				} else {
 					port.postMessage(false);
 				}
 			});
-		});
-	} else if ("checkLogin" == port.name) {
-		port.onMessage.addListener(function(msg) {
-			console.log(port.name + " : " + msg);
-			if (token != null) {
+			break;
+		case "initRequest" :
+			//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
+			//TODO 返回是否可获取文章、是否可获取选择信息
+			if (token) {
 				getTab(wizSaveToWiz);
-				port.postMessage(true);
+				port.postMessage(token);
 			} else {
 				port.postMessage(false);
 			}
-		});
-	} else if ("onkeydown" == port.name) {
-		port.onMessage.addListener(function(msg) {
-			console.log(port.name + " : " + msg);
-			if (!token || token == null) {
-				return;
-			} else {
-				var direction = msg.direction;
-				getTab(bindKeyDownHandler, direction);
-			}
-		});
-	} else if ("popupClosed" == port.name) {
-		port.onDisconnect.addListener(function() {
-			getTab(hideContentVeil);
-		});
-	} else if ("preview" == port.name) {
-		port.onMessage.addListener(function(msg) {
-			console.log(port.name + " : " + msg);
-			if (!msg) {
-				return;
-			}
-			getTab(wizSaveToWiz, msg);
-		});
-	} else if ("requestCategory" == port.name) {
-		console.log("start : " + port.name);
-		var url = "http://service.wiz.cn/wizkm/xmlrpc";
-		var params = new Object();
-		params.client_type = "web3";
-		params.api_version = 3;
-		params.token = token;
-		var sending = xmlrpc.writeCall("category.getAll", [params]);
-		$.ajax({
-			type : "POST",
-			url : url,
-			data : sending,
-			success : function(res) {
-				var xmldoc = xmlrpc.createXml(res);
-				try {
-					var ret = xmlrpc.parseResponse(xmldoc);
-				} catch (err) {
-					port.postMessage(err);
+			break;
+		case "onkeydown" :
+			port.onMessage.addListener(function(msg) {
+				if (!token || token == null) {
+					return;
+				} else {
+					var direction = msg.direction;
+					getTab(bindKeyDownHandler, direction);
+				}
+			});
+			break;
+		case "popupClosed" :
+			port.onDisconnect.addListener(function() {
+				getTab(hideContentVeil);
+			});
+			break;
+		case "preview" :
+			port.onMessage.addListener(function(msg) {
+				if (!msg) {
 					return;
 				}
-				console.log("success : " + port.name);
-				port.postMessage(ret);
-			},
-			error : function(res) {
-				console.log("error : " + port.name);
-				port.postMessage(false);
+				getTab(wizSaveToWiz, msg);
+			});
+			break;
+		case "requestToken" :
+			if (token) {
+				port.postMessage(token);
 			}
-		});
-	} else if ("initRequest" == port.name) {
-		//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
-		//TODO 返回是否可获取文章、是否可获取选择信息
-		if (token) {
-			getTab(wizSaveToWiz);
-			port.postMessage(token);
-		} else {
-			port.postMessage(false);
-		}
-	} else if ("logout" == port.name) {
-		token = null;
-	} else if ("requestToken" == port.name) {
-		if (token) {
-			port.postMessage(token);
-		}
-	} else if ("saveDocument" == port.name) {
-		port.onMessage.addListener(function(info) {
-			console.log("start : " + port.name);
-			if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
-				console.error(port.name + "error : " + info);
-				return;
-			}
-			wizExecuteSave(info);
-		});
+			break;
+		case "logout" :
+			token = null;
 	}
 
 });
+
+function portLogin(msg, port) {
+	var url = "http://service.wiz.cn/wizkm/xmlrpc";
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : msg,
+		success : function(res) {
+			var xmldoc = xmlrpc.createXml(res);
+			try {
+				var ret = xmlrpc.parseResponse(xmldoc);
+			} catch (err) {
+				if (port) {
+					port.postMessage(err);
+				}
+				return;
+			}
+			token = ret.token;
+			var time = 4 * 60 * 1000;
+			setInterval(refreshToken, time);
+			if (port) {
+				port.postMessage(true);
+				getTab(wizSaveToWiz);
+			}
+		},
+		error : function(res) {
+			if (port) {
+				port.postMessage(false);
+			}
+		}
+	});
+}
+
+function portRequestCategory(port) {
+	var url = "http://service.wiz.cn/wizkm/xmlrpc";
+	var params = {};
+	params.client_type = "web3";
+	params.api_version = 3;
+	params.token = token;
+	var sending = xmlrpc.writeCall("category.getAll", [params]);
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : sending,
+		success : function(res) {
+			var xmldoc = xmlrpc.createXml(res);
+			try {
+				var ret = xmlrpc.parseResponse(xmldoc);
+			} catch (err) {
+				if (port) {
+					port.postMessage(err);
+				}
+				return;
+			}
+			if (port) {
+				port.postMessage(ret);
+			}
+		},
+		error : function(res) {
+			if (port) {
+				port.postMessage(false);
+			}
+		}
+	});
+}
 
 function getTab(callback, direction) {
 	chrome.windows.getCurrent(function(win) {
@@ -233,21 +234,23 @@ function wizSaveToWiz(tab, op) {
 }
 
 /**
- *请求剪辑页面回调函数 
+ *请求剪辑页面回调函数
  */
 function sendTabRequestCallbackByBrowserAction(option) {
-	if(!option) {
+	if (!option) {
 		//当前页面无法剪辑
-		chrome.extension.connect({"name" : "PageClipFailure"});
+		chrome.extension.connect({
+			"name" : "PageClipFailure"
+		});
 	}
 }
+
 function sendTabRequestCallbackByContextMenu(option) {
-	if(!option) {
+	if (!option) {
 		var pageClipFailure = chrome.i18n.getMessage("pageClipFailure");
 		alert(pageClipFailure);
 	}
 }
-
 
 var authenticationErrorMsg = chrome.i18n.getMessage('AuthenticationFailure');
 function wizOnSaveToWizContextMenuClick(info, tab) {
@@ -283,7 +286,6 @@ function refreshToken() {
 			//自动保持，成功或者失败不需要进行处理
 		},
 		error : function(res) {
-			console.error("refreshToken error : " + res);
 		}
 	});
 }
@@ -334,19 +336,19 @@ function initContextMenus() {
 	chrome.contextMenus.create({
 		"title" : clipPageContext,
 		"contexts" : ["page", "image"],
-      	"documentUrlPatterns" : allowableUrls,
+		"documentUrlPatterns" : allowableUrls,
 		"onclick" : wizSavePageContextMenuClick
 	});
 	chrome.contextMenus.create({
 		"title" : clipSelectionContext,
 		"contexts" : ["selection"],
-      	"documentUrlPatterns" : allowableUrls,
+		"documentUrlPatterns" : allowableUrls,
 		"onclick" : wizSaveSelectionContextMenuClick
 	});
 	chrome.contextMenus.create({
 		"title" : clipUrlContext,
 		"contexts" : ['all'],
-      	"documentUrlPatterns" : allowableUrls,
+		"documentUrlPatterns" : allowableUrls,
 		"onclick" : wizSaveUrlContextMenuClick
 	});
 }
