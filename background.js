@@ -8,7 +8,6 @@ var tab = null;
 chrome.extension.onConnect.addListener(function(port) {
 	if ("login" == port.name) {
 		port.onMessage.addListener(function(msg) {
-			// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
 			var url = "http://service.wiz.cn/wizkm/xmlrpc";
 			$.ajax({
 				type : "POST",
@@ -106,17 +105,15 @@ chrome.extension.onConnect.addListener(function(port) {
 		if (token) {
 			port.postMessage(token);
 		}
+	} else if ("saveDocument" == port.name) {
+		port.onMessage.addListener(function(info) {
+			if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
+				return;
+			}
+			wizExecuteSave(info);
+		});
 	}
-	port.onMessage.addListener(function(info) {
-		if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
-			return;
-		}
-		// chrome.tabs.sendMessage(tab.id, {
-		// name : "clip",
-		// info : info
-		// });
-		wizExecuteSave(info);
-	});
+
 });
 
 function getTab(callback, direction) {
@@ -171,6 +168,11 @@ function wizExecuteSave(info) {
 		success : function(res) {
 			var json = JSON.parse(res);
 			if (json.return_code != 200) {
+				chrome.tabs.sendMessage(tab.id, {
+					name : "error",
+					info : info
+				});
+				alert(json.return_message);
 				return;
 			}
 			chrome.tabs.sendMessage(tab.id, {

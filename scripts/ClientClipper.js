@@ -304,7 +304,7 @@ function getSelectedHTML() {
 }
 
 function postClipInfo(info) {
-	chrome.extension.connect().postMessage(info);
 	clipResult.startClip();
+	chrome.extension.connect({"name" : "saveDocument"}).postMessage(info);
 }
 
