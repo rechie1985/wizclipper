@@ -6,6 +6,30 @@ var token = null;
 
 var tab = null;
 chrome.extension.onConnect.addListener(function(port) {
+	var name = port.name;
+	if(!name) {
+		return;
+	}
+	switch(name) {
+		case "login" : 
+			break;
+		case "requestCategory" : 
+			break;
+		case "saveDocument" : 
+			break;
+		case "checkLogin" : 
+			break;
+		case "initRequest" : 
+			break; 
+		case "onkeydown" : 
+			break;
+		case "popupClosed" : 
+			break;
+		case "preview" : 
+			break;
+		case "requestToken" : 
+			break;
+	}
 	if ("login" == port.name) {
 		port.onMessage.addListener(function(msg) {
 			console.log(port.name + " : " + msg);

@@ -142,5 +142,8 @@
 	},
 	"pageClipFailure": {
 		"message" : "\u7121\u6cd5\u526a\u8f2f\u8a72\u9801\u9762"
+	},
+	"category_loading": {
+		"message" : "\u52a0\u8f09\u4e2d\uff0c\u8acb\u7a0d\u5f8c"
 	}
 }

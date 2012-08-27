@@ -202,12 +202,30 @@ function LoginControl() {
 	}
 
 	function initDefaultCategory() {
+		// $("#category_info").bind("click", showCategoryLoading);
 		var lastCategory = localStorage["last-category"];
 		if (lastCategory) {
 			var array = lastCategory.split("*"), displayName = array[0], location = array[1];
 			$("#category_info").html(displayName).attr("location", location);
 		}
+	}
 
+	/**
+	 *加载中 
+	 */
+	function showCategoryLoading() {
+		var visible = getCategoryLoadingStatus();
+		if(visible) {
+			$("#category_loading").hide();
+		} else {
+			$("#category_loading").show();
+			$("#category_loading label").html(chrome.i18n.getMessage("category_loading"));
+		}
+	}
+	
+	function getCategoryLoadingStatus() {
+		var visible = $("#category_loading").is(":visible");
+		return visible;
 	}
 
 	function initLogoutLink() {
@@ -251,6 +269,13 @@ function LoginControl() {
 	function parseWizCategory(categoryStr) {
 		categoryString = categoryStr;
 		initZtree();
+		var visible = getCategoryLoadingStatus();
+		if(visible) {
+			//用户已经点击展开文件夹树，此时，需要直接显示文件夹树即可
+			$("#category_loading").hide();
+			$("#ztree_container").show(500);
+		} 
+		$("#category_info").unbind("click");
 		$("#category_info").click(showCategoryTree);
 	}
 
@@ -277,12 +302,11 @@ function LoginControl() {
 	 *加载文件夹信息
 	 */
 	function requestCategory() {
-		$('#wiz_note_category').attr("placeholder", "loading category...");
+		$("#category_info").bind("click", showCategoryLoading);
 		var port = chrome.extension.connect({
 			name : "requestCategory"
 		});
 		port.onMessage.addListener(function(msg) {
-			$('#wiz_note_category').attr("placeholder", "input category");
 			var value = $('#wiz_note_category').val();
 			parseWizCategory(msg.categories);
 			localStorage["category"] = msg.categories;

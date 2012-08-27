@@ -122,6 +122,11 @@ body.popup {
 	width: 20%;
 }
 
+.category_loading {
+	padding: 5px 0 0 15px;
+	border-top: 1px solid #B1B1B1;
+}
+
 .submit-group {
 	float: right;
 	height: 55px;
@@ -232,11 +237,11 @@ body.popup {
 }
 
 .submit-button {
-	margin-right:10px;
 	z-index: 201;
 	-webkit-border-bottom-right-radius: 0px;
 	-webkit-border-top-right-radius: 0px;
 }
+
 .submit-type, .submit-type:hover, .submit-type:active {
 	background-image: url(../../images/button-dropdown.png);
 	background-repeat: no-repeat;

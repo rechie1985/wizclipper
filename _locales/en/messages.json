@@ -142,6 +142,9 @@
 	},
 	"pageClipFailure": {
 		"message" : "Can not clip this page"
+	},
+	"category_loading": {
+		"message" : "loading category,please wait"
 	}
 }
 
