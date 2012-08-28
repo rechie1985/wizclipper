@@ -31,11 +31,10 @@ function LoginControl() {
 	function login(loginParam) {
 		// var url = "http://127.0.0.1:8800/wizkm/xmlrpc";
 		var url = "http://service.wiz.cn/wizkm/xmlrpc";
-		var sending = xmlrpc.writeCall("accounts.clientLogin", [loginParam]);
 		var port = chrome.extension.connect({
 			name : "login"
 		});
-		port.postMessage(sending);
+		port.postMessage(loginParam);
 		port.onMessage.addListener(function(msg) {
 			if (msg == true) {
 				localStorage.clear()
@@ -307,6 +306,7 @@ function LoginControl() {
 			name : "requestCategory"
 		});
 		port.onMessage.addListener(function(msg) {
+			//错误处理
 			var value = $('#wiz_note_category').val();
 			parseWizCategory(msg.categories);
 			localStorage["category"] = msg.categories;

@@ -6,34 +6,19 @@ var url = "http://service.wiz.cn/wizkm/xmlrpc";
 var token = null;
 var tab = null;
 
-chrome.extension.onConnect.addListener(function(port) {
+function onConnectListener(port) {
 	var name = port.name;
 	if (!name) {
 		return;
 	}
 	switch(name) {
 		case "login" :
-			port.onMessage.addListener(function(msg) {
-				portLogin(msg);
-				if (token) {
-					port.postMessage(true);
-					getTab(wizSaveToWiz);
-					var time = 4 * 60 * 1000;
-					setInterval(refreshToken, time);
-				} else {
-					port.postMessage(false);
-				}
-			});
+			port.onMessage.addListener(portLogin);
 			break;
 		case "retryClip" :
-			getCookies(url, "wiz-clip-auth", autoLogin);
-			port.onMessage.addListener(function(msg) {
-				if (msg && msg.title && msg.params) {
-					wizExecuteSave(msg);
-				}
-			});
+			retryClip(port);
 		case "requestCategory" :
-			portRequestCategory(port);
+			portRequestCategoryAjax(port);
 			break;
 		case "saveDocument" :
 			port.onMessage.addListener(function(info) {
@@ -94,9 +79,34 @@ chrome.extension.onConnect.addListener(function(port) {
 		case "logout" :
 			token = null;
 	}
+}
 
-});
-var getCookies = function(url, key, callback) {
+function portLogin(loginParam, port) {
+	portLoginAjax(loginParam, port);
+
+}
+
+function callbackLoginSuccess(port) {
+	if (token) {
+		port.postMessage(true);
+		getTab(wizSaveToWiz);
+		var time = 4 * 60 * 1000;
+		setInterval(refreshToken, time);
+	} else {
+		port.postMessage(false);
+	}
+}
+
+function retryClip(port) {
+	getCookies(url, "wiz-clip-auth", loginByCookies);
+	port.onMessage.addListener(function(msg) {
+		if (msg && msg.title && msg.params) {
+			wizExecuteSave(msg);
+		}
+	});
+}
+
+function getCookies(url, key, callback) {
 	chrome.cookies.get({
 		url : url,
 		name : key
@@ -109,7 +119,8 @@ var getCookies = function(url, key, callback) {
 		callback(cookies);
 	});
 }
-var autoLogin = function(cookie) {
+
+function loginByCookies(cookie) {
 	isAutoLogin = true;
 
 	var info = cookie.value;
@@ -119,64 +130,39 @@ var autoLogin = function(cookie) {
 	loginParam.api_version = 3;
 	loginParam.user_id = info.substring(0, split_count);
 	loginParam.password = info.substring(split_count + 1);
-	var sending = xmlrpc.writeCall("accounts.clientLogin", [loginParam]);
-	portLogin(sending);
-}
-function portLogin(loginParam) {
-	var url = "http://service.wiz.cn/wizkm/xmlrpc";
-	$.ajax({
-		type : "POST",
-		url : url,
-		data : loginParam,
-		async : false,
-		success : function(res) {
-			var xmldoc = xmlrpc.createXml(res);
-			try {
-				var ret = xmlrpc.parseResponse(xmldoc);
-			} catch (err) {
-				return;
-			}
-			token = ret.token;
-			return;
-		},
-		error : function(res) {
-			return;
-		}
-	});
-	console.log("ok");
-	return;
+	portLogin(loginParam);
 }
 
-function portRequestCategory(port) {
-	var params = {};
-	params.client_type = "web3";
-	params.api_version = 3;
-	params.token = token;
-	var sending = xmlrpc.writeCall("category.getAll", [params]);
-	$.ajax({
-		type : "POST",
-		url : url,
-		data : sending,
-		success : function(res) {
-			var xmldoc = xmlrpc.createXml(res);
-			try {
-				var ret = xmlrpc.parseResponse(xmldoc);
-			} catch (err) {
-				if (port) {
-					port.postMessage(err);
-				}
-				return;
-			}
-			if (port) {
-				port.postMessage(ret);
-			}
-		},
-		error : function(res) {
-			if (port) {
-				port.postMessage(false);
-			}
+function portLoginAjax(loginParam, port) {
+	var loginError = function(response) {
+		console.log("login error : " + response);
+	}
+	var loginSuccess = function(responseJSON) {
+		token = responseJSON.token;
+		if (port) {
+			callbackLoginSuccess(port);
 		}
-	});
+	}
+	xmlrpc(url, 'accounts.clientLogin', [loginParam], loginSuccess, loginError);
+}
+
+function portRequestCategoryAjax(port) {
+	var params = {
+		client_type : "web3",
+		api_version : 3,
+		token : token
+	};
+	var callbackSuccess = function(responseJSON) {
+		if (port) {
+			port.postMessage(responseJSON);
+		}
+	}
+	var callbackError = function(response) {
+		if (port) {
+			port.postMessage(false);
+		}
+	}
+	xmlrpc(url, 'category.getAll', [params], callbackSuccess, callbackError);
 }
 
 function getTab(callback, direction) {
@@ -203,26 +189,18 @@ function bindKeyDownHandler(tab, direction) {
 	});
 }
 
-function wizExecuteSave(info) {
+function wizExecuteSave(docInfo) {
 
-	var regexp = /%20/g;
-	var title = info.title;
-	var category = info.category;
-	var comment = info.comment;
-	var body = info.params;
+	var regexp = /%20/g, title = docInfo.title, category = docInfo.category, comment = docInfo.comment, body = docInfo.params;
 	if (comment && comment.trim() != "") {
 		body = comment + "<hr>" + body;
 	}
-
-	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") + "&body=" + encodeURIComponent(body).replace(regexp, "+");
 	if (!category) {
 		category = "/My Notes/";
 	}
-	requestData = requestData + "&category=" + encodeURIComponent(category).replace(regexp, "+")
-	chrome.tabs.sendMessage(tab.id, {
-		name : "sync",
-		info : info
-	});
+	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") 
+						+ "&body=" + encodeURIComponent(body).replace(regexp, "+") + "&category=" + encodeURIComponent(category).replace(regexp, "+");
+	chrome.tabs.sendMessage(tab.id, {name: "sync", info: docInfo});
 	$.ajax({
 		type : "POST",
 		url : "http://service.wiz.cn/wizkm/a/web/post?",
@@ -233,26 +211,17 @@ function wizExecuteSave(info) {
 			if (json.return_code != 200) {
 				console.log(json);
 				info.errorMsg = json.return_message;
-				chrome.tabs.sendMessage(tab.id, {
-					name : "error",
-					info : info
-				});
+				chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
 				console.error("error :" + json.return_message);
 				return;
 			}
 			console.log("success : saveDocument");
-			chrome.tabs.sendMessage(tab.id, {
-				name : "saved",
-				info : info
-			});
+			chrome.tabs.sendMessage(tab.id, {name: "saved" , info: docInfo});
 		},
 		error : function(res) {
 			var errorJSON = JSON.parse(res);
 			info.errorMsg = json.return_message;
-			chrome.tabs.sendMessage(tab.id, {
-				name : "error",
-				info : info
-			});
+			chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
 		}
 	});
 }
@@ -308,21 +277,16 @@ function isLogin() {
  */
 function refreshToken() {
 	var url = "http://service.wiz.cn/wizkm/xmlrpc";
-	var params = new Object();
-	params.client_type = "web3";
-	params.api_version = 3;
-	params.token = token;
-	var sending = xmlrpc.writeCall("accounts.keepAlive", [params]);
-	$.ajax({
-		type : "POST",
-		url : url,
-		data : sending,
-		success : function(res) {
-			//自动保持，成功或者失败不需要进行处理
-		},
-		error : function(res) {
-		}
-	});
+	var params = {
+		client_type : 'web3',
+		api_version : 3,
+		token : token
+	};
+	//暂时不对成功、失败做处理
+	var callbackSuccess = function(responseJSON) {}
+	var callbackError = function(response) {}
+	
+	xmlrpc(url, 'accounts.keepAlive', [params], callbackSuccess, callbackError)
 }
 
 function wizSavePageContextMenuClick(info, tab) {
@@ -388,4 +352,5 @@ function initContextMenus() {
 	});
 }
 
+chrome.extension.onConnect.addListener(onConnectListener);
 initContextMenus();
