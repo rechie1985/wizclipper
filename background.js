@@ -191,38 +191,51 @@ function bindKeyDownHandler(tab, direction) {
 
 function wizExecuteSave(docInfo) {
 
-	var regexp = /%20/g, title = docInfo.title, category = docInfo.category, comment = docInfo.comment, body = docInfo.params;
+	var regexp = /%20/g, 
+		  title = docInfo.title, 
+		  category = docInfo.category, 
+		  comment = docInfo.comment, 
+		  body = docInfo.params;
+		  
 	if (comment && comment.trim() != "") {
 		body = comment + "<hr>" + body;
 	}
+	
 	if (!category) {
 		category = "/My Notes/";
 	}
-	var requestData = "title=" + encodeURIComponent(title).replace(regexp, "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp, "+") 
-						+ "&body=" + encodeURIComponent(body).replace(regexp, "+") + "&category=" + encodeURIComponent(category).replace(regexp, "+");
+	
+	var requestData = "title=" + encodeURIComponent(title).replace(regexp,  "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp,  "+") 
+						+ "&body=" + encodeURIComponent(body).replace(regexp,  "+") + "&category=" + encodeURIComponent(category).replace(regexp,  "+");
 	chrome.tabs.sendMessage(tab.id, {name: "sync", info: docInfo});
-	$.ajax({
-		type : "POST",
-		url : "http://service.wiz.cn/wizkm/a/web/post?",
-		data : requestData,
-
-		success : function(res) {
-			var json = JSON.parse(res);
+	
+	var callbackSuccess = function(response) {
+		var json = JSON.parse(response);
 			if (json.return_code != 200) {
 				console.log(json);
-				info.errorMsg = json.return_message;
+				docInfo.errorMsg = json.return_message;
+				
 				chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
 				console.error("error :" + json.return_message);
 				return;
 			}
 			console.log("success : saveDocument");
+			
 			chrome.tabs.sendMessage(tab.id, {name: "saved" , info: docInfo});
-		},
-		error : function(res) {
-			var errorJSON = JSON.parse(res);
-			info.errorMsg = json.return_message;
+	}
+	
+	var callbackError = function(response) {
+			var errorJSON = JSON.parse(response);
+			docInfo.errorMsg = json.return_message;
+			
 			chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
-		}
+	}
+	$.ajax({
+		type : "POST",
+		url : "http://service.wiz.cn/wizkm/a/web/post?",
+		data : requestData,
+		success : callbackSuccess,
+		error : callbackError
 	});
 }
 

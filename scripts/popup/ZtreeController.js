@@ -57,12 +57,13 @@ function ZtreeController() {
 				var mapNodeObj = categoryMap.get(tempLocation);
 				if (!mapNodeObj) {
 					//根节点特殊处理
-					var nodeObj = {};
-					nodeObj.children = [];
-					nodeObj.name = changeSpecilaLoction(name);
-					nodeObj.displayLocation = changeSpecilaLoction(tempLocation);
-					nodeObj.location = tempLocation;
-					nodeObj.level = levelIndex;
+					var nodeObj = {
+						children : [] ,
+						name : changeSpecilaLoction(name) ,
+						displayLocation : changeSpecilaLoction(tempLocation) ,
+						location : tempLocation,
+						level : levelIndex
+					};
 					categoryMap.put(tempLocation, nodeObj);
 					//非根节点
 					if (levelIndex == 0) {
