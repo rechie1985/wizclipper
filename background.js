@@ -17,9 +17,7 @@ chrome.extension.onConnect.addListener(function(port) {
 				portLogin(msg);
 				if (token) {
 					port.postMessage(true);
-					if (tab) {
-						getTab(wizSaveToWiz);
-					}
+					getTab(wizSaveToWiz);
 					var time = 4 * 60 * 1000;
 					setInterval(refreshToken, time);
 				} else {
@@ -145,6 +143,7 @@ function portLogin(loginParam) {
 			return;
 		}
 	});
+	console.log("ok");
 	return;
 }
 

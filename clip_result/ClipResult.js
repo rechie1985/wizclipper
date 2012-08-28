@@ -99,6 +99,7 @@ chrome.extension.onMessage.addListener(function(data, sender, sendResponse) {
 });
 
 var switchNotificationMessageByCmd = function(cmd, info) {
+	console.log(info);
 	switch(cmd) {
 		case "clip" :
 			showClipping(info);
