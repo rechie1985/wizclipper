@@ -145,5 +145,8 @@
 	},
 	"category_loading": {
 		"message" : "\u52a0\u8f7d\u4e2d\uff0c\u8bf7\u7a0d\u540e"
+	},
+	"retry_clip_button" : {
+		"message" : "\u91cd\u8bd5"
 	}
 }

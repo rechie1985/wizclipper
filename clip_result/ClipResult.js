@@ -8,16 +8,32 @@ var errorActions = "#errorActions";
 var successIcon = "#successIcon";
 var errorIcon = "#errorIcon";
 var activeIcon = "#activeIcon";
+var retryClipSpan = "#retryClip";
 
 var clippingMsg = chrome.i18n.getMessage("clipResult_clipping");
 var syncMsg = chrome.i18n.getMessage("clipResult_sync");
 var successMsg = chrome.i18n.getMessage("clipResult_success");
 var errorMsg = chrome.i18n.getMessage("clipResult_error");
+var retryClipMsg = chrome.i18n.getMessage("retry_clip_button");
+
+var info = null;
 
 function clear() {
 	$(notificationHeadline).empty();
 	$(notificationDetails).empty();
 	$(successActions).hide();
+	$(errorActions).hide();
+}
+
+function bindErrorAction() {
+	$(errorActions).show();
+	$(retryClipSpan).html(retryClipMsg);
+	$(retryClipSpan).bind("click", retryButtonHandler);
+}
+
+function retryButtonHandler() {
+	chrome.extension.connect({"name" : "autoLogin"}).postMessage(info);
+	$(notificationDetails).hide();
 	$(errorActions).hide();
 }
 
@@ -51,45 +67,51 @@ function showClippingIcon() {
 
 function showSuccess(info) {
 	var msg = successMsg + " : " + info.title;
-	$(notificationDetails).html(msg);
+	$(notificationHeadline).html(msg);
 	showSuccessIcon();
 }
 
 function showError(info) {
+	this.info = info;
 	var msg = errorMsg + " : " + info.title;
-	$(notificationDetails).html(msg);
+	$(notificationHeadline).html(msg);
+	$(notificationDetails).html(info.errorMsg);
 	showErrorIcon();
+	bindErrorAction(info);
 }
 
 function showSyncing(info) {
 	var msg = syncMsg + " : " + info.title;
-	$(notificationDetails).html(msg);
+	$(notificationHeadline).html(msg);
 	showActiveIcon();
 }
 
 function showClipping(info) {
 	var msg = clippingMsg + " : " + info.title;
-	$(notificationDetails).html(msg);
+	$(notificationHeadline).html(msg);
 	showClippingIcon();
 
 }
 
 chrome.extension.onMessage.addListener(function(data, sender, sendResponse) {
 	var cmd = data.name;
-	console.log("documentInfo : " + data);
+	switchNotificationMessageByCmd(cmd, data.info);
+});
+
+var switchNotificationMessageByCmd = function(cmd, info) {
 	switch(cmd) {
 		case "clip" :
-			showClipping(data.info);
+			showClipping(info);
 			break;
 		case "sync" :
-			showSyncing(data.info);
+			showSyncing(info);
 			break;
 		case "error" :
-			showError(data.info);
+			showError(info);
 			break;
 		case "saved" :
-			showSuccess(data.info);
+			showSuccess(info);
 			break;
 	}
+}
 
-});

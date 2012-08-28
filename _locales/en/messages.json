@@ -145,6 +145,9 @@
 	},
 	"category_loading": {
 		"message" : "loading category,please wait"
+	},
+	"retry_clip_button" : {
+		"message" : "Retry"
 	}
 }
 
