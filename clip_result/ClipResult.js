@@ -28,6 +28,7 @@ function clear() {
 function bindErrorAction() {
 	$(errorActions).show();
 	$(retryClipSpan).html(retryClipMsg);
+	$(retryClipSpan).unbind("click");
 	$(retryClipSpan).bind("click", retryButtonHandler);
 }
 
