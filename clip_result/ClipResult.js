@@ -32,7 +32,7 @@ function bindErrorAction() {
 }
 
 function retryButtonHandler() {
-	chrome.extension.connect({"name" : "autoLogin"}).postMessage(info);
+	chrome.extension.connect({"name" : "retryClip"}).postMessage(info);
 	$(notificationDetails).hide();
 	$(errorActions).hide();
 }

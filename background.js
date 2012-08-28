@@ -27,7 +27,7 @@ chrome.extension.onConnect.addListener(function(port) {
 				}
 			});
 			break;
-		case "autoLogin" :
+		case "retryClip" :
 			getCookies(url, "wiz-clip-auth", autoLogin);
 			port.onMessage.addListener(function(msg) {
 				if (msg && msg.title && msg.params) {
