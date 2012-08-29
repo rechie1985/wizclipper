@@ -5,22 +5,22 @@
 /**
  * 文件夹信息
  */
-var Category = function(location, name) {
-	Category.prototype.location = location;
-	Category.prototype.name = name;
+
+var CategoryInfo = {
+	createNew : function(name, location) {
+		var category = {};
+		category.name = name;
+		category.location = location;
+		category.getLocation = function() {
+			return this.location;
+		};
+		category.getName = function() {
+			return this.name;
+		};
+		return category;
+	}
 }
 
-Category.prototype.getLocation = function() {
-	return this.location;
-}
-
-Category.prototype.getName = function() {
-	return this.name;
-}
-
-Category.prototype.setLocation = function() {
-	this._location = location;
-}
 /**
  * 标签信息
  */

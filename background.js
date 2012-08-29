@@ -191,6 +191,7 @@ function bindKeyDownHandler(tab, direction) {
 
 function wizExecuteSave(docInfo) {
 
+	//整理数据
 	var regexp = /%20/g, 
 		  title = docInfo.title, 
 		  category = docInfo.category, 
@@ -207,28 +208,31 @@ function wizExecuteSave(docInfo) {
 	
 	var requestData = "title=" + encodeURIComponent(title).replace(regexp,  "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp,  "+") 
 						+ "&body=" + encodeURIComponent(body).replace(regexp,  "+") + "&category=" + encodeURIComponent(category).replace(regexp,  "+");
+
+	//发送给当前tab消息，显示剪辑结果					
 	chrome.tabs.sendMessage(tab.id, {name: "sync", info: docInfo});
 	
 	var callbackSuccess = function(response) {
 		var json = JSON.parse(response);
-			if (json.return_code != 200) {
-				console.log(json);
-				docInfo.errorMsg = json.return_message;
-				
-				chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
-				console.error("error :" + json.return_message);
-				return;
-			}
-			console.log("success : saveDocument");
+		if (json.return_code != 200) {
+			console.error("sendError : " + json.return_message);
+			docInfo.errorMsg = json.return_message;
 			
-			chrome.tabs.sendMessage(tab.id, {name: "saved" , info: docInfo});
+			chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
+			return;
+		}
+		console.log("success : saveDocument");
+		
+		chrome.tabs.sendMessage(tab.id, {name: "saved" , info: docInfo});
 	}
 	
 	var callbackError = function(response) {
 			var errorJSON = JSON.parse(response);
 			docInfo.errorMsg = json.return_message;
-			
+
 			chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
+
+			console.error("callback error : " + json.return_message);
 	}
 	$.ajax({
 		type : "POST",

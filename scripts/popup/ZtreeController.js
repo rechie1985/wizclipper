@@ -85,10 +85,10 @@ function ZtreeController() {
 		zNodesObj = data;
 	}
 
-	function show(id) {
+	function initTree(id) {
 		$.fn.zTree.init($("#" + id), setting, zNodesObj);
 	};
-	this.show = show;
+	this.initTree = initTree;
 	this.setNodes = setNodes;
 	this.parseDate = parseDate;
 }

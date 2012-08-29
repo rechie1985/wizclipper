@@ -1,82 +1,279 @@
 /**
  * @author rechie
  */
-
-var mainUrl = "http://service.wiz.cn/web";
+var cookieUrl = 'http://service.wiz.cn/web',
+	cookieName = 'wiz-clip-auth',
+	cookieExpiredays = 14 * 24 * 60 * 60;
+	
 function ClipPageControl() {
 
-	$("#note_submit").click(noteSubmit);
-	$("#submit-type").change(changeTypehandler);
-	$("body").bind("keyup", keyDownHandler);
-	$("#comment-info").focus(resizeComment);
+	function initClipPageListener() {
+		$('body').bind('keyup', keyDownHandler);
+		$('#submit-type').change(changeSubmitTypehandler);
+		$('#note_submit').click(noteSubmit);
+		$('#comment-info').focus(resizeCommentHeight);
+		$('#wiz_clip_detail').show(initClipPageInfo);
+	}
 
-	function resizeComment() {
-		$("#comment-info").animate({
-			height : "80px"
+	function resizeCommentHeight(evt) {
+		$('#comment-info').animate({
+			height : '80px'
 		}, 500);
 	}
+
+	//监听截取信息事件
+	chrome.extension.onConnect.addListener(messageListener);
+	function messageListener(port) {
+		var name = port.name;
+		switch(name) {
+			case 'contentVeilShow' :
+				$('#waiting').hide();
+				if ($('#wiz_clip_detail').is(':hidden')) {
+					initClipPageListener();
+				}
+				break;
+			case 'PageClipFailure' :
+				var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
+				$('#waiting_div').hide();
+				$('#errorpage_tip label').html(pageClipFailure);
+				$('#errorpage_tip').show();
+		}
+	}
+
+
+	/**
+	 * 加载当前页面的是否能智能截取、是否有选择的信息，并根据该信息显示
+	 */
+	function requestPageStatus() {
+		chrome.windows.getCurrent(function(win) {
+			chrome.tabs.getSelected(win.id, function(tab) {
+				chrome.tabs.sendMessage(tab.id, {
+					name : 'getInfo'
+				}, function(params) {
+					var clipArticle = params.article;
+					var clipSelection = params.selection;
+					if (clipSelection == true) {
+						$('#submit-type')[0].options[1].selected = true;
+					} else if (clipArticle == true) {
+						$('#submit-type')[0].options[0].selected = true;
+					} else {
+						$('#submit-type')[0].options[2].selected = true;
+					}
+
+					//用户没有选择时，禁止选择该'保存选择'
+					if (clipSelection == false) {
+						$('#submit-type option[id="selection"]').attr('disabled', '');
+					}
+
+					//用户有选择或者不可以智能提取时，禁止选择'保存文章'
+					if (clipArticle == false || clipSelection == true) {
+						$('#submit-type option[id="article"]').attr('disabled', '');
+					}
+					var type = $('#submit-type').val();
+					$('#note_submit').html(type);
+				});
+			});
+		});
+	}
+
+	//初始化剪辑页面信息
+	function initClipPageInfo(evt) {
+		initLogoutLink();
+		requestPageStatus();
+		requestTitle();
+		initDefaultCategory();
+		requestToken();
+		var categoryStr = localStorage['category'];
+		//如果本地未保存文件夹信息，需要发送请求加载
+		if (categoryStr) {
+			parseWizCategory();
+		} else {
+			requestCategory();
+		}
+	}
+
+	/**
+	 * 加载并显示默认文件夹---上次选择的文件夹
+	 */
+	function initDefaultCategory() {
+		var lastCategory = localStorage['last-category'];
+		if (lastCategory) {
+			var array = lastCategory.split('*'), displayName = array[0], location = array[1];
+			$('#category_info').html(displayName).attr('location', location);
+		}
+	}
+
+	/**
+	 *加载中 
+	 */
+	function showCategoryLoading() {
+		var visible = getCategoryLoadingStatus();
+		if(visible) {
+			ClipPageView.hideCategoryLoading();
+		} else {
+			var categoryLoadingMsg = chrome.i18n.getMessage('category_loading');
+			ClipPageView.showCategoryLoading(categoryLoadingMsg);
+		}
+	}
+	
+	function getCategoryLoadingStatus() {
+		var visible = $('#category_loading').is(':visible');
+		return visible;
+	}
+
+	function initLogoutLink() {
+		var logoutText = chrome.i18n.getMessage('logout');
+		$('#header_user').show();
+		$('#logout_control').html(logoutText).bind('click', cmdLogout);
+	}
+
+	function cmdLogout() {
+		Cookie.removeCookies(cookieUrl, cookieName, function() {
+			chrome.extension.connect({
+				name : 'logout'
+			});
+		});
+		window.close();
+	}
+
+	/**
+	 *加载标题
+	 */
+	function requestTitle() {
+		chrome.windows.getCurrent(function(win) {
+			chrome.tabs.getSelected(win.id, function(tab) {
+				var title = tab.title;
+				if (!title) {
+					return;
+				}
+				setTitle(title);
+			});
+		});
+	}
+
+	function setTitle(title) {
+		$('#wiz_note_title').val(title);
+	}
+
+	/**
+	 *对目录信息进行处理
+	 * @param {Object} categoryStr
+	 */
+	function parseWizCategory(categoryStr) {
+		initZtree();
+		var visible = getCategoryLoadingStatus();
+		if(visible) {
+			//用户已经点击展开文件夹树，此时，需要直接显示文件夹树即可
+			ClipPageView.showCategoryTreeFromLoading(500);
+		} 
+		$('#category_info').unbind('click');
+		$('#category_info').click(switchCategoryTreeVisible);
+	}
+
+	function initZtree() {
+		var categoryString = localStorage['category'];
+		var ztreeJson = ztreeControl.parseDate(categoryString);
+		ztreeControl.setNodes(ztreeJson);
+		ztreeControl.initTree('ztree');
+	}
+
+	/**
+	 *显示树
+	 */
+	function switchCategoryTreeVisible() {
+		var visible = $('#ztree_container').is(':visible');
+		if (visible) {
+			$('#ztree_container').hide(500);
+		} else {
+			$('#ztree_container').show(500);
+		}
+	}
+
+	/**
+	 *加载文件夹信息
+	 */
+	function requestCategory() {
+		$('#category_info').bind('click', showCategoryLoading);
+		var port = chrome.extension.connect({
+			name : 'requestCategory'
+		});
+		port.onMessage.addListener(function(msg) {
+			//错误处理
+			var value = $('#wiz_note_category').val();
+			localStorage['category'] = msg.categories;
+			parseWizCategory(msg.categories);
+		});
+	}
+
+
+	function requestToken() {
+		var port = chrome.extension.connect({
+			name : 'requestToken'
+		});
+		port.onMessage.addListener(function(token) {
+			initUserLink(token);
+		});
+	}
+
+
 
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
 	 */
-	function changeTypehandler(evt) {
+	function changeSubmitTypehandler(evt) {
 		var selectedOption = $('option:selected', '#submit-type');
-		var cmd = selectedOption.attr("id");
+		var cmd = selectedOption.attr('id');
 		var port = chrome.extension.connect({
-			name : "preview"
+			name : 'preview'
 		});
 		port.postMessage(cmd);
 
 		//改变页面显示
-		var type = $("#submit-type").val();
-		changeType(type);
+		ClipPageView.changeSubmitDisplayByType();
 	}
 
-	function changeType(type) {
-		$("#note_submit").html(type);
-	}
+	
 
-	function keyDownHandler(e) {
-		var target = e.target;
-		var skipTypes = ["input", "select", "textarea"];
+
+	function keyDownHandler(evt) {
+		var target = evt.target;
+		var skipTypes = ['input', 'select', 'textarea'];
 		for (var i = 0; i < skipTypes.length; i++) {
-			if (e.srcElement.nodeName.toLowerCase() == skipTypes[i]) {
+			if (evt.srcElement.nodeName.toLowerCase() == skipTypes[i]) {
 				return;
 			}
 		}
-		var keycode = e.keyCode;
+		var keycode = evt.keyCode;
 		if (13 == keycode) {
-			doSubmit();
+			requestSubmit();
 			return;
 		}
-		//其他按键处理
-		var port = chrome.extension.connect({
-			name : "onkeydown"
-		});
 
-		var opCmd = getNudgeOp(keycode, e);
-		var info = {
-			direction : opCmd
+		var opCmd = getNudgeOp(keycode, evt);
+		var info = { 
+			direction : opCmd 
 		};
-		port.postMessage(info);
+		chrome.extension.connect({
+			name : 'onkeydown'
+		}).postMessage(info);
 	}
 
 	function getNudgeOp(key, evt) {
 		var returnValue = null;
 		var KEY_ALT = 18, KEY_CTRL = 17;
 		var keyMap = {
-			27 : "cancle",
-			38 : "expand", // up
-			40 : "shrink", // down
-			37 : "left",
-			39 : "right",
+			27 : 'cancle',
+			38 : 'expand', // up
+			40 : 'shrink', // down
+			37 : 'left',
+			39 : 'right',
 
-			56 : "topexpand", // alt + up
-			58 : "topshrink", // alt + down
+			56 : 'topexpand', // alt + up
+			58 : 'topshrink', // alt + down
 
-			57 : "bottomexpand", // ctrl + down
-			55 : "bottomshrink", // ctrl + up
+			57 : 'bottomexpand', // ctrl + down
+			55 : 'bottomshrink', // ctrl + up
 		}
 
 		if (keyMap[key]) {
@@ -95,25 +292,26 @@ function ClipPageControl() {
 	 * 保存文档处理
 	 * @param {Event} e
 	 */
-	function noteSubmit(e) {
-		doSubmit();
+	function noteSubmit(evt) {
+		requestSubmit();
 	}
 
-	function doSubmit() {
-		var type = $('option:selected', '#submit-type').attr("id");
-		var title = $("#wiz_note_title").val();
-		var category = $("#category_info").attr('location');
-		var comment = $("#comment-info").val();
-		var info = {};
-		info.title = title;
-		info.category = category;
-		info.comment = comment;
+	function requestSubmit() {
+		var type = $('option:selected', '#submit-type').attr('id');
+		var title = $('#wiz_note_title').val();
+		var category = $('#category_info').attr('location');
+		var comment = $('#comment-info').val();
+		var docInfo = {
+			title : title,
+			category : category,
+			comment : comment
+		};
 		chrome.windows.getCurrent(function(win) {
 			chrome.tabs.getSelected(win.id, function(tab) {
 				chrome.tabs.sendRequest(tab.id, {
-					name : "preview",
-					op : "submit",
-					info : info,
+					name : 'preview',
+					op : 'submit',
+					info : docInfo,
 					type : type
 				}, function(params) {
 					window.close();
@@ -122,18 +320,29 @@ function ClipPageControl() {
 		});
 	}
 
-	var initUserLink = function(token) {
-		var user_id = localStorage["wiz-clip-auth"];
-		$("#header_username").html('(' + user_id + ')').bind("click", function(evt) {
+	function initUserLink(token) {
+		var user_id = localStorage['wiz-clip-auth'];
+		$('#header_username').html('(' + user_id + ')').bind('click', function(evt) {
 			window.open(mainUrl + '/?t=' + token);
 		});
 	}
 
-	this.initUserLink = initUserLink;
-
-}
-
-
-document.ready = function() {
-	window.clipPageControl = new ClipPageControl();
+	//剪辑页面显示控制
+	var ClipPageView = {
+		changeSubmitDisplayByType : function() {
+			var type = $('#submit-type').val();
+			$('#note_submit').html(type);
+		},
+		showCategoryTreeFromLoading : function(animate_time_ms) {
+			$('#category_loading').hide();
+			$('#ztree_container').show(animate_time_ms);
+		},
+		showCategoryLoading : function(categoryLoadingMsg){
+			$('#category_loading').show();
+			$('#category_loading label').html(chrome.i18n.getMessage('category_loading'));
+		},
+		hideCategoryLoading : function(){
+			$('#category_loading').hide();
+		}
+	}
 }
