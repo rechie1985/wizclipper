@@ -1,8 +1,3 @@
-'use strict';
-$.ajaxSetup({
-	dataType : 'text',
-	cache : false,
-});
 var url = "http://service.wiz.cn/wizkm/xmlrpc";
 var token = null;
 var tab = null;
@@ -12,73 +7,75 @@ function onConnectListener(port) {
 	if (!name) {
 		return;
 	}
-	switch(name) {
-		case "login" :
-			port.onMessage.addListener(portLogin);
-			break;
-		case "retryClip" :
-			retryClip(port);
-		case "requestCategory" :
-			portRequestCategoryAjax(port);
-			break;
-		case "saveDocument" :
-			port.onMessage.addListener(function(info) {
-				if (info == null || info.title == null || info.params == null || info.title.toString() == "" || info.params.toString() == "") {
-					return;
-				}
-				wizExecuteSave(info);
-			});
-			break;
-		case "checkLogin" :
-			port.onMessage.addListener(function(msg) {
-				if (token != null) {
-					getTab(wizSaveToWiz);
-					port.postMessage(true);
-				} else {
-					port.postMessage(false);
-				}
-			});
-			break;
-		case "initRequest" :
-			//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
-			//TODO 返回是否可获取文章、是否可获取选择信息
-			if (token) {
+	switch (name) {
+	case "login":
+		port.onMessage.addListener(portLogin);
+		break;
+	case "retryClip":
+		retryClip(port);
+		break;
+	case "requestCategory":
+		portRequestCategoryAjax(port);
+		break;
+	case "saveDocument":
+		port.onMessage.addListener(function(info) {
+			if (info == null || info.title == null || info.params == null || info.title.toString() === "" || info.params.toString() === "") {
+				return;
+			}
+			wizExecuteSave(info);
+		});
+		break;
+	case "checkLogin":
+		port.onMessage.addListener(function(msg) {
+			if (token != null) {
 				getTab(wizSaveToWiz);
-				port.postMessage(token);
+				port.postMessage(true);
 			} else {
 				port.postMessage(false);
 			}
-			break;
-		case "onkeydown" :
-			port.onMessage.addListener(function(msg) {
-				if (!token || token == null) {
-					return;
-				} else {
-					var direction = msg.direction;
-					getTab(bindKeyDownHandler, direction);
-				}
-			});
-			break;
-		case "popupClosed" :
-			port.onDisconnect.addListener(function() {
-				getTab(hideContentVeil);
-			});
-			break;
-		case "preview" :
-			port.onMessage.addListener(function(msg) {
-				if (!msg) {
-					return;
-				}
-				getTab(wizSaveToWiz, msg);
-			});
-			break;
-		case "requestToken" :
-			if (token) {
-				port.postMessage(token);
+		});
+		break;
+	case "initRequest":
+		//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
+		//TODO 返回是否可获取文章、是否可获取选择信息
+		if (token) {
+			getTab(wizSaveToWiz);
+			port.postMessage(token);
+		} else {
+			port.postMessage(false);
+		}
+		break;
+	case "onkeydown":
+		port.onMessage.addListener(function (msg) {
+			if (!token) {
+				return;
+			} else {
+				var direction = msg.direction;
+				getTab(bindKeyDownHandler, direction);
 			}
-			break;
-		case "logout" :
-			token = null;
+		});
+		break;
+	case "popupClosed":
+		port.onDisconnect.addListener(function() {
+			getTab(hideContentVeil);
+		});
+		break;
+	case "preview":
+		port.onMessage.addListener(function(msg) {
+			if (!msg) {
+				return;
+			}
+			getTab(wizSaveToWiz, msg);
+		});
+		break;
+	case "requestToken":
+		if (token) {
+			port.postMessage(token);
+		}
+		break;
+	case "logout":
+		token = null;
+		break;
 	}
 }
 

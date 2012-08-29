@@ -1,9 +1,8 @@
 /**
  * @author rechie
  */
- 
-'use strict';
 function ZtreeController() {
+	'use strict';
 	var setting = {
 		view : {
 			dblClickExpand : false,
@@ -20,20 +19,18 @@ function ZtreeController() {
 			onClick : zTreeOnClick
 		}
 
-	};
-
-	var zNodesObj;
+	},
+		zNodesObj;
 
 	function zTreeOnClick(event, treeId, treeNode) {
-		var nodeLocation = treeNode.location;
-		var displayLocation = treeNode.displayLocation;
-		$("#category_info").attr("location", nodeLocation);
-		
+		var nodeLocation = treeNode.location,
+			displayLocation = treeNode.displayLocation;
+		$("#category_info").attr("location", nodeLocation);		
 		PopupView.hideCategoryTreeAfterSelect(displayLocation, 500);
 
 		//把最后一次选择的文件夹保存起来，下次使用
 		localStorage["last-category"] = displayLocation + "*" + nodeLocation;
-	};
+	}
 
 	/**
 	 * 将获取到的json object处理成ztree需要的格式
@@ -41,27 +38,35 @@ function ZtreeController() {
 	 */
 	function parseDate(obj) {
 		//用来存放 category-name的map
-		var categoryMap = new HashMap();
-		var array = obj.split('*');
+		var categoryMap = new HashMap(),
+			array = obj.split('*'),
 		//数组下标
-		var index = 0;
-		var ztreeData = [];
+			index = 0,
+			ztreeData = [],
+			tempLocation,
+			locationLength,
+			nameArr,
+			parentLocation,
+			nodeData,
+			mapNodeObj,
+			nodeObj,
+			parentNode,
+			childCount;
 
 		$.each(array, function(firstIndex, location) {
-			var tempLocation = '/';
-			var length = location.length;
+			tempLocation = '/';
+			locationLength = location.length;
 			//把头尾的空串去掉
-			var nameArr = location.substr(1, length - 2).split('/');
+			nameArr = location.substr(1, locationLength - 2).split('/');
 			$.each(nameArr, function(levelIndex, name) {
 				//记录路径
-				var parentLocation = tempLocation;
+				parentLocation = tempLocation;
 				tempLocation += name + '/';
-				var nodeData = {};
-				var mapNodeObj = categoryMap.get(tempLocation);
+				nodeData = {};
+				mapNodeObj = categoryMap.get(tempLocation);
 				if (!mapNodeObj) {
 					//根节点特殊处理
-					var nodeObj = {
-						children : [] ,
+					nodeObj = {
 						name : changeSpecilaLoction(name) ,
 						displayLocation : changeSpecilaLoction(tempLocation) ,
 						location : tempLocation,
@@ -73,10 +78,11 @@ function ZtreeController() {
 						ztreeData[index] = nodeObj;
 						index++;
 					}
-					var parentNode = categoryMap.get(parentLocation);
+					parentNode = categoryMap.get(parentLocation);
 					if (parentNode) {
-						var length = parentNode.children.length;
-						parentNode.children[length] = nodeObj;
+						parentNode.children = parentNode.children || [];
+						childCount = parentNode.children.length;
+						parentNode.children[childCount] = nodeObj;
 					}
 				}
 			});
