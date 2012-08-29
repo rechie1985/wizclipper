@@ -1,6 +1,7 @@
 /**
  * @author rechie
  */
+'use strict';
 var notificationHeadline = "#notificationHeadline";
 var notificationDetails = "#notificationDetails";
 var successActions = "#successActions";

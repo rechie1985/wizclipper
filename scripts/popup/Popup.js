@@ -1,3 +1,4 @@
+'use strict';
 var mainUrl = "http://service.wiz.cn/web";
 window.onload = function() {
 	initPopupPage();

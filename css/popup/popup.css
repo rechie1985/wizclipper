@@ -1,4 +1,4 @@
-html, body, div, table {
+html, body{
 	font-family: "微软雅黑", "宋体", Helvetica, Arial, sans-serif;
 	font-size: 10.5pt;
 }
@@ -151,6 +151,7 @@ body.popup {
 }
 
 .btn {
+	font-family: "微软雅黑", "宋体", Helvetica, Arial, sans-serif;
 	font-size: 10.5pt;
 	padding: 4px 10px 4px;
 	margin-bottom: 0;

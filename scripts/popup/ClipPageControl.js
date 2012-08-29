@@ -1,6 +1,7 @@
 /**
  * @author rechie
  */
+'use strict';
 var cookieUrl = 'http://service.wiz.cn/web',
 	cookieName = 'wiz-clip-auth',
 	cookieExpiredays = 14 * 24 * 60 * 60;

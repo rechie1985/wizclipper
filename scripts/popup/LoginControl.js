@@ -1,8 +1,10 @@
 /**
  * @author rechie
  */
+'use strict';
 var ztreeControl = new ZtreeController();
 function LoginControl() {
+	'use strict';
 
 	var isAutoLogin = false;
 	//add click listener to login button

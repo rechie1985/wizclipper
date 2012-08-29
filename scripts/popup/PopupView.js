@@ -1,3 +1,4 @@
+'use strict';
 var PopupView = {
 	changeSubmitDisplayByType : function() 
 	{

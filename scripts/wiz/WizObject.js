@@ -6,6 +6,7 @@
  * 文件夹信息
  */
 
+'use strict';
 var CategoryInfo = {
 	createNew : function(name, location) {
 		var category = {};

@@ -1,6 +1,8 @@
 /**
  * @author rechie
  */
+ 
+'use strict';
 function ZtreeController() {
 	var setting = {
 		view : {
