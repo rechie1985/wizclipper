@@ -4,7 +4,7 @@ window.onload = function() {
 
 	var clipPageControl = new ClipPageControl();
 	var loginControl = new LoginControl();
-	Cookie.getCookies(cookieUrl, cookieName, showByCookies);
+	Cookie.getCookies(cookieUrl, cookieName, showByCookies, true);
 
 	//保证popup页面和preview页面同时关闭
 	chrome.extension.connect({

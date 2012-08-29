@@ -14,12 +14,12 @@ Cookie.setCookies =  function(url, name, value, expireSecond) {
 	chrome.cookies.set(param, function(cookie) {
 	});
 };
-Cookie.getCookies = function(url, key, callback) {
+Cookie.getCookies = function(url, key, callback, isAutoDelay) {
 	chrome.cookies.get({
 		url : url,
 		name : key
 	}, function(cookies) {
-		if (cookies && cookies.value) {
+		if (cookies && cookies.value && isAutoDelay) {
 			//自动延长cookie时间
 			var expiredays = cookieExpiredays;
 			Cookie.setCookies(url, key, cookies.value, expiredays);

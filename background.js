@@ -86,7 +86,7 @@ function portLogin(loginParam, port) {
 
 }
 
-function callbackLoginSuccess(port) {
+function callbackLogin(port) {
 	if (token) {
 		port.postMessage(true);
 		getTab(wizSaveToWiz);
@@ -98,25 +98,12 @@ function callbackLoginSuccess(port) {
 }
 
 function retryClip(port) {
-	getCookies(url, "wiz-clip-auth", loginByCookies);
+	//不自动增加cookie时间
+	Cookie.getCookies(url, "wiz-clip-auth", loginByCookies, false);
 	port.onMessage.addListener(function(msg) {
 		if (msg && msg.title && msg.params) {
 			wizExecuteSave(msg);
 		}
-	});
-}
-
-function getCookies(url, key, callback) {
-	chrome.cookies.get({
-		url : url,
-		name : key
-	}, function(cookies) {
-		if (cookies && cookies.value) {
-			//自动延长cookie时间
-			expiredays = 14 * 24 * 60 * 60;
-			setCookies(url, key, cookies.value, expiredays);
-		}
-		callback(cookies);
 	});
 }
 
@@ -140,7 +127,7 @@ function portLoginAjax(loginParam, port) {
 	var loginSuccess = function(responseJSON) {
 		token = responseJSON.token;
 		if (port) {
-			callbackLoginSuccess(port);
+			callbackLogin(port);
 		}
 	}
 	xmlrpc(url, 'accounts.clientLogin', [loginParam], loginSuccess, loginError);
