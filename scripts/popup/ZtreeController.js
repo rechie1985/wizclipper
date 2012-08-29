@@ -25,9 +25,10 @@ function ZtreeController() {
 	function zTreeOnClick(event, treeId, treeNode) {
 		var nodeLocation = treeNode.location;
 		var displayLocation = treeNode.displayLocation;
-		$("#category_info").html(displayLocation);
 		$("#category_info").attr("location", nodeLocation);
-		$("#ztree_container").hide(500);
+		
+		PopupView.hideCategoryTreeAfterSelect(displayLocation, 500);
+
 		//把最后一次选择的文件夹保存起来，下次使用
 		localStorage["last-category"] = displayLocation + "*" + nodeLocation;
 	};

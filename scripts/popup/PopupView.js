@@ -43,5 +43,10 @@ var PopupView = {
 		$("#waiting").hide();
 		$("#wiz_login").show();
 		$("#wiz_clip_detail").hide();
+	},
+	hideCategoryTreeAfterSelect : function(display, delay_ms)
+	{
+		$("#category_info").html(display);
+		$("#ztree_container").hide(delay_ms);
 	}
 }

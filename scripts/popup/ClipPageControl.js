@@ -39,6 +39,49 @@ function ClipPageControl() {
 	}
 
 
+
+
+	/**
+	 *修改保存的类型
+	 * @param {Object} model
+	 */
+	function changeSubmitTypehandler(evt) {
+		var selectedOption = $('option:selected', '#submit-type');
+		var cmd = selectedOption.attr('id');
+		var port = chrome.extension.connect({
+			name : 'preview'
+		});
+		port.postMessage(cmd);
+
+		//改变页面显示
+		PopupView.changeSubmitDisplayByType();
+	}
+
+
+	function initSubmitGroup(clipPageResponse) {
+		var clipArticle = clipPageResponse.article;
+		var clipSelection = clipPageResponse.selection;
+		if (clipSelection == true) {
+			$('#submit-type')[0].options[1].selected = true;
+		} else if (clipArticle == true) {
+			$('#submit-type')[0].options[0].selected = true;
+		} else {
+			$('#submit-type')[0].options[2].selected = true;
+		}
+
+		//用户没有选择时，禁止选择该'保存选择'
+		if (clipSelection == false) {
+			$('#submit-type option[id="selection"]').attr('disabled', '');
+		}
+
+		//用户有选择或者不可以智能提取时，禁止选择'保存文章'
+		if (clipArticle == false || clipSelection == true) {
+			$('#submit-type option[id="article"]').attr('disabled', '');
+		}
+		var type = $('#submit-type').val();
+		$('#note_submit').html(type);
+	}
+
 	/**
 	 * 加载当前页面的是否能智能截取、是否有选择的信息，并根据该信息显示
 	 */
@@ -48,27 +91,7 @@ function ClipPageControl() {
 				chrome.tabs.sendMessage(tab.id, {
 					name : 'getInfo'
 				}, function(params) {
-					var clipArticle = params.article;
-					var clipSelection = params.selection;
-					if (clipSelection == true) {
-						$('#submit-type')[0].options[1].selected = true;
-					} else if (clipArticle == true) {
-						$('#submit-type')[0].options[0].selected = true;
-					} else {
-						$('#submit-type')[0].options[2].selected = true;
-					}
-
-					//用户没有选择时，禁止选择该'保存选择'
-					if (clipSelection == false) {
-						$('#submit-type option[id="selection"]').attr('disabled', '');
-					}
-
-					//用户有选择或者不可以智能提取时，禁止选择'保存文章'
-					if (clipArticle == false || clipSelection == true) {
-						$('#submit-type option[id="article"]').attr('disabled', '');
-					}
-					var type = $('#submit-type').val();
-					$('#note_submit').html(type);
+					initSubmitGroup(params);
 				});
 			});
 		});
@@ -90,34 +113,6 @@ function ClipPageControl() {
 		}
 	}
 
-	/**
-	 * 加载并显示默认文件夹---上次选择的文件夹
-	 */
-	function initDefaultCategory() {
-		var lastCategory = localStorage['last-category'];
-		if (lastCategory) {
-			var array = lastCategory.split('*'), displayName = array[0], location = array[1];
-			$('#category_info').html(displayName).attr('location', location);
-		}
-	}
-
-	/**
-	 *加载中 
-	 */
-	function showCategoryLoading() {
-		var visible = getCategoryLoadingStatus();
-		if(visible) {
-			PopupView.hideCategoryLoading();
-		} else {
-			var categoryLoadingMsg = chrome.i18n.getMessage('category_loading');
-			PopupView.showCategoryLoading(categoryLoadingMsg);
-		}
-	}
-	
-	function getCategoryLoadingStatus() {
-		var visible = $('#category_loading').is(':visible');
-		return visible;
-	}
 
 	function initLogoutLink() {
 		var logoutText = chrome.i18n.getMessage('logout');
@@ -153,11 +148,42 @@ function ClipPageControl() {
 		$('#wiz_note_title').val(title);
 	}
 
+
+
+	/**
+	 * 加载并显示默认文件夹---上次选择的文件夹
+	 */
+	function initDefaultCategory() {
+		var lastCategory = localStorage['last-category'];
+		if (lastCategory) {
+			var array = lastCategory.split('*'), displayName = array[0], location = array[1];
+			$('#category_info').html(displayName).attr('location', location);
+		}
+	}
+
+	/**
+	 *加载中 
+	 */
+	function showCategoryLoading() {
+		var visible = getCategoryLoadingStatus();
+		if(visible) {
+			PopupView.hideCategoryLoading();
+		} else {
+			var categoryLoadingMsg = chrome.i18n.getMessage('category_loading');
+			PopupView.showCategoryLoading(categoryLoadingMsg);
+		}
+	}
+	
+	function getCategoryLoadingStatus() {
+		var visible = $('#category_loading').is(':visible');
+		return visible;
+	}
 	/**
 	 *对目录信息进行处理
 	 * @param {Object} categoryStr
 	 */
 	function parseWizCategory(categoryStr) {
+
 		initZtree();
 		var visible = getCategoryLoadingStatus();
 		if(visible) {
@@ -212,26 +238,6 @@ function ClipPageControl() {
 			initUserLink(token);
 		});
 	}
-
-
-
-	/**
-	 *修改保存的类型
-	 * @param {Object} model
-	 */
-	function changeSubmitTypehandler(evt) {
-		var selectedOption = $('option:selected', '#submit-type');
-		var cmd = selectedOption.attr('id');
-		var port = chrome.extension.connect({
-			name : 'preview'
-		});
-		port.postMessage(cmd);
-
-		//改变页面显示
-		PopupView.changeSubmitDisplayByType();
-	}
-
-	
 
 
 	function keyDownHandler(evt) {

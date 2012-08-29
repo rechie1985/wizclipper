@@ -262,25 +262,25 @@ function launchClientClipper(info) {
 
 	params = wiz_getSelected(window);
 	info.params = params;
-	postClipInfo(info);
+	requestSaveDoc(info);
 }
 
 function launchClientClipperFullPage(info) {
 	info.params = getFullpageHTML();
-	postClipInfo(info);
+	requestSaveDoc(info);
 }
 
 function launchClientClipperSelection(info) {
 	var params = getSelectedHTML();
 	info.params = params;
-	postClipInfo(info);
+	requestSaveDoc(info);
 }
 
 function launchClientClipperUrl(info) {
 	var url = '<a href="' + window.location.href + '">' + window.location.href + '</a>';
 	var params = url;
 	info.params = params;
-	postClipInfo(info);
+	requestSaveDoc(info);
 }
 
 function getFullpageHTML() {
@@ -303,7 +303,7 @@ function getSelectedHTML() {
 		return "";
 }
 
-function postClipInfo(info) {
+function requestSaveDoc(info) {
 	clipResult.startClip();
 	setTimeout(function(){
 		chrome.extension.connect({"name" : "saveDocument"}).postMessage(info);
