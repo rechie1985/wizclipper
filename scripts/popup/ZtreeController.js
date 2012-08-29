@@ -40,17 +40,22 @@ function ZtreeController() {
 		//用来存放 category-name的map
 		var categoryMap = new HashMap(),
 			array = obj.split('*'),
-		//数组下标
+			//数组下标
 			index = 0,
 			ztreeData = [],
 			tempLocation,
 			locationLength,
+			//解析后单个文件夹的名称数组
 			nameArr,
+			//当前文件夹的父路径
 			parentLocation,
-			nodeData,
+			//存放在HashMap中的nodeData，防止重复
 			mapNodeObj,
+			//每个节点的数据
 			nodeObj,
+			//父节点
 			parentNode,
+			//当前文件夹父节点的子节点数
 			childCount;
 
 		$.each(array, function (firstIndex, location) {
@@ -62,7 +67,6 @@ function ZtreeController() {
 				//记录路径
 				parentLocation = tempLocation;
 				tempLocation += name + '/';
-				nodeData = {};
 				mapNodeObj = categoryMap.get(tempLocation);
 				if (!mapNodeObj) {
 					//根节点特殊处理
