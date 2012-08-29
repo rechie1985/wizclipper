@@ -1,13 +1,11 @@
 /**
  * @author rechie
  */
-'use strict';
 var cookieUrl = 'http://service.wiz.cn/web',
 	cookieName = 'wiz-clip-auth',
 	cookieExpiredays = 14 * 24 * 60 * 60;
-	
 function ClipPageControl() {
-
+	'use strict';
 	function initClipPageListener() {
 		$('body').bind('keyup', keyDownHandler);
 		$('#submit-type').change(changeSubmitTypehandler);
@@ -26,16 +24,17 @@ function ClipPageControl() {
 	chrome.extension.onConnect.addListener(messageListener);
 	function messageListener(port) {
 		var name = port.name;
-		switch(name) {
-			case 'contentVeilShow' :
-				$('#waiting').hide();
-				if ($('#wiz_clip_detail').is(':hidden')) {
-					initClipPageListener();
-				}
-				break;
-			case 'PageClipFailure' :
-				var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
-				PopupView.showClipFailure(pageClipFailure);
+		switch (name) {
+		case 'contentVeilShow':
+			$('#waiting').hide();
+			if ($('#wiz_clip_detail').is(':hidden')) {
+				initClipPageListener();
+			}
+			break;
+		case 'PageClipFailure':
+			var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
+			PopupView.showClipFailure(pageClipFailure);
+			break;
 		}
 	}
 
@@ -47,9 +46,9 @@ function ClipPageControl() {
 	 * @param {Object} model
 	 */
 	function changeSubmitTypehandler(evt) {
-		var selectedOption = $('option:selected', '#submit-type');
-		var cmd = selectedOption.attr('id');
-		var port = chrome.extension.connect({
+		var selectedOption = $('option:selected', '#submit-type'),
+			cmd = selectedOption.attr('id'),
+			port = chrome.extension.connect({
 			name : 'preview'
 		});
 		port.postMessage(cmd);
@@ -60,8 +59,8 @@ function ClipPageControl() {
 
 
 	function initSubmitGroup(clipPageResponse) {
-		var clipArticle = clipPageResponse.article;
-		var clipSelection = clipPageResponse.selection;
+		var clipArticle = clipPageResponse.article,
+			clipSelection = clipPageResponse.selection;
 		if (clipSelection == true) {
 			$('#submit-type')[0].options[1].selected = true;
 		} else if (clipArticle == true) {
@@ -87,11 +86,11 @@ function ClipPageControl() {
 	 * 加载当前页面的是否能智能截取、是否有选择的信息，并根据该信息显示
 	 */
 	function requestPageStatus() {
-		chrome.windows.getCurrent(function(win) {
-			chrome.tabs.getSelected(win.id, function(tab) {
+		chrome.windows.getCurrent(function (win) {
+			chrome.tabs.getSelected(win.id, function (tab) {
 				chrome.tabs.sendMessage(tab.id, {
 					name : 'getInfo'
-				}, function(params) {
+				}, function (params) {
 					initSubmitGroup(params);
 				});
 			});
@@ -122,7 +121,7 @@ function ClipPageControl() {
 	}
 
 	function cmdLogout() {
-		Cookie.removeCookies(cookieUrl, cookieName, function() {
+		Cookie.removeCookies(cookieUrl, cookieName, function () {
 			chrome.extension.connect({
 				name : 'logout'
 			});
@@ -134,8 +133,8 @@ function ClipPageControl() {
 	 *加载标题
 	 */
 	function requestTitle() {
-		chrome.windows.getCurrent(function(win) {
-			chrome.tabs.getSelected(win.id, function(tab) {
+		chrome.windows.getCurrent(function (win) {
+			chrome.tabs.getSelected(win.id, function (tab) {
 				var title = tab.title;
 				if (!title) {
 					return;

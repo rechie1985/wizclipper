@@ -25,7 +25,7 @@ function ZtreeController() {
 	function zTreeOnClick(event, treeId, treeNode) {
 		var nodeLocation = treeNode.location,
 			displayLocation = treeNode.displayLocation;
-		$("#category_info").attr("location", nodeLocation);		
+		$("#category_info").attr("location", nodeLocation);
 		PopupView.hideCategoryTreeAfterSelect(displayLocation, 500);
 
 		//把最后一次选择的文件夹保存起来，下次使用
@@ -53,12 +53,12 @@ function ZtreeController() {
 			parentNode,
 			childCount;
 
-		$.each(array, function(firstIndex, location) {
+		$.each(array, function (firstIndex, location) {
 			tempLocation = '/';
 			locationLength = location.length;
 			//把头尾的空串去掉
 			nameArr = location.substr(1, locationLength - 2).split('/');
-			$.each(nameArr, function(levelIndex, name) {
+			$.each(nameArr, function (levelIndex, name) {
 				//记录路径
 				parentLocation = tempLocation;
 				tempLocation += name + '/';
@@ -67,14 +67,14 @@ function ZtreeController() {
 				if (!mapNodeObj) {
 					//根节点特殊处理
 					nodeObj = {
-						name : changeSpecilaLoction(name) ,
-						displayLocation : changeSpecilaLoction(tempLocation) ,
+						name : changeSpecilaLoction(name),
+						displayLocation : changeSpecilaLoction(tempLocation),
 						location : tempLocation,
 						level : levelIndex
 					};
 					categoryMap.put(tempLocation, nodeObj);
 					//非根节点
-					if (levelIndex == 0) {
+					if (levelIndex === 0) {
 						ztreeData[index] = nodeObj;
 						index++;
 					}
@@ -96,7 +96,7 @@ function ZtreeController() {
 
 	function initTree(id) {
 		$.fn.zTree.init($("#" + id), setting, zNodesObj);
-	};
+	}
 	this.initTree = initTree;
 	this.setNodes = setNodes;
 	this.parseDate = parseDate;
@@ -119,14 +119,15 @@ var specialLocation = {
 }
 
 function changeSpecilaLoction(location) {
-	$.each(specialLocation, function(key, value) {
+	'use strict' ;
+	$.each(specialLocation, function (key, value) {
 		var index = location.indexOf(key);
 
-		if(index === 0 && location == key) {
+		if (index === 0 && location === key) {
 			location = value;
-			return false;			
+			return false;
 		}
-		if(index === 1 && location.indexOf("/") === 0) {
+		if (index === 1 && location.indexOf("/") === 0) {
 			location = "/" + value + location.substr(key.length + 1);
 			return false;
 		}
