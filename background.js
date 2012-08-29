@@ -104,11 +104,6 @@ function retryClip(port) {
 		if (msg && msg.title && msg.params) {
 			wizExecuteSave(msg);
 		}
-<<<<<<< HEAD
-=======
-    	alert(cookies.value);
-		callback(cookies);
->>>>>>> alert
 	});
 }
 
