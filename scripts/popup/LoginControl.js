@@ -53,24 +53,17 @@ function LoginControl() {
 			//返回错误
 			else {
 				if (msg == false) {
-					$('#wiz_login').show();
-					$('#wiz_clip_detail').hide();
-					$('#div_error_validator').html(chrome.i18n.getMessage('network_wrong'));
-				} else {
-					$('#wiz_login').show();
-					$('#wiz_clip_detail').hide();
-					$('#div_error_validator').html(msg);
+					msg = chrome.i18n.getMessage('network_wrong');
 				}
-				$('#waiting').hide();
+				PopupView.showLoginError(msg);
 			}
 		});
 	}
 
 	function doLogin() {
-		$('#waiting').show();
-		$('#waiting-label').html(chrome.i18n.getMessage('logining'));
-		$('#wiz_login').hide();
-		$('#wiz_clip_detail').hide();
+		var loginingMsg = chrome.i18n.getMessage('logining');
+		PopupView.showWaiting(loginingMsg);
+
 		var loginParam = new Object();
 		loginParam.client_type = 'web3';
 		loginParam.api_version = 3;

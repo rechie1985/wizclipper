@@ -34,9 +34,7 @@ function ClipPageControl() {
 				break;
 			case 'PageClipFailure' :
 				var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
-				$('#waiting_div').hide();
-				$('#errorpage_tip label').html(pageClipFailure);
-				$('#errorpage_tip').show();
+				PopupView.showClipFailure(pageClipFailure);
 		}
 	}
 
@@ -109,10 +107,10 @@ function ClipPageControl() {
 	function showCategoryLoading() {
 		var visible = getCategoryLoadingStatus();
 		if(visible) {
-			ClipPageView.hideCategoryLoading();
+			PopupView.hideCategoryLoading();
 		} else {
 			var categoryLoadingMsg = chrome.i18n.getMessage('category_loading');
-			ClipPageView.showCategoryLoading(categoryLoadingMsg);
+			PopupView.showCategoryLoading(categoryLoadingMsg);
 		}
 	}
 	
@@ -164,7 +162,7 @@ function ClipPageControl() {
 		var visible = getCategoryLoadingStatus();
 		if(visible) {
 			//用户已经点击展开文件夹树，此时，需要直接显示文件夹树即可
-			ClipPageView.showCategoryTreeFromLoading(500);
+			PopupView.showCategoryTreeFromLoading(500);
 		} 
 		$('#category_info').unbind('click');
 		$('#category_info').click(switchCategoryTreeVisible);
@@ -230,7 +228,7 @@ function ClipPageControl() {
 		port.postMessage(cmd);
 
 		//改变页面显示
-		ClipPageView.changeSubmitDisplayByType();
+		PopupView.changeSubmitDisplayByType();
 	}
 
 	
@@ -325,24 +323,5 @@ function ClipPageControl() {
 		$('#header_username').html('(' + user_id + ')').bind('click', function(evt) {
 			window.open(mainUrl + '/?t=' + token);
 		});
-	}
-
-	//剪辑页面显示控制
-	var ClipPageView = {
-		changeSubmitDisplayByType : function() {
-			var type = $('#submit-type').val();
-			$('#note_submit').html(type);
-		},
-		showCategoryTreeFromLoading : function(animate_time_ms) {
-			$('#category_loading').hide();
-			$('#ztree_container').show(animate_time_ms);
-		},
-		showCategoryLoading : function(categoryLoadingMsg){
-			$('#category_loading').show();
-			$('#category_loading label').html(chrome.i18n.getMessage('category_loading'));
-		},
-		hideCategoryLoading : function(){
-			$('#category_loading').hide();
-		}
 	}
 }

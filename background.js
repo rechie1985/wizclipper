@@ -86,16 +86,6 @@ function portLogin(loginParam, port) {
 
 }
 
-function callbackLogin(port) {
-	if (token) {
-		port.postMessage(true);
-		getTab(wizSaveToWiz);
-		var time = 4 * 60 * 1000;
-		setInterval(refreshToken, time);
-	} else {
-		port.postMessage(false);
-	}
-}
 
 function retryClip(port) {
 	//不自动增加cookie时间
@@ -108,8 +98,6 @@ function retryClip(port) {
 }
 
 function loginByCookies(cookie) {
-	isAutoLogin = true;
-
 	var info = cookie.value;
 	var split_count = info.indexOf("*md5");
 	var loginParam = {};
@@ -121,13 +109,16 @@ function loginByCookies(cookie) {
 }
 
 function portLoginAjax(loginParam, port) {
-	var loginError = function(response) {
-		console.log("login error : " + response);
+	var loginError = function(err) {
+		port.postMessage(err.message);
 	}
 	var loginSuccess = function(responseJSON) {
 		token = responseJSON.token;
 		if (port) {
-			callbackLogin(port);
+			port.postMessage(true);
+			getTab(wizSaveToWiz);
+			var time = 4 * 60 * 1000;
+			setInterval(refreshToken, time);
 		}
 	}
 	xmlrpc(url, 'accounts.clientLogin', [loginParam], loginSuccess, loginError);

@@ -25,10 +25,8 @@ window.onload = function() {
 			});
 
 		} else {
-			$("#waiting").hide();
-			//cookie中未保存或已过期
-			$("#wiz_login").show();
-			$("#wiz_clip_detail").hide();
+			PopupView.showLogin();
+			
 			loginControl.initLogoffLink();
 		}
 	}
