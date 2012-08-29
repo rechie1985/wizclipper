@@ -1,4 +1,4 @@
-var url = "http://service.wiz.cn/wizkm/xmlrpc";
+var url = 'http://service.wiz.cn/wizkm/xmlrpc';
 var token = null;
 var tab = null;
 
@@ -8,24 +8,24 @@ function onConnectListener(port) {
 		return;
 	}
 	switch (name) {
-	case "login":
+	case 'login':
 		port.onMessage.addListener(portLogin);
 		break;
-	case "retryClip":
+	case 'retryClip':
 		retryClip(port);
 		break;
-	case "requestCategory":
+	case 'requestCategory':
 		portRequestCategoryAjax(port);
 		break;
-	case "saveDocument":
+	case 'saveDocument':
 		port.onMessage.addListener(function(info) {
-			if (info == null || info.title == null || info.params == null || info.title.toString() === "" || info.params.toString() === "") {
+			if (info == null || info.title == null || info.params == null || info.title.toString() === '' || info.params.toString() === '') {
 				return;
 			}
 			wizExecuteSave(info);
 		});
 		break;
-	case "checkLogin":
+	case 'checkLogin':
 		port.onMessage.addListener(function(msg) {
 			if (token != null) {
 				getTab(wizSaveToWiz);
@@ -35,7 +35,7 @@ function onConnectListener(port) {
 			}
 		});
 		break;
-	case "initRequest":
+	case 'initRequest':
 		//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
 		//TODO 返回是否可获取文章、是否可获取选择信息
 		if (token) {
@@ -45,7 +45,7 @@ function onConnectListener(port) {
 			port.postMessage(false);
 		}
 		break;
-	case "onkeydown":
+	case 'onkeydown':
 		port.onMessage.addListener(function (msg) {
 			if (!token) {
 				return;
@@ -55,12 +55,12 @@ function onConnectListener(port) {
 			}
 		});
 		break;
-	case "popupClosed":
+	case 'popupClosed':
 		port.onDisconnect.addListener(function() {
 			getTab(hideContentVeil);
 		});
 		break;
-	case "preview":
+	case 'preview':
 		port.onMessage.addListener(function(msg) {
 			if (!msg) {
 				return;
@@ -68,12 +68,12 @@ function onConnectListener(port) {
 			getTab(wizSaveToWiz, msg);
 		});
 		break;
-	case "requestToken":
+	case 'requestToken':
 		if (token) {
 			port.postMessage(token);
 		}
 		break;
-	case "logout":
+	case 'logout':
 		token = null;
 		break;
 	}
@@ -87,7 +87,7 @@ function portLogin(loginParam, port) {
 
 function retryClip(port) {
 	//不自动增加cookie时间
-	Cookie.getCookies(url, "wiz-clip-auth", loginByCookies, false);
+	Cookie.getCookies(url, 'wiz-clip-auth', loginByCookies, false);
 	port.onMessage.addListener(function(msg) {
 		if (msg && msg.title && msg.params) {
 			wizExecuteSave(msg);
@@ -97,9 +97,9 @@ function retryClip(port) {
 
 function loginByCookies(cookie) {
 	var info = cookie.value;
-	var split_count = info.indexOf("*md5");
+	var split_count = info.indexOf('*md5');
 	var loginParam = {};
-	loginParam.client_type = "web3";
+	loginParam.client_type = 'web3';
 	loginParam.api_version = 3;
 	loginParam.user_id = info.substring(0, split_count);
 	loginParam.password = info.substring(split_count + 1);
@@ -119,12 +119,13 @@ function portLoginAjax(loginParam, port) {
 			setInterval(refreshToken, time);
 		}
 	}
+	console.log('login');
 	xmlrpc(url, 'accounts.clientLogin', [loginParam], loginSuccess, loginError);
 }
 
 function portRequestCategoryAjax(port) {
 	var params = {
-		client_type : "web3",
+		client_type : 'web3',
 		api_version : 3,
 		token : token
 	};
@@ -152,15 +153,15 @@ function getTab(callback, direction) {
 
 function hideContentVeil(tab) {
 	chrome.tabs.sendRequest(tab.id, {
-		name : "preview",
-		op : "clear"
+		name : 'preview',
+		op : 'clear'
 	});
 }
 
 function bindKeyDownHandler(tab, direction) {
 	chrome.tabs.sendRequest(tab.id, {
-		name : "preview",
-		op : "keydown",
+		name : 'preview',
+		op : 'keydown',
 		opCmd : direction
 	});
 }
@@ -174,45 +175,46 @@ function wizExecuteSave(docInfo) {
 		  comment = docInfo.comment, 
 		  body = docInfo.params;
 		  
-	if (comment && comment.trim() != "") {
-		body = comment + "<hr>" + body;
+	if (comment && comment.trim() != '') {
+		body = comment + '<hr>' + body;
 	}
 	
 	if (!category) {
-		category = "/My Notes/";
+		category = '/My Notes/';
 	}
 	
-	var requestData = "title=" + encodeURIComponent(title).replace(regexp,  "+") + "&token_guid=" + encodeURIComponent(token).replace(regexp,  "+") 
-						+ "&body=" + encodeURIComponent(body).replace(regexp,  "+") + "&category=" + encodeURIComponent(category).replace(regexp,  "+");
+	var requestData = 'title=' + encodeURIComponent(title).replace(regexp,  '+') + '&token_guid=' + encodeURIComponent(token).replace(regexp,  '+') 
+						+ '&body=' + encodeURIComponent(body).replace(regexp,  '+') + '&category=' + encodeURIComponent(category).replace(regexp,  '+');
 
 	//发送给当前tab消息，显示剪辑结果					
-	chrome.tabs.sendMessage(tab.id, {name: "sync", info: docInfo});
+	chrome.tabs.sendMessage(tab.id, {name: 'sync', info: docInfo});
 	
 	var callbackSuccess = function(response) {
 		var json = JSON.parse(response);
 		if (json.return_code != 200) {
-			console.error("sendError : " + json.return_message);
+			console.error('sendError : ' + json.return_message);
 			docInfo.errorMsg = json.return_message;
 			
-			chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
+			chrome.tabs.sendMessage(tab.id, {name: 'error' , info: docInfo});
 			return;
 		}
-		console.log("success : saveDocument");
+		console.log('success : saveDocument');
 		
-		chrome.tabs.sendMessage(tab.id, {name: "saved" , info: docInfo});
+		chrome.tabs.sendMessage(tab.id, {name: 'saved' , info: docInfo});
 	}
 	
 	var callbackError = function(response) {
 			var errorJSON = JSON.parse(response);
 			docInfo.errorMsg = json.return_message;
 
-			chrome.tabs.sendMessage(tab.id, {name: "error" , info: docInfo});
+			chrome.tabs.sendMessage(tab.id, {name: 'error' , info: docInfo});
 
-			console.error("callback error : " + json.return_message);
+			console.error('callback error : ' + json.return_message);
 	}
+	console.log('post document info');
 	$.ajax({
-		type : "POST",
-		url : "http://service.wiz.cn/wizkm/a/web/post?",
+		type : 'POST',
+		url : 'http://service.wiz.cn/wizkm/a/web/post?',
 		data : requestData,
 		success : callbackSuccess,
 		error : callbackError
@@ -222,10 +224,10 @@ function wizExecuteSave(docInfo) {
 function wizSaveToWiz(tab, op) {
 	if (!op) {
 		//默认为文章
-		op = "article";
+		op = 'article';
 	}
 	chrome.tabs.sendRequest(tab.id, {
-		name : "preview",
+		name : 'preview',
 		op : op
 	}, sendTabRequestCallbackByBrowserAction);
 }
@@ -237,14 +239,14 @@ function sendTabRequestCallbackByBrowserAction(option) {
 	if (!option) {
 		//当前页面无法剪辑
 		chrome.extension.connect({
-			"name" : "PageClipFailure"
+			'name' : 'PageClipFailure'
 		});
 	}
 }
 
 function sendTabRequestCallbackByContextMenu(option) {
 	if (!option) {
-		var pageClipFailure = chrome.i18n.getMessage("pageClipFailure");
+		var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
 		alert(pageClipFailure);
 	}
 }
@@ -269,7 +271,7 @@ function isLogin() {
  *延长token时间
  */
 function refreshToken() {
-	var url = "http://service.wiz.cn/wizkm/xmlrpc";
+	var url = 'http://service.wiz.cn/wizkm/xmlrpc';
 	var params = {
 		client_type : 'web3',
 		api_version : 3,
@@ -278,7 +280,7 @@ function refreshToken() {
 	//暂时不对成功、失败做处理
 	var callbackSuccess = function(responseJSON) {}
 	var callbackError = function(response) {}
-	
+	console.log('refresh token start')
 	xmlrpc(url, 'accounts.keepAlive', [params], callbackSuccess, callbackError)
 }
 
@@ -286,10 +288,10 @@ function wizSavePageContextMenuClick(info, tab) {
 	if (isLogin()) {
 		info.title = tab.title;
 		chrome.tabs.sendRequest(tab.id, {
-			name : "preview",
-			op : "submit",
+			name : 'preview',
+			op : 'submit',
 			info : info,
-			type : "fullPage"
+			type : 'fullPage'
 		}, sendTabRequestCallbackByContextMenu);
 	}
 }
@@ -299,10 +301,10 @@ function wizSaveSelectionContextMenuClick(info, tab) {
 		info.params = info.selectionText;
 		info.title = tab.title;
 		chrome.tabs.sendRequest(tab.id, {
-			name : "preview",
-			op : "submit",
+			name : 'preview',
+			op : 'submit',
 			info : info,
-			type : "selection"
+			type : 'selection'
 		}, sendTabRequestCallbackByContextMenu);
 	}
 }
@@ -312,36 +314,36 @@ function wizSaveUrlContextMenuClick(info, tab) {
 		info.params = tab.url;
 		info.title = tab.title
 		chrome.tabs.sendRequest(tab.id, {
-			name : "preview",
-			op : "submit",
+			name : 'preview',
+			op : 'submit',
 			info : info,
-			type : "url"
+			type : 'url'
 		}, sendTabRequestCallbackByContextMenu);
 	}
 }
 
 function initContextMenus() {
-	var clipPageContext = chrome.i18n.getMessage("contextMenus_clipPage");
-	var clipSelectionContext = chrome.i18n.getMessage("contextMenus_clipSelection");
-	var clipUrlContext = chrome.i18n.getMessage("contextMenus_clipUrl");
-	var allowableUrls = ["http://*/*", "https://*/*"];
+	var clipPageContext = chrome.i18n.getMessage('contextMenus_clipPage');
+	var clipSelectionContext = chrome.i18n.getMessage('contextMenus_clipSelection');
+	var clipUrlContext = chrome.i18n.getMessage('contextMenus_clipUrl');
+	var allowableUrls = ['http://*/*', 'https://*/*'];
 	chrome.contextMenus.create({
-		"title" : clipPageContext,
-		"contexts" : ["page", "image"],
-		"documentUrlPatterns" : allowableUrls,
-		"onclick" : wizSavePageContextMenuClick
+		'title' : clipPageContext,
+		'contexts' : ['page', 'image'],
+		'documentUrlPatterns' : allowableUrls,
+		'onclick' : wizSavePageContextMenuClick
 	});
 	chrome.contextMenus.create({
-		"title" : clipSelectionContext,
-		"contexts" : ["selection"],
-		"documentUrlPatterns" : allowableUrls,
-		"onclick" : wizSaveSelectionContextMenuClick
+		'title' : clipSelectionContext,
+		'contexts' : ['selection'],
+		'documentUrlPatterns' : allowableUrls,
+		'onclick' : wizSaveSelectionContextMenuClick
 	});
 	chrome.contextMenus.create({
-		"title" : clipUrlContext,
-		"contexts" : ['all'],
-		"documentUrlPatterns" : allowableUrls,
-		"onclick" : wizSaveUrlContextMenuClick
+		'title' : clipUrlContext,
+		'contexts' : ['all'],
+		'documentUrlPatterns' : allowableUrls,
+		'onclick' : wizSaveUrlContextMenuClick
 	});
 }
 

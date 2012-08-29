@@ -2,20 +2,20 @@
  * @author rechie
  */
 'use strict';
-var notificationHeadline = "#notificationHeadline";
-var notificationDetails = "#notificationDetails";
-var successActions = "#successActions";
-var errorActions = "#errorActions";
-var successIcon = "#successIcon";
-var errorIcon = "#errorIcon";
-var activeIcon = "#activeIcon";
-var retryClipSpan = "#retryClip";
+var notificationHeadline = '#notificationHeadline';
+var notificationDetails = '#notificationDetails';
+var successActions = '#successActions';
+var errorActions = '#errorActions';
+var successIcon = '#successIcon';
+var errorIcon = '#errorIcon';
+var activeIcon = '#activeIcon';
+var retryClipSpan = '#retryClip';
 
-var clippingMsg = chrome.i18n.getMessage("clipResult_clipping");
-var syncMsg = chrome.i18n.getMessage("clipResult_sync");
-var successMsg = chrome.i18n.getMessage("clipResult_success");
-var errorMsg = chrome.i18n.getMessage("clipResult_error");
-var retryClipMsg = chrome.i18n.getMessage("retry_clip_button");
+var clippingMsg = chrome.i18n.getMessage('clipResult_clipping');
+var syncMsg = chrome.i18n.getMessage('clipResult_sync');
+var successMsg = chrome.i18n.getMessage('clipResult_success');
+var errorMsg = chrome.i18n.getMessage('clipResult_error');
+var retryClipMsg = chrome.i18n.getMessage('retry_clip_button');
 
 var info = null;
 
@@ -29,12 +29,12 @@ function clear() {
 function bindErrorAction() {
 	$(errorActions).show();
 	$(retryClipSpan).html(retryClipMsg);
-	$(retryClipSpan).unbind("click");
-	$(retryClipSpan).bind("click", retryButtonHandler);
+	$(retryClipSpan).unbind('click');
+	$(retryClipSpan).bind('click', retryButtonHandler);
 }
 
 function retryButtonHandler() {
-	chrome.extension.connect({"name" : "retryClip"}).postMessage(info);
+	chrome.extension.connect({'name' : 'retryClip'}).postMessage(info);
 	$(notificationDetails).hide();
 	$(errorActions).hide();
 }
@@ -68,14 +68,14 @@ function showClippingIcon() {
 }
 
 function showSuccess(info) {
-	var msg = successMsg + " : " + info.title;
+	var msg = successMsg + ' : ' + info.title;
 	$(notificationHeadline).html(msg);
 	showSuccessIcon();
 }
 
 function showError(info) {
 	this.info = info;
-	var msg = errorMsg + " : " + info.title;
+	var msg = errorMsg + ' : ' + info.title;
 	$(notificationHeadline).html(msg);
 	$(notificationDetails).html(info.errorMsg);
 	showErrorIcon();
@@ -83,13 +83,13 @@ function showError(info) {
 }
 
 function showSyncing(info) {
-	var msg = syncMsg + " : " + info.title;
+	var msg = syncMsg + ' : ' + info.title;
 	$(notificationHeadline).html(msg);
 	showActiveIcon();
 }
 
 function showClipping(info) {
-	var msg = clippingMsg + " : " + info.title;
+	var msg = clippingMsg + ' : ' + info.title;
 	$(notificationHeadline).html(msg);
 	showClippingIcon();
 
@@ -102,19 +102,20 @@ chrome.extension.onMessage.addListener(function(data, sender, sendResponse) {
 
 var switchNotificationMessageByCmd = function(cmd, info) {
 	console.log(info);
-	switch(cmd) {
-		case "clip" :
-			showClipping(info);
-			break;
-		case "sync" :
-			showSyncing(info);
-			break;
-		case "error" :
-			showError(info);
-			break;
-		case "saved" :
-			showSuccess(info);
-			break;
+	switch(cmd) 
+	{
+	case 'clip' :
+		showClipping(info);
+		break;
+	case 'sync' :
+		showSyncing(info);
+		break;
+	case 'error' :
+		showError(info);
+		break;
+	case 'saved' :
+		showSuccess(info);
+		break;
 	}
 }
 

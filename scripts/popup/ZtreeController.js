@@ -25,11 +25,11 @@ function ZtreeController() {
 	function zTreeOnClick(event, treeId, treeNode) {
 		var nodeLocation = treeNode.location,
 			displayLocation = treeNode.displayLocation;
-		$("#category_info").attr("location", nodeLocation);
+		$('#category_info').attr('location', nodeLocation);
 		PopupView.hideCategoryTreeAfterSelect(displayLocation, 500);
 
 		//把最后一次选择的文件夹保存起来，下次使用
-		localStorage["last-category"] = displayLocation + "*" + nodeLocation;
+		localStorage['last-category'] = displayLocation + '*' + nodeLocation;
 	}
 
 	/**
@@ -99,7 +99,7 @@ function ZtreeController() {
 	}
 
 	function initTree(id) {
-		$.fn.zTree.init($("#" + id), setting, zNodesObj);
+		$.fn.zTree.init($('#' + id), setting, zNodesObj);
 	}
 	this.initTree = initTree;
 	this.setNodes = setNodes;
@@ -107,19 +107,19 @@ function ZtreeController() {
 }
 
 var specialLocation = {
-	"My Notes" : chrome.i18n.getMessage("MyNotes"),
-	"My Mobiles" : chrome.i18n.getMessage("MyMobiles"),
-	"My Drafts" : chrome.i18n.getMessage("MyDrafts"),
-	"My Journals" : chrome.i18n.getMessage("MyJournals"),
-	"My Events" : chrome.i18n.getMessage("MyEvents"),
-	"My Contacts" : chrome.i18n.getMessage("MyContacts"),
-	"My Tasks" : chrome.i18n.getMessage("MyTasks"),
-	"Deleted Items" : chrome.i18n.getMessage("DeletedItems"),
-	"My Sticky Notes" : chrome.i18n.getMessage("MyStickyNotes"),
-	"Inbox" : chrome.i18n.getMessage("Inbox"),
-	"Completed" : chrome.i18n.getMessage("Completed"),
-	"My Photos" : chrome.i18n.getMessage("MyPhotos"),
-	"My Emails" : chrome.i18n.getMessage("MyEmails")
+	'My Notes' : chrome.i18n.getMessage('MyNotes'),
+	'My Mobiles' : chrome.i18n.getMessage('MyMobiles'),
+	'My Drafts' : chrome.i18n.getMessage('MyDrafts'),
+	'My Journals' : chrome.i18n.getMessage('MyJournals'),
+	'My Events' : chrome.i18n.getMessage('MyEvents'),
+	'My Contacts' : chrome.i18n.getMessage('MyContacts'),
+	'My Tasks' : chrome.i18n.getMessage('MyTasks'),
+	'Deleted Items' : chrome.i18n.getMessage('DeletedItems'),
+	'My Sticky Notes' : chrome.i18n.getMessage('MyStickyNotes'),
+	'Inbox' : chrome.i18n.getMessage('Inbox'),
+	'Completed' : chrome.i18n.getMessage('Completed'),
+	'My Photos' : chrome.i18n.getMessage('MyPhotos'),
+	'My Emails' : chrome.i18n.getMessage('MyEmails')
 }
 
 function changeSpecilaLoction(location) {
@@ -131,8 +131,8 @@ function changeSpecilaLoction(location) {
 			location = value;
 			return false;
 		}
-		if (index === 1 && location.indexOf("/") === 0) {
-			location = "/" + value + location.substr(key.length + 1);
+		if (index === 1 && location.indexOf('/') === 0) {
+			location = '/' + value + location.substr(key.length + 1);
 			return false;
 		}
 	});
