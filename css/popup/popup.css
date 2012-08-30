@@ -248,6 +248,8 @@ body.popup {
 	background-image: url(../../images/button-dropdown.png);
 	background-repeat: no-repeat;
 	background-position: 90% 55%;
+	min-width: 50px;
+	max-width: 90px;
 }
 
 .striped {
