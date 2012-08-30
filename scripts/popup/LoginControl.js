@@ -113,11 +113,11 @@ function LoginControl() {
 
 	}
 
-	function initLogoffLink() {
-		$('#create_aacount').html(chrome.i18n.getMessage('create_account_link')).bind('click', function(evt) {
+	function initCreateAccountLink() {
+		$('#create_acount').html(chrome.i18n.getMessage('create_account_link')).bind('click', function(evt) {
 			window.open('http://service.wiz.cn/wizkm/a/signup');
 		});
 	}
-	this.initLogoffLink = initLogoffLink;
+	this.initCreateAccountLink = initCreateAccountLink;
 	this.autoLogin = autoLogin;
 }

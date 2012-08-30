@@ -17,7 +17,7 @@ window.onload = function() {
 			var port = chrome.extension.connect({
 				name : 'initRequest'
 			});
-			port.onMessage.addListener(function(msg) {
+			port.onMessage.addListener(function (msg) {
 				if (msg == false) {
 					loginControl.autoLogin(cookies);
 				} else {
@@ -28,7 +28,7 @@ window.onload = function() {
 		} else {
 			PopupView.showLogin();
 			
-			loginControl.initLogoffLink();
+			loginControl.initCreateAccountLink();
 		}
 	}
 

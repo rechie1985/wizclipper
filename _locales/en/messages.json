@@ -1,75 +1,75 @@
 {
 	"actionName": {
-		"message": "Wiz Note Web Clipper"
+		"message": "WizNote Web Clipper"
 	},
 	"extName": {
-		"message": "Wiz Note Web Clipper"
+		"message": "WizNote Web Clipper"
 	},
 	"popup_wating": {
-		"message": "waiting page..."
+		"message": "Waiting page..."
 	},
 	"user_id_tip": {
-		"message": "account: "
+		"message": "Account: "
 	},
 	"user_id_help": {
 		"message": "(email or mobile)"
 	},
 	"userid_error": {
-		"message": "User name input error"
+		"message": "Invalid user name"
 	},
 	"password_tip": {
-		"message": "password: "
+		"message": "Password: "
 	},
 	"keep_password_tip": {
-		"message": "keep password"
+		"message": "Remember me"
 	},
 	"login_msg": {
-		"message": "   login   "
+		"message": "   Sign in   "
 	},
 	"note_title_tip": {
-		"message": "title: "
+		"message": "Title: "
 	},
 	"category_tip": {
-		"message": "category: "
+		"message": "Folder: "
 	},
 	"tag_tip": {
-		"message": "tag: "
+		"message": "Tags: "
 	},
 	"tag_input": {
-		"message": "input tag: "
+		"message": "Input tag: "
 	},
 	"note_submit": {
-		"message": "   commit   "
+		"message": "   Commit   "
 	},
 	"logining": {
-		"message": "logining"
+		"message": "Logining"
 	},
 	"article_save": {
-		"message": "save article"
+		"message": "Save Article"
 	},
 	"fullpage_save": {
-		"message": "save fullpage"
+		"message": "Save Full Page"
 	},
 	"select_save": {
-		"message": "save selected"
+		"message": "Save Selected"
 	},
 	"url_save": {
-		"message": "save url"
+		"message": "Save URL"
 	},
 	"network_wrong" : {
-		"message" : "The network is not available. Please try again after checking"
+		"message" : "Network is not available. Please try again after checking"
 	},
 	"add_tag" : {
-		"message" : "add tag"
+		"message" : "Add tag"
 	},
 	"comment_tip" : {
-		"message" : "comment: "
+		"message" : "Comment: "
 	},
 	"password_error" : {
-		"message" : "password error"
+		"message" : "Invalid Password"
 	},
 	"add_comment" : {
-		"message" : "add comment"
+		"message" : "Add comment"
 	},
 	"MyNotes": {
 		"message": "My Notes"
@@ -111,7 +111,7 @@
 		"message" : "My Emails"
 	},
 	"logout": {
-		"message" : "Log Out"
+		"message" : "Sign out"
 	},
 	"clipResult_clipping" : {
 		"message" : "Clipping"
@@ -138,13 +138,13 @@
 		"message" : "Clip URL"
 	},
 	"create_account_link": {
-		"message" : "Create Wiz Account"
+		"message" : "Create WizNote Account"
 	},
 	"pageClipFailure": {
 		"message" : "Can not clip this page"
 	},
 	"category_loading": {
-		"message" : "loading category,please wait"
+		"message" : "Loading category,please wait"
 	},
 	"retry_clip_button" : {
 		"message" : "Retry"

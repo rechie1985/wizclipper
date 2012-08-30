@@ -142,6 +142,9 @@ function portRequestCategoryAjax(port) {
 	xmlrpc(url, 'category.getAll', [params], callbackSuccess, callbackError);
 }
 
+/**
+ *获取当前页面的tab信息 
+ */
 function getTab(callback, direction) {
 	chrome.windows.getCurrent(function(win) {
 		chrome.tabs.getSelected(win.id, function(tab) {

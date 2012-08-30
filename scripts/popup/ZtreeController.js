@@ -39,7 +39,7 @@ function ZtreeController() {
 	function parseDate(obj) {
 		//用来存放 category-name的map
 		var categoryMap = new HashMap(),
-			array = obj.split('*'),
+			locationArray = obj.split('*'),
 			//数组下标
 			index = 0,
 			ztreeData = [],
@@ -58,7 +58,7 @@ function ZtreeController() {
 			//当前文件夹父节点的子节点数
 			childCount;
 
-		$.each(array, function (firstIndex, location) {
+		$.each(locationArray, function (firstIndex, location) {
 			tempLocation = '/';
 			locationLength = location.length;
 			//把头尾的空串去掉
@@ -122,6 +122,9 @@ var specialLocation = {
 	'My Emails' : chrome.i18n.getMessage('MyEmails')
 }
 
+/**
+ * 对特殊的文件夹处理，返回相应的显示名
+ */
 function changeSpecilaLoction(location) {
 	'use strict' ;
 	$.each(specialLocation, function (key, value) {
