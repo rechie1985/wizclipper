@@ -4,8 +4,10 @@
 var cookieUrl = 'http://service.wiz.cn/web',
 	cookieName = 'wiz-clip-auth',
 	cookieExpiredays = 14 * 24 * 60 * 60;
+
 function ClipPageControl() {
 	'use strict';
+
 	function initClipPageListener() {
 		$('body').bind('keyup', keyDownHandler);
 		$('#submit-type').change(changeSubmitTypehandler);
@@ -16,12 +18,13 @@ function ClipPageControl() {
 
 	function resizeCommentHeight(evt) {
 		$('#comment-info').animate({
-			height : '80px'
+			height: '80px'
 		}, 500);
 	}
 
 	//监听截取信息事件
 	chrome.extension.onConnect.addListener(messageListener);
+
 	function messageListener(port) {
 		var name = port.name;
 		switch (name) {
@@ -40,17 +43,17 @@ function ClipPageControl() {
 
 
 
-
 	/**
 	 *修改保存的类型
 	 * @param {Object} model
 	 */
+
 	function changeSubmitTypehandler(evt) {
 		var selectedOption = $('option:selected', '#submit-type'),
 			cmd = selectedOption.attr('id'),
 			port = chrome.extension.connect({
-			name : 'preview'
-		});
+				name: 'preview'
+			});
 		port.postMessage(cmd);
 
 		//改变页面显示
@@ -85,11 +88,12 @@ function ClipPageControl() {
 	/**
 	 * 加载当前页面的是否能智能截取、是否有选择的信息，并根据该信息显示
 	 */
+
 	function requestPageStatus() {
 		chrome.windows.getCurrent(function (win) {
 			chrome.tabs.getSelected(win.id, function (tab) {
 				chrome.tabs.sendMessage(tab.id, {
-					name : 'getInfo'
+					name: 'getInfo'
 				}, function (params) {
 					initSubmitGroup(params);
 				});
@@ -98,6 +102,8 @@ function ClipPageControl() {
 	}
 
 	//初始化剪辑页面信息
+
+
 	function initClipPageInfo(evt) {
 		initLogoutLink();
 		requestPageStatus();
@@ -123,7 +129,7 @@ function ClipPageControl() {
 	function cmdLogout() {
 		Cookie.removeCookies(cookieUrl, cookieName, function () {
 			chrome.extension.connect({
-				name : 'logout'
+				name: 'logout'
 			});
 		});
 		window.close();
@@ -132,6 +138,7 @@ function ClipPageControl() {
 	/**
 	 *加载标题
 	 */
+
 	function requestTitle() {
 		chrome.windows.getCurrent(function (win) {
 			chrome.tabs.getSelected(win.id, function (tab) {
@@ -153,28 +160,32 @@ function ClipPageControl() {
 	/**
 	 * 加载并显示默认文件夹---上次选择的文件夹
 	 */
+
 	function initDefaultCategory() {
 		var lastCategory = localStorage['last-category'];
 		if (lastCategory) {
-			var array = lastCategory.split('*'), displayName = array[0], location = array[1];
+			var array = lastCategory.split('*'),
+				displayName = array[0],
+				location = array[1];
 			$('#category_info').html(displayName).attr('location', location);
 		}
 	}
 
 	/**
-	 *加载中 
+	 *加载中
 	 */
-	function showCategoryLoading() {
-		var visible = getCategoryLoadingStatus();
-		if(visible) {
+
+	function changeCategoryLoadingStatus() {
+		var visible = isCategoryLoading();
+		if (visible) {
 			PopupView.hideCategoryLoading();
 		} else {
 			var categoryLoadingMsg = chrome.i18n.getMessage('category_loading');
 			PopupView.showCategoryLoading(categoryLoadingMsg);
 		}
 	}
-	
-	function getCategoryLoadingStatus() {
+
+	function isCategoryLoading() {
 		var visible = $('#category_loading').is(':visible');
 		return visible;
 	}
@@ -182,14 +193,15 @@ function ClipPageControl() {
 	 *对目录信息进行处理
 	 * @param {Object} categoryStr
 	 */
+
 	function parseWizCategory(categoryStr) {
 
 		initZtree();
 		var visible = getCategoryLoadingStatus();
-		if(visible) {
+		if (visible) {
 			//用户已经点击展开文件夹树，此时，需要直接显示文件夹树即可
 			PopupView.showCategoryTreeFromLoading(500);
-		} 
+		}
 		$('#category_info').unbind('click');
 		$('#category_info').click(switchCategoryTreeVisible);
 	}
@@ -204,6 +216,7 @@ function ClipPageControl() {
 	/**
 	 *显示树
 	 */
+
 	function switchCategoryTreeVisible() {
 		var visible = $('#ztree_container').is(':visible');
 		if (visible) {
@@ -216,12 +229,13 @@ function ClipPageControl() {
 	/**
 	 *加载文件夹信息
 	 */
+
 	function requestCategory() {
-		$('#category_info').bind('click', showCategoryLoading);
+		$('#category_info').bind('click', changeCategoryLoadingStatus);
 		var port = chrome.extension.connect({
-			name : 'requestCategory'
+			name: 'requestCategory'
 		});
-		port.onMessage.addListener(function(msg) {
+		port.onMessage.addListener(function (msg) {
 			//错误处理
 			var value = $('#wiz_note_category').val();
 			localStorage['category'] = msg.categories;
@@ -232,19 +246,21 @@ function ClipPageControl() {
 
 	function requestToken() {
 		var port = chrome.extension.connect({
-			name : 'requestToken'
+			name: 'requestToken'
 		});
-		port.onMessage.addListener(function(token) {
+		port.onMessage.addListener(function (token) {
 			initUserLink(token);
 		});
 	}
 
 
 	function keyDownHandler(evt) {
-		var target = evt.target;
-		var skipTypes = ['input', 'select', 'textarea'];
-		for (var i = 0; i < skipTypes.length; i++) {
-			if (evt.srcElement.nodeName.toLowerCase() == skipTypes[i]) {
+		var target = evt.target,
+			skipTypes = ['input', 'select', 'textarea'],
+			skipIndex;
+
+		for (skipIndex = 0; skipIndex < skipTypes.length; skipIndex++) {
+			if (evt.srcElement.nodeName.toLowerCase() == skipTypes[skipIndex]) {
 				return;
 			}
 		}
@@ -255,35 +271,41 @@ function ClipPageControl() {
 		}
 
 		var opCmd = getNudgeOp(keycode, evt);
-		var info = { 
-			direction : opCmd 
+		var info = {
+			direction: opCmd
 		};
 		chrome.extension.connect({
-			name : 'onkeydown'
+			name: 'onkeydown'
 		}).postMessage(info);
 	}
 
 	function getNudgeOp(key, evt) {
-		var returnValue = null;
-		var KEY_ALT = 18, KEY_CTRL = 17;
-		var keyMap = {
-			27 : 'cancle',
-			38 : 'expand', // up
-			40 : 'shrink', // down
-			37 : 'left',
-			39 : 'right',
+		var returnValue = null,
+			KEY_ALT = 18,
+			KEY_CTRL = 17,
+			keyMap = {
+			27: 'cancle',
+			38: 'expand',
+			// up
+			40: 'shrink',
+			// down
+			37: 'left',
+			39: 'right',
 
-			56 : 'topexpand', // alt + up
-			58 : 'topshrink', // alt + down
-
-			57 : 'bottomexpand', // ctrl + down
-			55 : 'bottomshrink', // ctrl + up
-		}
+			56: 'topexpand',
+			// alt + up
+			58: 'topshrink',
+			// alt + down
+			57: 'bottomexpand',
+			// ctrl + down
+			55: 'bottomshrink'
+			// ctrl + up
+		};
 
 		if (keyMap[key]) {
-			if (evt && evt.altKey == true) {// 18
+			if (evt && evt.altKey == true) { // 18
 				returnValue = keyMap[key + KEY_ALT];
-			} else if (evt && evt.ctrlKey == true) {// 17
+			} else if (evt && evt.ctrlKey == true) { // 17
 				returnValue = keyMap[key + KEY_CTRL];
 			} else {
 				returnValue = keyMap[key];
@@ -296,28 +318,29 @@ function ClipPageControl() {
 	 * 保存文档处理
 	 * @param {Event} e
 	 */
+
 	function noteSubmit(evt) {
 		requestSubmit();
 	}
 
 	function requestSubmit() {
-		var type = $('option:selected', '#submit-type').attr('id');
-		var title = $('#wiz_note_title').val();
-		var category = $('#category_info').attr('location');
-		var comment = $('#comment-info').val();
-		var docInfo = {
-			title : title,
-			category : category,
-			comment : comment
-		};
-		chrome.windows.getCurrent(function(win) {
-			chrome.tabs.getSelected(win.id, function(tab) {
+		var type = $('option:selected', '#submit-type').attr('id'),
+			title = $('#wiz_note_title').val(),
+			category = $('#category_info').attr('location'),
+			comment = $('#comment-info').val(),
+			docInfo = {
+				title: title,
+				category: category,
+				comment: comment
+			};
+		chrome.windows.getCurrent(function (win) {
+			chrome.tabs.getSelected(win.id, function (tab) {
 				chrome.tabs.sendRequest(tab.id, {
-					name : 'preview',
-					op : 'submit',
-					info : docInfo,
-					type : type
-				}, function(params) {
+					name: 'preview',
+					op: 'submit',
+					info: docInfo,
+					type: type
+				}, function (params) {
 					window.close();
 				});
 			});
@@ -326,7 +349,7 @@ function ClipPageControl() {
 
 	function initUserLink(token) {
 		var user_id = localStorage['wiz-clip-auth'];
-		$('#header_username').html('(' + user_id + ')').bind('click', function(evt) {
+		$('#header_username').html('(' + user_id + ')').bind('click', function (evt) {
 			window.open(mainUrl + '/?t=' + token);
 		});
 	}

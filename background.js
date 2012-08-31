@@ -349,6 +349,5 @@ function initContextMenus() {
 		'onclick' : wizSaveUrlContextMenuClick
 	});
 }
-
 chrome.extension.onConnect.addListener(onConnectListener);
 initContextMenus();
