@@ -17,8 +17,6 @@ var successMsg = chrome.i18n.getMessage('clipResult_success');
 var errorMsg = chrome.i18n.getMessage('clipResult_error');
 var retryClipMsg = chrome.i18n.getMessage('retry_clip_button');
 
-var info = null;
-
 function clear() {
 	$(notificationHeadline).empty();
 	$(notificationDetails).empty();
@@ -26,14 +24,15 @@ function clear() {
 	$(errorActions).hide();
 }
 
-function bindErrorAction() {
+function bindErrorAction(info) {
 	$(errorActions).show();
 	$(retryClipSpan).html(retryClipMsg);
 	$(retryClipSpan).unbind('click');
-	$(retryClipSpan).bind('click', retryButtonHandler);
+	$(retryClipSpan).bind('click', function () {retryButtonHandler(info)});
 }
 
-function retryButtonHandler() {
+function retryButtonHandler(info) {
+	console.log('Retry Save')
 	chrome.extension.connect({'name' : 'retryClip'}).postMessage(info);
 	$(notificationDetails).hide();
 	$(errorActions).hide();
@@ -74,7 +73,6 @@ function showSuccess(info) {
 }
 
 function showError(info) {
-	this.info = info;
 	var msg = errorMsg + ' : ' + info.title;
 	$(notificationHeadline).html(msg);
 	$(notificationDetails).html(info.errorMsg);
