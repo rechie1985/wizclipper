@@ -9,6 +9,7 @@ function ClipPageControl() {
 	'use strict';
 
 	function initClipPageListener() {
+		PopupView.hideCreateDiv();
 		$('body').bind('keyup', keyDownHandler);
 		$('#submit-type').change(changeSubmitTypehandler);
 		$('#note_submit').click(noteSubmit);
@@ -197,7 +198,7 @@ function ClipPageControl() {
 	function parseWizCategory(categoryStr) {
 
 		initZtree();
-		var visible = getCategoryLoadingStatus();
+		var visible = isCategoryLoading();
 		if (visible) {
 			//用户已经点击展开文件夹树，此时，需要直接显示文件夹树即可
 			PopupView.showCategoryTreeFromLoading(500);

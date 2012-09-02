@@ -49,5 +49,8 @@ var PopupView = {
 	{
 		$("#category_info").html(display);
 		$("#ztree_container").hide(delay_ms);
+	},
+	hideCreateDiv : function() {
+		$('#waiting_div').hide();
 	}
 }
