@@ -2,7 +2,7 @@
  * @author rechie
  */
 function ZtreeController() {
-	'use strict';
+	// 'use strict';
 	var setting = {
 		view : {
 			dblClickExpand : false,

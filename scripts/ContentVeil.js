@@ -1,4 +1,5 @@
-function ContentVeil() {"use strict";
+function Wiz_ContentVeil() {
+	//"use strict";
 
 	// @TODO: save() and restore() aren't properly used here, so if we do things like add transforms in founctions,
 	// we probably break other functions' notion of how to render things.

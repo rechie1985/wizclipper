@@ -1,4 +1,5 @@
-function PageInfo() {"use strict";
+function Wiz_PageInfo() {
+	//"use strict";
 
 	// This is a map of hostnames (for hostnames that begin with 'www.', the 'www.' will be stripped off first, so don't
 	// include it in your lookup string) to CSS selectors. When we try and locate an article in a page, we'll see if we
@@ -324,7 +325,7 @@ function PageInfo() {"use strict";
 	Object.preventExtensions(this);
 }
 
-Object.preventExtensions(PageInfo);
+Object.preventExtensions(Wiz_PageInfo);
 
-var pageInfo = new PageInfo();
+var wiz_pageInfo = new Wiz_PageInfo();
 

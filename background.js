@@ -22,13 +22,13 @@ function onConnectListener(port) {
 			if (info == null || info.title == null || info.params == null || info.title.toString() === '' || info.params.toString() === '') {
 				return;
 			}
-			wizExecuteSave(info);
+			wizPostDocument(info);
 		});
 		break;
 	case 'checkLogin':
 		port.onMessage.addListener(function(msg) {
 			if (token != null) {
-				getTab(wizSaveToWiz);
+				getTab(wizRequestPreview);
 				port.postMessage(true);
 			} else {
 				port.postMessage(false);
@@ -39,7 +39,7 @@ function onConnectListener(port) {
 		//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
 		//TODO 返回是否可获取文章、是否可获取选择信息
 		if (token) {
-			getTab(wizSaveToWiz);
+			getTab(wizRequestPreview);
 			port.postMessage(token);
 		} else {
 			port.postMessage(false);
@@ -65,7 +65,7 @@ function onConnectListener(port) {
 			if (!msg) {
 				return;
 			}
-			getTab(wizSaveToWiz, msg);
+			getTab(wizRequestPreview, msg);
 		});
 		break;
 	case 'requestToken':
@@ -90,7 +90,7 @@ function retryClip(port) {
 	Cookie.getCookies(url, 'wiz-clip-auth', loginByCookies, false);
 	port.onMessage.addListener(function(msg) {
 		if (msg && msg.title && msg.params) {
-			wizExecuteSave(msg);
+			wizPostDocument(msg);
 		}
 	});
 }
@@ -114,7 +114,7 @@ function portLoginAjax(loginParam, port) {
 		token = responseJSON.token;
 		if (port) {
 			port.postMessage(true);
-			getTab(wizSaveToWiz);
+			getTab(wizRequestPreview);
 			var time = 4 * 60 * 1000;
 			setInterval(refreshToken, time);
 		}
@@ -169,7 +169,7 @@ function bindKeyDownHandler(tab, direction) {
 	});
 }
 
-function wizExecuteSave(docInfo) {
+function wizPostDocument(docInfo) {
 
 	//整理数据
 	var regexp = /%20/g, 
@@ -224,7 +224,7 @@ function wizExecuteSave(docInfo) {
 	});
 }
 
-function wizSaveToWiz(tab, op) {
+function wizRequestPreview(tab, op) {
 	if (!op) {
 		//默认为文章
 		op = 'article';
@@ -255,12 +255,6 @@ function sendTabRequestCallbackByContextMenu(option) {
 }
 
 var authenticationErrorMsg = chrome.i18n.getMessage('AuthenticationFailure');
-function wizOnSaveToWizContextMenuClick(info, tab) {
-	if (isLogin()) {
-		wizSaveToWiz(tab);
-	}
-}
-
 function isLogin() {
 	if (token == null) {
 		alert(authenticationErrorMsg);

@@ -1,5 +1,5 @@
-function PreviewController() {
-  "use strict";
+function  PreviewController() {
+  // "use strict";
 
   var reqName = "preview";
 
@@ -70,10 +70,6 @@ function PreviewController() {
   // Force people to add properties and methods for this object here, and not arbitrarily from other code.
   Object.preventExtensions(this);
 };
-
-// register shortcut keys
-// document.querySelector("body").addEventListener("keydown", nudge);
-
 function nudge(evt) {
     // We won't do anything unless we're pretty sure we're correct.
     if (!evt) return;
@@ -88,34 +84,7 @@ function nudge(evt) {
     }
 
     var key = evt.keyCode;
-    contentPreview.nudgePreview(getNudgeOp(key, evt));
-    // Note: the keys in here are all coerced to strings!
-    // var KEY_ALT = 18, KEY_CTRL = 17;
-    // var keyMap = {
-      // 13: "enter",
-      // 27: "cancle",
-      // 38: "expand", // up
-      // 40: "shrink", // down
-      // 37: "left",
-      // 39: "right",
-// 
-      // 56: "topexpand", // alt + up
-      // 58: "topshrink", // alt + down
-// 
-      // 57: "bottomexpand", // ctrl + down
-      // 55: "bottomshrink", // ctrl + up
-    // }
-// 
-    // if (keyMap[key]) {
-      // if (evt.altKey == true) // 18
-          // contentPreview.nudgePreview(keyMap[key+KEY_ALT]);
-      // else if (evt.ctrlKey == true) // 17
-          // contentPreview.nudgePreview(keyMap[key+KEY_CTRL]);
-      // else
-          // contentPreview.nudgePreview(keyMap[key]);
-      // //previewController.nudgePreview(null, keyMap[key]);
-      // //chrome.extension.sendRequest({name: "preview", op: "clear"});
-    // }
+    wiz_contentPreview.nudgePreview(getNudgeOp(key, evt));
 }
 
 function getNudgeOp(key, evt) {
@@ -137,17 +106,15 @@ function getNudgeOp(key, evt) {
 
     if (keyMap[key]) {
       if (evt && evt.altKey == true) { // 18         
-      	 // contentPreview.nudgePreview(keyMap[key+KEY_ALT]);
+      	 // wiz_contentPreview.nudgePreview(keyMap[key+KEY_ALT]);
       	 returnValue = keyMap[key+KEY_ALT];
       } else if (evt && evt.ctrlKey == true) {// 17
-      	 // contentPreview.nudgePreview(keyMap[key+KEY_CTRL]);
+      	 // wiz_contentPreview.nudgePreview(keyMap[key+KEY_CTRL]);
       	 returnValue = keyMap[key+KEY_CTRL];
       } else {
-      	 // contentPreview.nudgePreview(keyMap[key]);
+      	 // wiz_contentPreview.nudgePreview(keyMap[key]);
       	 returnValue = keyMap[key];
       }
       return returnValue;
-      //previewController.nudgePreview(null, keyMap[key]);
-      //chrome.extension.sendRequest({name: "preview", op: "clear"});
     }
 }

@@ -1,6 +1,7 @@
-function ContentPreview() {"use strict";
+function Wiz_ContentPreview() {
+	//"use strict";
 
-	var contentVeil = new ContentVeil();
+	var contentVeil = new Wiz_ContentVeil();
 
 	// Stores a reference to the last element that we used as a preview.
 	var previewElement = null;
@@ -123,14 +124,14 @@ function ContentPreview() {"use strict";
 		clear();
 		previewElement = null;
 
-		if ( typeof pageInfo !== undefined) {
-			previewElement = pageInfo.getDefaultArticle();
+		if ( typeof wiz_pageInfo !== undefined) {
+			previewElement = wiz_pageInfo.getDefaultArticle();
 		} else {
-			console.warn("Couldn't find a 'pageInfo' object.");
+			console.warn("Couldn't find a 'wiz_pageInfo' object.");
 		}
 
 		if (previewElement) {
-			var selectionFrame = pageInfo.getSelectionFrame();
+			var selectionFrame = wiz_pageInfo.getSelectionFrame();
 			if (selectionFrame) {
 
 				var rect = {
@@ -434,7 +435,7 @@ function ContentPreview() {"use strict";
 				break;
 
 			case "enter":
-				launchClientClipper();
+				wiz_clipper.launchClientClipperArticle();
 				clear();
 				break;
 
@@ -576,12 +577,12 @@ function ContentPreview() {"use strict";
 
 	function previewSelection() {
 
-		var selection = pageInfo.getSelection();
+		var selection = wiz_pageInfo.getSelection();
 		contentVeil.reset();
 
 		// If our selection is in a frame or iframe, we'll compute an offset relative to that, so we need to adjust it by
 		// the offset of the frame.
-		var selectionFrame = pageInfo.getSelectionFrame();
+		var selectionFrame = wiz_pageInfo.getSelectionFrame();
 		var frameRect = null;
 		if (selectionFrame) {
 			frameRect = selectionFrame.getBoundingClientRect();
@@ -629,7 +630,7 @@ function ContentPreview() {"use strict";
 				nudgePreview(request.args.direction);
 				break;
 			case "article":
-				if (pageInfo.getSelection()) {
+				if (wiz_pageInfo.getSelection()) {
 					console.log("preview selection active");
 					previewSelection();
 				} else {
@@ -667,13 +668,17 @@ function ContentPreview() {"use strict";
 	}
 
 	function noteSubmitByType(type, info) {
+		if (typeof wiz_clipper === 'undefined') {
+			console.warn("Could not found wiz_clipper object!")
+			return ;
+		}
 		switch(type) {
 			case "article" :
-				launchClientClipper(info);
+				wiz_clipper.launchClientClipper(info);
 				clear();
 				break;
 			case "fullPage" :
-				launchClientClipperFullPage(info);
+				wiz_clipper.launchClientClipperFullPage(info);
 				clear();
 				break;
 			case "selection" :
@@ -681,11 +686,11 @@ function ContentPreview() {"use strict";
 					// launchClientClipper(info);
 					// break;
 				// }
-				launchClientClipperSelection(info);
+				wiz_clipper.launchClientClipperSelection(info);
 				clear();
 				break;
 			case "url" :
-				launchClientClipperUrl(info);
+				wiz_clipper.launchClientClipperUrl(info);
 				clear();
 				break;
 		}
@@ -702,4 +707,4 @@ function ContentPreview() {"use strict";
 	Object.preventExtensions(this);
 }
 
-var contentPreview = new ContentPreview();
+var wiz_contentPreview = new Wiz_ContentPreview();

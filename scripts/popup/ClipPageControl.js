@@ -6,7 +6,7 @@ var cookieUrl = 'http://service.wiz.cn/web',
 	cookieExpiredays = 14 * 24 * 60 * 60;
 
 function ClipPageControl() {
-	'use strict';
+	// 'use strict';
 
 	function initClipPageListener() {
 		PopupView.hideCreateDiv();
