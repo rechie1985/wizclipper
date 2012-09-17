@@ -326,12 +326,12 @@ function refreshToken() {
 	xmlrpc(url, 'accounts.keepAlive', [params], callbackSuccess, callbackError)
 }
 
-function wizSaveNativeContextMenuClick(info, tab) {
-	var wizClient = this.getNativeClient();
+// function wizSaveNativeContextMenuClick(info, tab) {
+// 	var wizClient = this.getNativeClient();
 	// console.log(info);
 	// console.log(tab);
-	saveToNative(tab.title);
-}
+// 	saveToNative(tab.title);
+// }
 
 function wizSavePageContextMenuClick(info, tab) {
 	if (isLogin()) {
