@@ -93,12 +93,7 @@ function showClipping(info) {
 
 }
 
-chrome.extension.onMessage.addListener(function(data, sender, sendResponse) {
-	var cmd = data.name;
-	switchNotificationMessageByCmd(cmd, data.info);
-});
-
-var switchNotificationMessageByCmd = function(cmd, info) {
+function switchNotificationMessageByCmd (cmd, info) {
 	console.log(info);
 	switch(cmd) 
 	{
@@ -116,4 +111,13 @@ var switchNotificationMessageByCmd = function(cmd, info) {
 		break;
 	}
 }
+
+chrome.extension.onMessage.addListener(function(data, sender, sendResponse) {
+	var cmd = data.name;
+	try {
+		switchNotificationMessageByCmd(cmd, data.info);
+	} catch (err) {
+		console.error('ClipResult.switchNotificationMessageByCmd() Error : ' + err);
+	}
+});
 

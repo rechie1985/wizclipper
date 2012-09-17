@@ -74,7 +74,6 @@ var xmlrpc = function(server, method, params, callback, callErr, callFinal) {
 };
 
 xmlrpc.writeCall = function(method, params) {
-	console.log(params);
     out = "<?xml version=\"1.0\"?>\n";
     out += "<methodCall>\n";
     out += "<methodName>"+ method + "</methodName>\n";
@@ -90,7 +89,6 @@ xmlrpc.writeCall = function(method, params) {
     }
 
     out += "</methodCall>\n";
-    console.log(out);
     return out;
 };
 
