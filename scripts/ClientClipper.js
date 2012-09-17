@@ -226,7 +226,7 @@ var ClientClipper = function () {
 		return null;
 	}
 
-	function wiz_getSelected(win) {
+	function wiz_getSelected(win, isNative) {
 		var params = "";
 		if ( typeof (win) == "object") {
 			var source_url = wiz_base64Encode(win.location.href);
@@ -251,9 +251,12 @@ var ClientClipper = function () {
 				var source_html = winsel.innerHTML;
 				if (source_html == null)
 					source_html = "";
-				//source_html = wiz_base64Encode(source_html); ;
-				//params += "param-surl='" + frame_url + "' ";
-				//params += "param-shtml='" + source_html + "' ";
+				if (isNative === true) {
+					//如果是调用本地客户端保存，调用base64处理
+					source_html = wiz_base64Encode(source_html);
+					params += "param-surl='" + frame_url + "' ";
+					params += "param-shtml='" + source_html + "' ";
+				}
 				params = source_html;
 			}
 		}
@@ -264,7 +267,7 @@ var ClientClipper = function () {
 		var params = wiz_collectAllFrames(window);
 		//params = params + wiz_getSelected(window);
 
-		params = wiz_getSelected(window);
+		params = wiz_getSelected(window, false);
 		info.params = params;
 		requestSaveDoc(info);
 	}
@@ -287,6 +290,20 @@ var ClientClipper = function () {
 		requestSaveDoc(info);
 	}
 
+	/**
+	 * 请求调用本地客户端保存
+	 * @param  {[type]} info [description]
+	 * @return {[type]}      [description]
+	 */
+	function launchNativeClipper(info) {
+		var isNative = true;
+		var params = wiz_collectAllFrames(window);
+		params = params + wiz_getSelected(window, isNative);
+		info.isNative = isNative;
+		info.params = params;
+		requestSaveDoc(info, isNative);
+	}
+
 	function getFullpageHTML() {
 		var base = "<base href='" + window.location.protocol + "//" + window.location.host + "'/>";
 		var page_content = document.getElementsByTagName("html")[0];
@@ -307,18 +324,22 @@ var ClientClipper = function () {
 			return "";
 	}
 
-	function requestSaveDoc(info) {
-		clipResult.startClip();
+	function requestSaveDoc(info, isNative) {
+		if (!isNative) {
+			alert(isNative);
+			clipResult.startClip();
+		}
 		setTimeout(function(){
 			chrome.extension.connect({"name" : "saveDocument"}).postMessage(info);
 		}, 200);
-
 	}
+
 
 	this.launchClientClipperArticle = launchClientClipperArticle;
 	this.launchClientClipperUrl = launchClientClipperUrl;
 	this.launchClientClipperSelection = launchClientClipperSelection;
 	this.launchClientClipperFullPage = launchClientClipperFullPage;
+	this.launchNativeClipper = launchNativeClipper;
 }
 
 var wiz_clipper = new ClientClipper();

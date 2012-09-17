@@ -148,5 +148,11 @@
 	},
 	"retry_clip_button" : {
 		"message" : "\u91cd\u8a66"
+	},
+	"native_check_tip" : {
+		"message" : "\u4fdd\u5b58\u5230\u672c\u5730"
+	},
+	"native_save" : {
+		"message" : "\u66f4\u591a"
 	}
 }

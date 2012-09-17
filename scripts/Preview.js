@@ -674,7 +674,7 @@ function Wiz_ContentPreview() {
 		}
 		switch(type) {
 			case "article" :
-				wiz_clipper.launchClientClipper(info);
+				wiz_clipper.launchClientClipperArticle(info);
 				clear();
 				break;
 			case "fullPage" :
@@ -693,6 +693,12 @@ function Wiz_ContentPreview() {
 				wiz_clipper.launchClientClipperUrl(info);
 				clear();
 				break;
+			case "native": 
+				wiz_clipper.launchNativeClipper(info);
+				clear();
+				break;
+			default : 
+				//TODO
 		}
 	}
 

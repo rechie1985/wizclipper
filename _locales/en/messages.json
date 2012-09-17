@@ -148,6 +148,12 @@
 	},
 	"retry_clip_button" : {
 		"message" : "Retry"
+	},
+	"native_check_tip" : {
+		"message" : "Save to PC Client"
+	},
+	"native_save" : {
+		"message" : "More"
 	}
 }
 

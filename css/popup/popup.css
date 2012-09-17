@@ -290,3 +290,8 @@ body.popup {
 	cursor: pointer;
 	border-bottom: 1px solid #0F8EEB;
 }
+
+.native-checkd {
+	padding: 20px;
+	float: left;
+}

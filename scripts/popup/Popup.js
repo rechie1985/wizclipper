@@ -51,9 +51,12 @@ window.onload = function() {
 		$('#fullPage').html(chrome.i18n.getMessage('fullpage_save'));
 		$('#selection').html(chrome.i18n.getMessage('select_save'));
 		$('#url').html(chrome.i18n.getMessage('url_save'));
+		$('#native').html(chrome.i18n.getMessage('native_save'));
 		//comment area
 		$('#comment_tip').html(chrome.i18n.getMessage('comment_tip'));
 		$('#comment-info').attr('placeholder', chrome.i18n.getMessage('add_comment'));
+
+		$('#native_check_tip').html(chrome.i18n.getMessage('native_check_tip'));
 
 		//默认文件夹
 		$('#category_info').html('/' + chrome.i18n.getMessage('MyNotes') + '/').attr('location', '/My Notes/');

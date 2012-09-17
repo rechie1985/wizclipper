@@ -22,9 +22,21 @@ function onConnectListener(port) {
 			if (info == null || info.title == null || info.params == null || info.title.toString() === '' || info.params.toString() === '') {
 				return;
 			}
-			wizPostDocument(info);
+			if (info.isNative === true) {
+				saveToNative(info);
+			} else {
+				wizPostDocument(info);
+			}
 		});
 		break;
+	case 'saveNative': 
+		port.onMessage.addListener(function(info) {
+			if (info && info.params && info.params.length > 0) {
+				saveToNative(info);
+			} else {
+				console.log('saveNative Error');
+			}
+		});
 	case 'checkLogin':
 		port.onMessage.addListener(function(msg) {
 			if (token != null) {
@@ -265,6 +277,33 @@ function isLogin() {
 }
 
 /**
+ * 获取本地客户端信息
+ * @return {[本地客户端]} []
+ */
+function getNativeClient () {
+	var nativeClient = document.getElementById('wiz-local-app'),
+		version = nativeClient.Version;
+	if (typeof version === 'undefined') {
+		return null;
+	}
+	return nativeClient;
+}
+
+function saveToNative(info) {
+	var wizClient = this.getNativeClient(),
+		params = info.params;
+	try {
+		alert(params);
+		wizClient.Execute(params);
+	} catch (err) {
+		console.warn('background saveToNative Error : ' + err);
+	}
+	console.log('Saved To Native Client');
+}
+
+
+
+/**
  *延长token时间
  */
 function refreshToken() {
@@ -279,6 +318,13 @@ function refreshToken() {
 	var callbackError = function(response) {}
 	console.log('refresh token start')
 	xmlrpc(url, 'accounts.keepAlive', [params], callbackSuccess, callbackError)
+}
+
+function wizSaveNativeContextMenuClick(info, tab) {
+	var wizClient = this.getNativeClient();
+	// console.log(info);
+	// console.log(tab);
+	saveToNative(tab.title);
 }
 
 function wizSavePageContextMenuClick(info, tab) {
@@ -320,10 +366,11 @@ function wizSaveUrlContextMenuClick(info, tab) {
 }
 
 function initContextMenus() {
-	var clipPageContext = chrome.i18n.getMessage('contextMenus_clipPage');
-	var clipSelectionContext = chrome.i18n.getMessage('contextMenus_clipSelection');
-	var clipUrlContext = chrome.i18n.getMessage('contextMenus_clipUrl');
-	var allowableUrls = ['http://*/*', 'https://*/*'];
+	var clipPageContext = chrome.i18n.getMessage('contextMenus_clipPage'),
+		clipSelectionContext = chrome.i18n.getMessage('contextMenus_clipSelection'),
+		clipUrlContext = chrome.i18n.getMessage('contextMenus_clipUrl'),
+		allowableUrls = ['http://*/*', 'https://*/*'],
+		hasNative = this.getNativeClient();
 	chrome.contextMenus.create({
 		'title' : clipPageContext,
 		'contexts' : ['page', 'image'],
@@ -342,6 +389,12 @@ function initContextMenus() {
 		'documentUrlPatterns' : allowableUrls,
 		'onclick' : wizSaveUrlContextMenuClick
 	});
+	// if (hasNative !== null) {
+	// 	chrome.contextMenus.create({
+	// 		'title': '保存到本地',
+	// 		'onclick': wizSaveNativeContextMenuClick
+	// 	});
+	// }
 }
 chrome.extension.onConnect.addListener(onConnectListener);
 initContextMenus();

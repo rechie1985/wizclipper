@@ -15,6 +15,17 @@ function ClipPageControl() {
 		$('#note_submit').click(noteSubmit);
 		$('#comment-info').focus(resizeCommentHeight);
 		$('#wiz_clip_detail').show(initClipPageInfo);
+		$('$native_check').click(nativeCheckBoxHandler);
+	}
+
+
+	function nativeCheckBoxHandler(evt) {
+		var checkedStatus = $(this).attr('checked');
+		if (checkedStatus === 'checked') {
+			this.nativeSave = true;
+		} else {
+			this.nativeSave = false;
+		}
 	}
 
 	function resizeCommentHeight(evt) {
@@ -313,6 +324,19 @@ function ClipPageControl() {
 			}
 			return returnValue;
 		}
+	}
+
+	/**
+	 * 获取本地客户端信息
+	 * @return {[type]} [description]
+	 */
+	function getNativeClient () {
+		var nativeClient = document.getElementById('wiz-local-app'),
+			version = nativeClient.Version;
+		if (typeof version === 'undefined') {
+			return null;
+		}
+		return nativeClient;
 	}
 
 	/**
