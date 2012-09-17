@@ -149,10 +149,13 @@
 	"retry_clip_button" : {
 		"message" : "Retry"
 	},
-	"native_check_tip" : {
+	"save_to_native" : {
 		"message" : "Save to PC Client"
 	},
-	"native_save" : {
+	"save_to_server" : {
+		"message" : "Save to Server"
+	},
+	"save_more" : {
 		"message" : "More"
 	}
 }

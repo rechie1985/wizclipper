@@ -61,6 +61,9 @@ var Base64 = {
 var ClientClipper = function () {
 
 	function wiz_base64Encode(str) {
+		if (!str || str.length < 1) {
+			return "";
+		}
 		var base64str = Base64.encode(str);
 		return base64str;
 	}
@@ -254,40 +257,78 @@ var ClientClipper = function () {
 				if (isNative === true) {
 					//如果是调用本地客户端保存，调用base64处理
 					source_html = wiz_base64Encode(source_html);
-					params += "param-surl='" + frame_url + "' ";
-					params += "param-shtml='" + source_html + "' ";
+					var localParams = params +  "param-surl='" + frame_url + "' ";
+					localParams += "param-shtml='" + source_html + "' ";
+					params = localParams;
+				} else {
+					var serverParams = source_html;
+					params = serverParams;
 				}
-				params = source_html;
 			}
 		}
 		return params;
 	}
 
+	var contentCmd = 'save_content',
+		fullpageCmd = 'save_all',
+		selectionCmd = 'save_sel',
+		urlCmd = 'save_url';
+
+
 	function launchClientClipperArticle(info) {
 		var params = wiz_collectAllFrames(window);
-		//params = params + wiz_getSelected(window);
-
-		params = wiz_getSelected(window, false);
+		if (info.isNative) {
+			params += wiz_getSelected(window, info.isNative);
+		} else {
+			params = wiz_getSelected(window, info.isNative);
+		}
 		info.params = params;
+		info.cmd = contentCmd;
 		requestSaveDoc(info);
 	}
 
 	function launchClientClipperFullPage(info) {
-		info.params = getFullpageHTML();
+		var body = getFullpageHTML();
+		if (info.isNative) {
+			var params = wiz_collectAllFrames(window) + formatParams(info.url, body);
+			info.params = params;
+		} else {
+			info.params = body;
+		}
+		info.cmd = fullpageCmd;
 		requestSaveDoc(info);
 	}
 
 	function launchClientClipperSelection(info) {
-		var params = getSelectedHTML();
-		info.params = params;
+		var body = getSelectedHTML();
+		if (info.isNative) {
+			var params = wiz_collectAllFrames(window) + formatParams(info.url, body);
+			info.params = params;
+		} else {
+			info.params = body;
+		}
+		info.cmd = selectionCmd;
 		requestSaveDoc(info);
 	}
 
 	function launchClientClipperUrl(info) {
-		var url = '<a href="' + window.location.href + '">' + window.location.href + '</a>';
-		var params = url;
-		info.params = params;
+		var body = '<a href="' + window.location.href + '">' + window.location.href + '</a>';
+		if (info.isNative) {
+			var params = wiz_collectAllFrames(window)  + formatParams(info.url, body); 
+			info.params = params;
+		} else {
+			info.params = body;
+		}
+		info.cmd = urlCmd;
 		requestSaveDoc(info);
+	}
+
+	function formatParams(url, source_html) {
+		var frame_url = wiz_base64Encode(url);
+		source_html = wiz_base64Encode(source_html);
+		var params = "param-surl='" + frame_url + "' ";
+		params += "param-shtml='" + source_html + "' ";
+		return params;
 	}
 
 	/**
@@ -298,7 +339,7 @@ var ClientClipper = function () {
 	function launchNativeClipper(info) {
 		var isNative = true;
 		var params = wiz_collectAllFrames(window);
-		params = params + wiz_getSelected(window, isNative);
+		params = params + wiz_getSelected(window, info.isNative);
 		info.isNative = isNative;
 		info.params = params;
 		requestSaveDoc(info, isNative);
@@ -324,11 +365,31 @@ var ClientClipper = function () {
 			return "";
 	}
 
-	function requestSaveDoc(info, isNative) {
-		if (!isNative) {
-			alert(isNative);
-			clipResult.startClip();
+	/**
+	 * 保存到本地客户端前需要做的相关处理
+	 * @param {[type]} info   [description]
+	 */
+	function addExtraParams(info) {
+		try {
+			console.log(info.params);
+			var comment = (info.comment) ? ('<div>' + info.comment.replace(/\n/gi, '<br />') + '</div>') : '',
+			params = info.params + ' save-command=' + info.cmd + ' userid="' + info.userid
+				+ '" title="' + wiz_base64Encode(info.title) 
+				+ '" location="' + wiz_base64Encode(info.category) 
+				+ '" comment="' + wiz_base64Encode(comment) + '"';
+			return params;
+		} catch (err) {
+			console.warn('ClipPageControl.addExtraParams() Error : ' + err);		
 		}
+	}
+
+	function requestSaveDoc(info) {
+		if (!info.isNative) {
+			clipResult.startClip();
+		} else {
+			info.params = addExtraParams(info);
+		}
+
 		setTimeout(function(){
 			chrome.extension.connect({"name" : "saveDocument"}).postMessage(info);
 		}, 200);

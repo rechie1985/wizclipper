@@ -18,11 +18,13 @@ window.onload = function() {
 				name : 'initRequest'
 			});
 			port.onMessage.addListener(function (msg) {
-				if (msg == false) {
+				if (msg.login == false) {
 					loginControl.autoLogin(cookies);
 				} else {
 					$('#wiz_login').hide();
 				}
+				console.log(msg.hasNative);
+				clipPageControl.setNativeStatus(msg.hasNative);
 			});
 
 		} else {
@@ -51,12 +53,13 @@ window.onload = function() {
 		$('#fullPage').html(chrome.i18n.getMessage('fullpage_save'));
 		$('#selection').html(chrome.i18n.getMessage('select_save'));
 		$('#url').html(chrome.i18n.getMessage('url_save'));
-		$('#native').html(chrome.i18n.getMessage('native_save'));
+		$('#native').html(chrome.i18n.getMessage('save_more'));
 		//comment area
 		$('#comment_tip').html(chrome.i18n.getMessage('comment_tip'));
 		$('#comment-info').attr('placeholder', chrome.i18n.getMessage('add_comment'));
 
-		$('#native_check_tip').html(chrome.i18n.getMessage('native_check_tip'));
+		$('#save_to_native').html(chrome.i18n.getMessage('save_to_native'));
+		$('#save_to_server').html(chrome.i18n.getMessage('save_to_server'));
 
 		//默认文件夹
 		$('#category_info').html('/' + chrome.i18n.getMessage('MyNotes') + '/').attr('location', '/My Notes/');

@@ -26,7 +26,6 @@
 		<link rel="stylesheet" type="text/css" href="css/zTreeStyle/zTreeStyle.css" />
 	</head>
 	<body class="popup" id="popup">
-		<embed type='application/x-wizbrother-wiz-ax' width='100' height='20' id="wiz-native-app" style="display:none;"></embed>
 		
 		<!-- head -->
 		<div class="header">
@@ -116,7 +115,10 @@
 				</div>
 				<div>
 					<div class="native-checkd">
-						<input type="checkbox" id="native_check" /><label id="native_check_tip"></label>
+						<select id="save_type_sel" class="save-type">
+							<option id="save_to_server"></option>
+							<option id="save_to_native"></option>
+						</select>
 					</div>
 					<div class="submit-group">
 						<button id="note_submit" class="btn btn-primary submit-button"></button>

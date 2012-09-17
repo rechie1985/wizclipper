@@ -637,10 +637,6 @@ function Wiz_ContentPreview() {
 					//if (request.args && request.args.showHelp) {
 					previewArticle(true);
 				}
-				//}
-				//else {
-				//  previewArticle(false);
-				//}
 				break;
 			case "fullPage":
 				previewFullPage();

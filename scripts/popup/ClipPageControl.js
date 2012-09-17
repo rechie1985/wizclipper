@@ -3,30 +3,57 @@
  */
 var cookieUrl = 'http://service.wiz.cn/web',
 	cookieName = 'wiz-clip-auth',
-	cookieExpiredays = 14 * 24 * 60 * 60;
+	cookieExpiredays = 14 * 24 * 60 * 60,
+	updateClientUrl = 'http://www.wiz.cn/wiznote_web_clipper_chrome';
 
 function ClipPageControl() {
 	// 'use strict';
+	
+	var saveType = localStorage['saveType'],
+		isNative = (saveType && saveType === 'save_to_native') ? true : false,
+		_hasNative = null;
 
 	function initClipPageListener() {
 		PopupView.hideCreateDiv();
+		initSaveType();
 		$('body').bind('keyup', keyDownHandler);
 		$('#submit-type').change(changeSubmitTypehandler);
 		$('#note_submit').click(noteSubmit);
 		$('#comment-info').focus(resizeCommentHeight);
 		$('#wiz_clip_detail').show(initClipPageInfo);
-		$('$native_check').click(nativeCheckBoxHandler);
+		$('#save_type_sel').change(changeSaveTypehandler);
 	}
 
-
-	function nativeCheckBoxHandler(evt) {
-		var checkedStatus = $(this).attr('checked');
-		if (checkedStatus === 'checked') {
-			this.nativeSave = true;
-		} else {
-			this.nativeSave = false;
+	function initSaveType() {
+		if (isNative) {
+			$('#save_type_sel')[0].options[1].selected = true;
 		}
 	}
+
+	/**
+	 * 保存到本地监听事件
+	 * @param  {[type]} evt [description]
+	 * @return {[type]}     [description]
+	 */
+	function changeSaveTypehandler(evt) {
+		var selectedOption = $('option:selected', '#save_type_sel'),
+			type = selectedOption.attr('id');
+		if ('save_to_native' === type && !checkNativeStatus()) {
+			evt.preventDefault();
+			return ;
+		}
+		setSaveType(type);
+	}
+
+	function setSaveType(type) {
+		if (type === 'save_to_native') {
+			isNative = true;
+		} else if (type === 'save_to_server') {
+			isNative = false;
+		}
+		localStorage['saveType'] = type;
+	}
+
 
 	function resizeCommentHeight(evt) {
 		$('#comment-info').animate({
@@ -63,13 +90,21 @@ function ClipPageControl() {
 	function changeSubmitTypehandler(evt) {
 		var selectedOption = $('option:selected', '#submit-type'),
 			cmd = selectedOption.attr('id'),
+			portName = ('native' === cmd) ? 'save-native' : 'preview',
 			port = chrome.extension.connect({
-				name: 'preview'
+				name: portName
 			});
-		port.postMessage(cmd);
-
-		//改变页面显示
-		PopupView.changeSubmitDisplayByType();
+		if ('native' === cmd) {
+			if (!checkNativeStatus()) {
+				evt.preventDefault();
+				return ;
+			}
+			noteSubmit();
+		} else {
+			port.postMessage(cmd);
+			//改变页面显示
+			PopupView.changeSubmitDisplayByType();
+		}
 	}
 
 
@@ -327,19 +362,6 @@ function ClipPageControl() {
 	}
 
 	/**
-	 * 获取本地客户端信息
-	 * @return {[type]} [description]
-	 */
-	function getNativeClient () {
-		var nativeClient = document.getElementById('wiz-local-app'),
-			version = nativeClient.Version;
-		if (typeof version === 'undefined') {
-			return null;
-		}
-		return nativeClient;
-	}
-
-	/**
 	 * 保存文档处理
 	 * @param {Event} e
 	 */
@@ -353,17 +375,20 @@ function ClipPageControl() {
 			title = $('#wiz_note_title').val(),
 			category = $('#category_info').attr('location'),
 			comment = $('#comment-info').val(),
-			docInfo = {
+			userid = localStorage['wiz-clip-auth'],
+			info = {
 				title: title,
 				category: category,
-				comment: comment
+				comment: comment,
+				userid : userid,
+				isNative : isNative
 			};
 		chrome.windows.getCurrent(function (win) {
 			chrome.tabs.getSelected(win.id, function (tab) {
 				chrome.tabs.sendRequest(tab.id, {
 					name: 'preview',
 					op: 'submit',
-					info: docInfo,
+					info: info,
 					type: type
 				}, function (params) {
 					window.close();
@@ -378,4 +403,24 @@ function ClipPageControl() {
 			window.open(mainUrl + '/?t=' + token);
 		});
 	}
+
+	function checkNativeStatus() {
+		if (!hasNativeClient()) {
+			if (window.confirm('该功能需要安装最新版的wiz客户端，是否跳转到下载页面?')) {
+				window.open(updateClientUrl);
+			}
+		}
+		return hasNativeClient();
+	}
+
+	function hasNativeClient() {
+		console.log(_hasNative);
+		return _hasNative;
+	}
+
+	function setNativeStatus(hasNative) {
+		_hasNative = hasNative;
+	}
+
+	this.setNativeStatus = setNativeStatus;
 }

@@ -29,14 +29,6 @@ function onConnectListener(port) {
 			}
 		});
 		break;
-	case 'saveNative': 
-		port.onMessage.addListener(function(info) {
-			if (info && info.params && info.params.length > 0) {
-				saveToNative(info);
-			} else {
-				console.log('saveNative Error');
-			}
-		});
 	case 'checkLogin':
 		port.onMessage.addListener(function(msg) {
 			if (token != null) {
@@ -50,11 +42,18 @@ function onConnectListener(port) {
 	case 'initRequest':
 		//页面初始化请求，需要返回是否已登录、是否可获取文章、是否可获取选择信息
 		//TODO 返回是否可获取文章、是否可获取选择信息
+		var hasNative = hasNativeClient(),
+			info = {
+				token : token,
+				hasNative : hasNative
+			};
 		if (token) {
 			getTab(wizRequestPreview);
-			port.postMessage(token);
+			info.login = true;
+			port.postMessage(info);
 		} else {
-			port.postMessage(false);
+			info.login = false;
+			port.postMessage(info);
 		}
 		break;
 	case 'onkeydown':
@@ -281,26 +280,33 @@ function isLogin() {
  * @return {[本地客户端]} []
  */
 function getNativeClient () {
-	var nativeClient = document.getElementById('wiz-local-app'),
-		version = nativeClient.Version;
-	if (typeof version === 'undefined') {
+	try {
+		var nativeClient = document.getElementById('wiz-local-app'),
+			version = nativeClient.Version;
+		if (typeof version === 'undefined') {
+			return null;
+		}
+		return nativeClient;
+	} catch(err) {
+		console.log('background.getNativeClient() Error : ' + err);
 		return null;
 	}
-	return nativeClient;
+}
+
+function hasNativeClient() {
+	var nativeClient = getNativeClient();
+	return (nativeClient === null) ? false : true;
 }
 
 function saveToNative(info) {
-	var wizClient = this.getNativeClient(),
-		params = info.params;
+	var wizClient = this.getNativeClient();
 	try {
-		alert(params);
-		wizClient.Execute(params);
+		wizClient.Execute(info.params);
 	} catch (err) {
 		console.warn('background saveToNative Error : ' + err);
 	}
 	console.log('Saved To Native Client');
 }
-
 
 
 /**
