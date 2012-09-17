@@ -339,10 +339,10 @@ var ClientClipper = function () {
 	function launchNativeClipper(info) {
 		var isNative = true;
 		var params = wiz_collectAllFrames(window);
-		params = params + wiz_getSelected(window, info.isNative);
+		// params = params + wiz_getSelected(window, info.isNative);
 		info.isNative = isNative;
 		info.params = params;
-		requestSaveDoc(info, isNative);
+		requestSaveDoc(info, true);
 	}
 
 	function getFullpageHTML() {
@@ -371,7 +371,6 @@ var ClientClipper = function () {
 	 */
 	function addExtraParams(info) {
 		try {
-			console.log(info.params);
 			var comment = (info.comment) ? ('<div>' + info.comment.replace(/\n/gi, '<br />') + '</div>') : '',
 			params = info.params + ' save-command=' + info.cmd + ' userid="' + info.userid
 				+ '" title="' + wiz_base64Encode(info.title) 
@@ -383,10 +382,10 @@ var ClientClipper = function () {
 		}
 	}
 
-	function requestSaveDoc(info) {
+	function requestSaveDoc(info, isSaveMore) {
 		if (!info.isNative) {
 			clipResult.startClip();
-		} else {
+		} else if(!isSaveMore){
 			info.params = addExtraParams(info);
 		}
 
