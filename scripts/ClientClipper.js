@@ -339,7 +339,7 @@ var ClientClipper = function () {
 	function launchNativeClipper(info) {
 		var isNative = true;
 		var params = wiz_collectAllFrames(window);
-		// params = params + wiz_getSelected(window, info.isNative);
+		params = params + wiz_getSelected(window, isNative);
 		var info = info || {};
 		info.isNative = isNative;
 		info.params = params;
