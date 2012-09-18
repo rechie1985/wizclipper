@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extName__",
-	"description": "This extension adds an save button to the toolbar which allows you to save the page to Wiz.",
+	"description": "__MSG_description__",
 	"version": "3.0.4",
 	"manifest_version": 2,
 	"default_locale": "en",
@@ -14,7 +14,7 @@
 	},
 	"content_scripts": [
 		{
-			"js": ["scripts/wiz/Browser.js", "scripts/lib/jquery.min.js", "clip_result/loader.js" , "scripts/ClientClipper.js", "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
+			"js": ["scripts/wiz/WeiboAssist.js", "scripts/wiz/Browser.js", "scripts/lib/jquery.min.js", "clip_result/loader.js" , "scripts/ClientClipper.js", "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
 			"css": ["css/contentpreview.css", "clip_result/iframe.css"],
 			"matches": ["*://*/*"]
 		}

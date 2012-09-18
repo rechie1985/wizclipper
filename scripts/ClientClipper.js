@@ -384,7 +384,6 @@ var ClientClipper = function () {
 	}
 
 	function requestSaveDoc(info, isSaveMore) {
-			console.log(info);
 		if (!info.isNative) {
 			clipResult.startClip();
 		} else if(!isSaveMore){
