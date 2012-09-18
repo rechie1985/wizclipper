@@ -1,5 +1,6 @@
 
-var Cookie = window.Cookie || {};
+var Cookie = window.Cookie || {},
+	cookieExpiredays = 14 * 24 * 60 * 60;
 Cookie.setCookies =  function(url, name, value, expireSecond) {
 	var exdate = new Date();
 	var param = {

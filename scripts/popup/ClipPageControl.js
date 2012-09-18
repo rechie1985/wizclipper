@@ -15,13 +15,24 @@ function ClipPageControl() {
 
 	function initClipPageListener() {
 		PopupView.hideCreateDiv();
-		initSaveType();
 		$('body').bind('keyup', keyDownHandler);
 		$('#submit-type').change(changeSubmitTypehandler);
 		$('#note_submit').click(noteSubmit);
-		$('#comment-info').focus(resizeCommentHeight);
+		$('#comment-info').bind('focus', resizeCommentHeight);
 		$('#wiz_clip_detail').show(initClipPageInfo);
-		$('#save_type_sel').change(changeSaveTypehandler);
+		initNativeDiv();
+	}
+
+	function initNativeDiv() {
+		var isWin = isWinPlatform();
+		if (isWin) {
+			initSaveType();
+			$('#save_type_sel').change(changeSaveTypehandler);
+		} else {
+			$('#save_type_sel').hide();
+			$('#native').remove();
+		}
+
 	}
 
 	function initSaveType() {
@@ -78,6 +89,20 @@ function ClipPageControl() {
 			PopupView.showClipFailure(pageClipFailure);
 			break;
 		}
+	}
+
+	/**
+	 * 是否windows系统
+	 * @return {Boolean} [description]
+	 */
+	function isWinPlatform() {
+		var platform = window.navigator.platform;
+			isMac = (platform === "Mac68K") || (platform === "MacPPC") || (platform === "Macintosh");
+			isLinux = (platform.toLowerCase().indexOf('linux') === 0);
+		if (isMac || isLinux) {
+			return false;
+		}
+		return true;
 	}
 
 
@@ -139,7 +164,7 @@ function ClipPageControl() {
 	function requestPageStatus() {
 		chrome.windows.getCurrent(function (win) {
 			chrome.tabs.getSelected(win.id, function (tab) {
-				chrome.tabs.sendMessage(tab.id, {
+				Wiz_Browser.sendRequest(tab.id, {
 					name: 'getInfo'
 				}, function (params) {
 					initSubmitGroup(params);
@@ -305,9 +330,10 @@ function ClipPageControl() {
 		var target = evt.target,
 			skipTypes = ['input', 'select', 'textarea'],
 			skipIndex;
-
+		console.log(evt);
 		for (skipIndex = 0; skipIndex < skipTypes.length; skipIndex++) {
 			if (evt.srcElement.nodeName.toLowerCase() == skipTypes[skipIndex]) {
+				console.log(skipTypes[skipIndex]);
 				return;
 			}
 		}
@@ -385,7 +411,7 @@ function ClipPageControl() {
 			};
 		chrome.windows.getCurrent(function (win) {
 			chrome.tabs.getSelected(win.id, function (tab) {
-				chrome.tabs.sendRequest(tab.id, {
+				Wiz_Browser.sendRequest(tab.id, {
 					name: 'preview',
 					op: 'submit',
 					info: info,

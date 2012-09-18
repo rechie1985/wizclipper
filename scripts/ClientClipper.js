@@ -340,6 +340,7 @@ var ClientClipper = function () {
 		var isNative = true;
 		var params = wiz_collectAllFrames(window);
 		// params = params + wiz_getSelected(window, info.isNative);
+		var info = info || {};
 		info.isNative = isNative;
 		info.params = params;
 		requestSaveDoc(info, true);
@@ -383,6 +384,7 @@ var ClientClipper = function () {
 	}
 
 	function requestSaveDoc(info, isSaveMore) {
+			console.log(info);
 		if (!info.isNative) {
 			clipResult.startClip();
 		} else if(!isSaveMore){

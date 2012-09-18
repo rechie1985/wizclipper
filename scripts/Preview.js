@@ -664,6 +664,7 @@ function Wiz_ContentPreview() {
 	}
 
 	function noteSubmitByType(type, info) {
+		console.log('Preview.noteSubmitByType() ' + type);
 		if (typeof wiz_clipper === 'undefined') {
 			console.warn("Could not found wiz_clipper object!")
 			return ;
@@ -698,8 +699,7 @@ function Wiz_ContentPreview() {
 		}
 	}
 
-
-	chrome.extension.onRequest.addListener(messageHandler);
+	Wiz_Browser.onRequest().addListener(messageHandler);
 
 	// Public API:
 	this.getArticleElement = getArticleElement;

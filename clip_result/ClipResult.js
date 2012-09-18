@@ -93,8 +93,8 @@ function showClipping(info) {
 
 }
 
-function switchNotificationMessageByCmd (cmd, info) {
-	console.log(info);
+function switchNotificationMessageByCmd(cmd, info) {
+	console.log('ClipResult.switchNotificationMessageByCmd() cmd=' + cmd + 'title=' + info.title);
 	switch(cmd) 
 	{
 	case 'clip' :
@@ -112,12 +112,14 @@ function switchNotificationMessageByCmd (cmd, info) {
 	}
 }
 
-chrome.extension.onMessage.addListener(function(data, sender, sendResponse) {
-	var cmd = data.name;
+function messageHanlder(data, sender, sendResponse) {
 	try {
+		var cmd = data.name;
+		console.log(data.info);
 		switchNotificationMessageByCmd(cmd, data.info);
 	} catch (err) {
 		console.error('ClipResult.switchNotificationMessageByCmd() Error : ' + err);
 	}
-});
+}
 
+Wiz_Browser.onRequest().addListener(messageHanlder);

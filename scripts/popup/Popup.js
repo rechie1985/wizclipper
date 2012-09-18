@@ -2,7 +2,6 @@
 var mainUrl = 'http://service.wiz.cn/web';
 window.onload = function() {
 	initPopupPage();
-
 	var clipPageControl = new ClipPageControl();
 	var loginControl = new LoginControl();
 	Cookie.getCookies(cookieUrl, cookieName, showByCookies, true);
@@ -23,7 +22,6 @@ window.onload = function() {
 				} else {
 					$('#wiz_login').hide();
 				}
-				console.log(msg.hasNative);
 				clipPageControl.setNativeStatus(msg.hasNative);
 			});
 

@@ -1,7 +1,7 @@
 {
 	"name": "__MSG_extName__",
 	"description": "This extension adds an save button to the toolbar which allows you to save the page to Wiz.",
-	"version": "3.0.3",
+	"version": "3.0.4",
 	"manifest_version": 2,
 	"default_locale": "en",
 	"browser_action": {
@@ -14,7 +14,7 @@
 	},
 	"content_scripts": [
 		{
-			"js": ["scripts/lib/jquery.min.js", "clip_result/loader.js" , "scripts/ClientClipper.js", "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
+			"js": ["scripts/wiz/Browser.js", "scripts/lib/jquery.min.js", "clip_result/loader.js" , "scripts/ClientClipper.js", "scripts/ContentVeil.js", "scripts/Preview.js", "scripts/PageInfo.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/GlobalUtils.js"],
 			"css": ["css/contentpreview.css", "clip_result/iframe.css"],
 			"matches": ["*://*/*"]
 		}
@@ -25,5 +25,5 @@
 		"128": "images/wiz_128x128.png"
 	},
 	"permissions": ["contextMenus", "cookies" , "tabs", "unlimitedStorage", "http://*/*", "https://*/*"],
-	"web_accessible_resources": ["background.js", "clip_result/clip_result.css", "clip_result/clip_result.html", "clip_result/iframe.css", "clip_result/loader.js", "clip_result/small_snippet.css", "images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png", "images/check.png", "images/scissors.png", "images/sync.png", "images/warning.png", "images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png"]
+	"web_accessible_resources": ["scripts/wiz/Browser.js", "scripts/hatena-extract-content/extract-content-all.js", "scripts/lib/zTree/zTreeJs/jquery.ztree.core-3.3.min.js", "scripts/lib/Cookie.js", "scripts/lib/md5.js", "background.js", "scripts/lib/xmlrpc.js", "scripts/lib/jquery.min.js", "clip_result/clip_result.css", "clip_result/clip_result.html", "clip_result/iframe.css", "clip_result/loader.js", "clip_result/small_snippet.css", "images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png", "images/check.png", "images/scissors.png", "images/sync.png", "images/warning.png", "images/nudge-icons/nudge-icon-arrow-up.png", "images/nudge-icons/nudge-icon-arrow-down.png", "images/nudge-icons/nudge-icon-arrow-lr.png", "images/nudge-icons/nudge-icon-return.png"]
 }

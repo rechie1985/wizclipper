@@ -309,7 +309,7 @@ function Wiz_PageInfo() {
 	}
 
 
-	chrome.extension.onMessage.addListener(messageHandler);
+	Wiz_Browser.onRequest().addListener(messageHandler);
 
 	// Finally we notify the extension that we're ready to go, in case it's been sitting there waiting for us to load.
 	// We pass it our URL so that it's less likely to get confused and think that we're ready to go when some other page

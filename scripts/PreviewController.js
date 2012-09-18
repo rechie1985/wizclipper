@@ -9,32 +9,32 @@ function  PreviewController() {
 
   function previewFullPage(tabId, callback) {
     var req = {name: reqName, op: "fullPage"};
-    chrome.tabs.sendRequest(tabId, req, callback);
+    Wiz_Browser.sendRequest(tabId, req, callback);
   }
 
   function previewSelection(tabId, callback) {
     var req = {name: reqName, op: "selection"};
-    chrome.tabs.sendRequest(tabId, req, callback);
+    Wiz_Browser.sendRequest(tabId, req, callback);
   }
 
   function previewArticle(tabId, callback, showHelp) {
     var req = {name: reqName, op: "article", args:{showHelp: showHelp}};
-    chrome.tabs.sendRequest(tabId, req, callback);
+    Wiz_Browser.sendRequest(tabId, req, callback);
   }
 
   function previewURL(tabId, callback) {
     var req = {name: reqName, op: "url"};
-    chrome.tabs.sendRequest(tabId, req, callback);
+    Wiz_Browser.sendRequest(tabId, req, callback);
   }
 
   function nudgePreview(tabId, direction, callback) {
     var req = {name: reqName, op: "nudge", args: {direction: direction}};
-    chrome.tabs.sendRequest(tabId, req, callback);
+    Wiz_Browser.sendRequest(tabId, req, callback);
   }
 
   function clear(tabId, callback) {
     var req = {name: reqName, op: "clear"};
-    chrome.tabs.sendRequest(tabId, req, callback);
+    Wiz_Browser.sendRequest(tabId, req, callback);
   }
 
   // Utility function called by 'clearAll'.
