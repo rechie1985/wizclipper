@@ -3,7 +3,8 @@ var Wiz_Context = {
 	cookieUrl : 'http://service.wiz.cn/web',
 	cookieName : 'wiz-clip-auth',
 	token : null,
-	tab : null
+	tab : null,
+	user_id : null
 }
 
 function onConnectListener(port) {
@@ -19,7 +20,7 @@ function onConnectListener(port) {
 		retryClip(port);
 		break;
 	case 'requestCategory':
-		portRequestCategoryAjax(port);
+		requestCategory(port);
 		break;
 	case 'saveDocument':
 		port.onMessage.addListener(function(info) {
@@ -137,8 +138,32 @@ function portLoginAjax(loginParam, port) {
 			setInterval(refreshToken, time);
 		}
 	}
+	//缓存userid
+	Wiz_Context.user_id = loginParam.user_id;
 	console.log('login');
 	xmlrpc(Wiz_Context.xmlUrl, 'accounts.clientLogin', [loginParam], loginSuccess, loginError);
+}
+
+function requestCategory(port) {
+	var categoryStr = getNativeCagetory(Wiz_Context.user_id);
+	//本地如果为获取到文件夹信息，则获取服务端的文件夹信息
+	if (categoryStr && categoryStr.length > 0 && port) {
+		port.postMessage(categoryStr);
+	} else {
+		portRequestCategoryAjax(port);
+	}
+}
+
+function getNativeCagetory(userid) {
+	var client = getNativeClient(),
+		categoryStr = null;
+	if (client) {
+		try {
+			categoryStr = client.GetAllFolders(userid);
+		} catch (err) {
+		}
+	}
+	return categoryStr;
 }
 
 function portRequestCategoryAjax(port) {
@@ -149,7 +174,7 @@ function portRequestCategoryAjax(port) {
 	};
 	var callbackSuccess = function(responseJSON) {
 		if (port) {
-			port.postMessage(responseJSON);
+			port.postMessage(responseJSON.categories);
 		}
 	}
 	var callbackError = function(response) {
@@ -188,7 +213,6 @@ function bindKeyDownHandler(tab, direction) {
 }
 
 function wizPostDocument(docInfo) {
-	console.log(docInfo);
 	//整理数据
 	var regexp = /%20/g, 
 		  title = docInfo.title, 
@@ -308,7 +332,6 @@ function hasNativeClient() {
 function saveToNative(info) {
 	var wizClient = this.getNativeClient();
 	try {
-		console.log(info.params);
 		wizClient.Execute(info.params);
 	} catch (err) {
 		console.warn('background saveToNative Error : ' + err);

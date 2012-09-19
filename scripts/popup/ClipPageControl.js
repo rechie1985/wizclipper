@@ -310,8 +310,8 @@ function ClipPageControl() {
 		port.onMessage.addListener(function (msg) {
 			//错误处理
 			var value = $('#wiz_note_category').val();
-			localStorage['category'] = msg.categories;
-			parseWizCategory(msg.categories);
+			localStorage['category'] = msg;
+			parseWizCategory(msg);
 		});
 	}
 
