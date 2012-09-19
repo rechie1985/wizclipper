@@ -245,13 +245,16 @@ var ClientClipper = function () {
 				}
 			}
 			if (winsel == null || winsel == "") {
+				winsel = win.getSelection().toString();
+			}
+			if (winsel == null || winsel == "") {
 				params = "";
 				return params;
 			} else {
 				//var docFragment = winsel.getRangeAt(0).cloneContents();
 				//var docFragment = winsel.innerHTML;
 				//var myp = window.document.createElement("<div>" + docFragment + "</Div>");
-				var source_html = winsel.innerHTML;
+				var source_html = (winsel.innerHTML) ? (winsel.innerHTML) : winsel;
 				if (source_html == null)
 					source_html = "";
 				if (isNative === true) {

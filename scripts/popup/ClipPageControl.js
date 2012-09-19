@@ -97,7 +97,7 @@ function ClipPageControl() {
 	 */
 	function isWinPlatform() {
 		var platform = window.navigator.platform;
-			isMac = (platform === "Mac68K") || (platform === "MacPPC") || (platform === "Macintosh");
+			isMac = (platform.toLowerCase().indexOf('mac') === 0);//(platform === "Mac68K") || (platform === "MacPPC") || (platform === "Macintosh");
 			isLinux = (platform.toLowerCase().indexOf('linux') === 0);
 		if (isMac || isLinux) {
 			return false;

@@ -307,6 +307,7 @@ function hasNativeClient() {
 function saveToNative(info) {
 	var wizClient = this.getNativeClient();
 	try {
+		console.log(info.params);
 		wizClient.Execute(info.params);
 	} catch (err) {
 		console.warn('background saveToNative Error : ' + err);
@@ -356,67 +357,24 @@ function wizSavePageContextMenuClick(info, tab) {
 	}
 }
 
-function wizSaveSelectionContextMenuClick(info, tab) {
-	window.tab = tab;
-	if (isLogin()) {
-		info.params = info.selectionText;
-		info.title = tab.title;
-		Wiz_Browser.sendRequest(tab.id, {
-			name : 'preview',
-			op : 'submit',
-			info : info,
-			type : 'selection'
-		}, sendTabRequestCallbackByContextMenu);
-	}
-}
-
-function wizSaveUrlContextMenuClick(info, tab) {
-	window.tab = tab;
-	if (isLogin()) {
-		info.params = tab.xmlUrl;
-		info.title = tab.title
-		Wiz_Browser.sendRequest(tab.id, {
-			name : 'preview',
-			op : 'submit',
-			info : info,
-			type : 'url'
-		}, sendTabRequestCallbackByContextMenu);
-	}
-}
-
 function initContextMenus() {
 	var clipPageContext = chrome.i18n.getMessage('contextMenus_clipPage'),
-		clipSelectionContext = chrome.i18n.getMessage('contextMenus_clipSelection'),
-		clipUrlContext = chrome.i18n.getMessage('contextMenus_clipUrl'),
-		saveMoreContext = chrome.i18n.getMessage('save_more');
-		allowableUrls = ['http://*/*', 'https://*/*'],
-		hasNative = this.getNativeClient()
-	chrome.contextMenus.create({
-		'title' : clipPageContext,
-		'contexts' : ['page', 'image'],
-		'documentUrlPatterns' : allowableUrls,
-		'onclick' : wizSavePageContextMenuClick
-	});
-	chrome.contextMenus.create({
-		'title' : clipSelectionContext,
-		'contexts' : ['selection'],
-		'documentUrlPatterns' : allowableUrls,
-		'onclick' : wizSaveSelectionContextMenuClick
-	});
-	chrome.contextMenus.create({
-		'title' : clipUrlContext,
-		'contexts' : ['all'],
-		'documentUrlPatterns' : allowableUrls,
-		'onclick' : wizSaveUrlContextMenuClick
-	});
+		allowableUrls = ['http://*/*', 'https://*/*'];
+	var	hasNative = this.getNativeClient();
+	
 	if (hasNativeClient()) {
-		//添加分割横线
-		chrome.contextMenus.create({type: 'separator', contexts: ['all']});
-
 		chrome.contextMenus.create({
-			'title': saveMoreContext,
+			'title': clipPageContext,
 			'contexts' : ['all'],
+			'documentUrlPatterns' : allowableUrls,
 			'onclick': wizSaveNativeContextMenuClick
+		});
+	} else {
+		chrome.contextMenus.create({
+			'title' : clipPageContext,
+			'contexts' : ['all'],
+			'documentUrlPatterns' : allowableUrls,
+			'onclick' : wizSavePageContextMenuClick
 		});
 	}
 }

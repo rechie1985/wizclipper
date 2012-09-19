@@ -132,7 +132,7 @@
 		"message" : "Before you clip the page. Please sign in using the toolbar button, and try again. "
 	},
 	"contextMenus_clipPage" : {
-		"message" : "Clip Page"
+		"message" : "Save To WizNote"
 	},
 	"contextMenus_clipSelection": {
 		"message" : "Clip Selection"
