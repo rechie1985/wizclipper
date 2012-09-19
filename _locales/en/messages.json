@@ -6,7 +6,7 @@
 		"message": "WizNote Web Clipper"
 	},
 	"description": {
-		"message": "Use WizNote Web Clipper , you can save The content on the network to your account"
+		"message": "Use WizNote Web Clipper . you can save The content on the network to your account"
 	},
 	"popup_wating": {
 		"message": "Waiting page..."
@@ -161,18 +161,18 @@
 	"save_more" : {
 		"message" : "More"
 	},
-   "contentPreview_clipArticle": {
-      "message": "clip article"
-   },
-   "contentPreview_expandSelection": {
-      "message": "expand selection"
-   },
-   "contentPreview_moveSelection": {
-      "message": "move selection"
-   },
-   "contentPreview_shrinkSelection": {
-      "message": "shrink selection"
-   }
+	"contentPreview_clipArticle": {
+		"message": "clip article"
+	},
+	"contentPreview_expandSelection": {
+		"message": "expand selection"
+	},
+	"contentPreview_moveSelection": {
+		"message": "move selection"
+	},
+	"contentPreview_shrinkSelection": {
+		"message": "shrink selection"
+	}
 }
 
 

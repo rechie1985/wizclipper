@@ -161,16 +161,16 @@
 	"save_more" : {
 		"message" : "\u66f4\u591a"
 	},
-   "contentPreview_clipArticle": {
-      "message": "\u526A\u8F91\u6587\u7AE0"
-   },
-   "contentPreview_expandSelection": {
-      "message": "\u6269\u5927\u9009\u53D6\u533A\u57DF"
-   },
-   "contentPreview_moveSelection": {
-      "message": "\u79FB\u52A8\u9009\u53D6\u533A\u57DF"
-   },
-   "contentPreview_shrinkSelection": {
-      "message": "\u7F29\u5C0F\u9009\u53D6\u533A\u57DF"
-   }
+	"contentPreview_clipArticle": {
+		"message": "\u526A\u8F91\u6587\u7AE0"
+	},
+	"contentPreview_expandSelection": {
+		"message": "\u6269\u5927\u9009\u53D6\u533A\u57DF"
+	},
+	"contentPreview_moveSelection": {
+		"message": "\u79FB\u52A8\u9009\u53D6\u533A\u57DF"
+	},
+	"contentPreview_shrinkSelection": {
+		"message": "\u7F29\u5C0F\u9009\u53D6\u533A\u57DF"
+	}
 }
