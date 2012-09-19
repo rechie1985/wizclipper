@@ -178,8 +178,7 @@ function Wiz_PageInfo() {
 
 	function messageHandler(request, sender, sendResponse) {
 		var handlers = {
-			"getInfo" : getInfoRequestHandler,
-			"content_ready" : readyRequestHandler
+			"getInfo" : getInfoRequestHandler
 		}
 
 		if (request.name && handlers[request.name]) {
