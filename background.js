@@ -157,8 +157,6 @@ function requestCategory(port) {
 }
 
 function requestCategoryByCookie(cookie, params) {
-	console.log(cookie);
-	console.log(new Date());
 	var port = params.port;
 	if (cookie && cookie.value) {
 		port.postMessage(cookie.value);

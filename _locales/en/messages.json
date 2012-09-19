@@ -6,7 +6,7 @@
 		"message": "WizNote Web Clipper"
 	},
 	"description": {
-		"message": "The extension “Wiz Note” can help you to save the content or the whole website in your own account."
+		"message": "The extension “Wiz Note” can help you to save the web content or the whole website in your own account."
 	},
 	"popup_wating": {
 		"message": "Waiting page..."
