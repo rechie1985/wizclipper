@@ -2,6 +2,8 @@ var Wiz_Context = {
 	xmlUrl : 'http://service.wiz.cn/wizkm/xmlrpc',
 	cookieUrl : 'http://service.wiz.cn/web',
 	cookieName : 'wiz-clip-auth',
+	cookie_category: 'wiz-all-category',
+	category_expireSec: 10 * 60,
 	token : null,
 	tab : null,
 	user_id : null
@@ -150,6 +152,17 @@ function requestCategory(port) {
 	if (categoryStr && categoryStr.length > 0 && port) {
 		port.postMessage(categoryStr);
 	} else {
+		Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookie_category, requestCategoryByCookie, false, {port: port});
+	}
+}
+
+function requestCategoryByCookie(cookie, params) {
+	console.log(cookie);
+	console.log(new Date());
+	var port = params.port;
+	if (cookie && cookie.value) {
+		port.postMessage(cookie.value);
+	} else {
 		portRequestCategoryAjax(port);
 	}
 }
@@ -173,8 +186,10 @@ function portRequestCategoryAjax(port) {
 		token : Wiz_Context.token
 	};
 	var callbackSuccess = function(responseJSON) {
+		var categoryStr = responseJSON.categories;
+		Cookie.setCookies(Wiz_Context.cookieUrl, Wiz_Context.cookie_category, categoryStr, Wiz_Context.category_expire);
 		if (port) {
-			port.postMessage(responseJSON.categories);
+			port.postMessage(categoryStr);
 		}
 	}
 	var callbackError = function(response) {
@@ -349,11 +364,13 @@ function refreshToken() {
 		api_version : 3,
 		token : Wiz_Context.token
 	};
-	//暂时不对成功、失败做处理
-	var callbackSuccess = function(responseJSON) {}
+	var callbackSuccess = function(responseJSON) {
+		//刷新时失败时，需要自动重新登陆
+		wiz_background_autoLogin();
+	}
 	var callbackError = function(response) {}
 	console.log('refresh token start')
-	xmlrpc(Wiz_Context.xmlUrl, 'accounts.keepAlive', [params], callbackSuccess, callbackError)
+	xmlrpc(Wiz_Context.xmlUrl, 'accounts.keepAlive', [params], callbackSuccess, callbackError);
 }
 
 function wizSaveNativeContextMenuClick(info, tab) {
@@ -401,6 +418,11 @@ function initContextMenus() {
 		});
 	}
 }
+
+function wiz_background_autoLogin() {
+	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, loginByCookies, true);
+}
+
 chrome.extension.onConnect.addListener(onConnectListener);
 initContextMenus();
-Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, loginByCookies, true);
+wiz_background_autoLogin();

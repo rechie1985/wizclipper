@@ -182,13 +182,7 @@ function ClipPageControl() {
 		requestTitle();
 		initDefaultCategory();
 		requestToken();
-		var categoryStr = localStorage['category'];
-		//如果本地未保存文件夹信息，需要发送请求加载
-		if (categoryStr) {
-			parseWizCategory();
-		} else {
-			requestCategory();
-		}
+		requestCategory();
 	}
 
 

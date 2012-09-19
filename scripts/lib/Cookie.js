@@ -12,10 +12,11 @@ Cookie.setCookies =  function(url, name, value, expireSecond) {
 		var expire = new Date().getTime() / 1000 + expireSecond;
 		param.expirationDate = expire;
 	}
+	console.log(param);
 	chrome.cookies.set(param, function(cookie) {
 	});
 };
-Cookie.getCookies = function(url, key, callback, isAutoDelay) {
+Cookie.getCookies = function(url, key, callback, isAutoDelay, params) {
 	chrome.cookies.get({
 		url : url,
 		name : key
@@ -25,7 +26,7 @@ Cookie.getCookies = function(url, key, callback, isAutoDelay) {
 			var expiredays = cookieExpiredays;
 			Cookie.setCookies(url, key, cookies.value, expiredays);
 		}
-		callback(cookies);
+		callback(cookies, params);
 	});
 };
 Cookie.removeCookies = function(url, key, callback) {
