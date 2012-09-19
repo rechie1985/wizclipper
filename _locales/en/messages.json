@@ -6,7 +6,7 @@
 		"message": "WizNote Web Clipper"
 	},
 	"description": {
-		"message": "This extension adds an save button to the toolbar which allows you to save the page to Wiz."
+		"message": "This extension adds an save button to the toolbar which allows you to save the page to WizNote."
 	},
 	"popup_wating": {
 		"message": "Waiting page..."

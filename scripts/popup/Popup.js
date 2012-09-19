@@ -1,15 +1,6 @@
 // 'use strict';
 var mainUrl = 'http://service.wiz.cn/web';
 window.onload = function() {
-	initPopupPage();
-	var clipPageControl = new ClipPageControl();
-	var loginControl = new LoginControl();
-	Cookie.getCookies(cookieUrl, cookieName, showByCookies, true);
-
-	//保证popup页面和preview页面同时关闭
-	chrome.extension.connect({
-		name : 'popupClosed'
-	});
 
 	function showByCookies(cookies) {
 		if (cookies) {
@@ -30,6 +21,24 @@ window.onload = function() {
 			
 			loginControl.initCreateAccountLink();
 		}
+	}
+
+
+	function tabLoadedListener() {
+		chrome.windows.getCurrent(function (win) {
+			chrome.tabs.getSelected(win.id, function (tab) {			
+				console.log(tab.status);
+				if (tab && tab.status === 'complete') {
+					Cookie.getCookies(cookieUrl, cookieName, showByCookies, true);
+				} else {
+					setTimeout(tabLoadedListener, 1000);
+				}
+			});
+		});
+	}
+
+	function wizPopupInitialize() {
+		tabLoadedListener();
 	}
 
 	function initPopupPage() {
@@ -63,4 +72,14 @@ window.onload = function() {
 		$('#category_info').html('/' + chrome.i18n.getMessage('MyNotes') + '/').attr('location', '/My Notes/');
 	}
 
+	initPopupPage();
+	var clipPageControl = new ClipPageControl();
+	var loginControl = new LoginControl();
+	
+	//保证popup页面和preview页面同时关闭
+	chrome.extension.connect({
+		name : 'popupClosed'
+	});
+
+	wizPopupInitialize();
 }

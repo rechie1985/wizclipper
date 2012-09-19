@@ -301,15 +301,15 @@ function Wiz_PageInfo() {
 	}
 
 	// If we can respond to this request, then we're ready. Otherwise, the page hasn't loaded this script yet.
-	function readyRequestHandler() {
-		chrome.extension.sendRequest({
-			name : "popup_pageInfoReadyToGo",
-			url : document.location.href
-		});
-	}
-
+	// function readyRequestHandler() {
+	// 	console.log('readyRequestHandler');
+	// 	chrome.extension.connect({
+	// 		name : "popup_pageInfoReadyToGo"
+	// 	}).postMessage({url : document.location.href});
+	// }
 
 	Wiz_Browser.onRequest().addListener(messageHandler);
+	// readyRequestHandler();
 
 	// Finally we notify the extension that we're ready to go, in case it's been sitting there waiting for us to load.
 	// We pass it our URL so that it's less likely to get confused and think that we're ready to go when some other page
