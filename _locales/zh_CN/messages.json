@@ -6,7 +6,7 @@
 		"message": "\u4e3a\u77e5\u7b14\u8bb0\u7f51\u9875\u526a\u8f91\u5668"
 	},
 	"description": {
-		"message": "\u4f7f\u7528 \u4e3a\u77e5\u7b14\u8bb0 \u6269\u5c55\u7a0b\u5e8f\u5c06\u4f60\u5728\u7f51\u7edc\u4e0a\u770b\u5230\u7684\u5185\u5bb9\u4fdd\u5b58\u81f3\u4f60\u7684\u5e10\u6237"
+		"message": "\u4f7f\u7528\u201c\u4e3a\u77e5\u7b14\u8bb0\u201d\u6269\u5c55\u7a0b\u5e8f\uff0c\u5c06\u7f51\u7edc\u4e0a\u4f60\u9700\u8981\u7684\u5185\u5bb9\u4e0e\u7f51\u9875\u4fdd\u5b58\u5230\u4f60\u81ea\u5df1\u7684\u5e10\u6237"
 	},
 	"popup_wating": {
 		"message": "\u7b49\u5f85\u9875\u9762..."
@@ -160,5 +160,17 @@
 	},
 	"save_more" : {
 		"message" : "\u66f4\u591a"
-	}
+	},
+   "contentPreview_clipArticle": {
+      "message": "\u526A\u8F91\u6587\u7AE0"
+   },
+   "contentPreview_expandSelection": {
+      "message": "\u6269\u5927\u9009\u53D6\u533A\u57DF"
+   },
+   "contentPreview_moveSelection": {
+      "message": "\u79FB\u52A8\u9009\u53D6\u533A\u57DF"
+   },
+   "contentPreview_shrinkSelection": {
+      "message": "\u7F29\u5C0F\u9009\u53D6\u533A\u57DF"
+   }
 }

@@ -23,6 +23,7 @@ function Wiz_ContentPreview() {
 			var div = document.createElement("div");
 			var img = document.createElement("img");
 			var message = document.createTextNode(" " + chrome.i18n.getMessage(nudgeImgs[i][1]));
+			console.log(chrome.i18n.getMessage(nudgeImgs[i][1]));
 			div.className = "keyIcon";
 			img.src = chrome.extension.getURL("images/nudge-icons/" + nudgeImgs[i][0]);
 			div.appendChild(img);
@@ -149,7 +150,7 @@ function Wiz_ContentPreview() {
 			}
 			if (showHelp) {
 				showPreviewLegend();
-				//setTimeout(hidePreviewLegend, 6000);
+				setTimeout(hidePreviewLegend, 5000);
 			}
 		} else {
 			previewFullPage();
