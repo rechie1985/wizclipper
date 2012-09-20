@@ -32,7 +32,6 @@ function ClipPageControl() {
 			$('#save_type_sel').hide();
 			$('#native').remove();
 		}
-
 	}
 
 	function initSaveType() {
@@ -96,8 +95,8 @@ function ClipPageControl() {
 	 * @return {Boolean} [description]
 	 */
 	function isWinPlatform() {
-		var platform = window.navigator.platform;
-			isMac = (platform.toLowerCase().indexOf('mac') === 0);//(platform === "Mac68K") || (platform === "MacPPC") || (platform === "Macintosh");
+		var platform = window.navigator.platform,
+			isMac = (platform.toLowerCase().indexOf('mac') === 0),//(platform === "Mac68K") || (platform === "MacPPC") || (platform === "Macintosh");
 			isLinux = (platform.toLowerCase().indexOf('linux') === 0);
 		if (isMac || isLinux) {
 			return false;
