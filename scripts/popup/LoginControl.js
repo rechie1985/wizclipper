@@ -57,6 +57,7 @@ function LoginControl() {
 				if (msg == false) {
 					msg = chrome.i18n.getMessage('network_wrong');
 				}
+				console.log(msg);
 				PopupView.showLoginError(msg);
 			}
 		});
@@ -95,8 +96,7 @@ function LoginControl() {
 	}
 
 	function verifyEmail(str_email) {
-		var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-		if (myreg.test(str_email)) {
+		if (str_email && str_email.trim().length > 1) {
 			return true;
 		}
 		return false;

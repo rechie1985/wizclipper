@@ -129,7 +129,7 @@ function loginByCookies(cookie) {
 
 function portLoginAjax(loginParam, port) {
 	var loginError = function(err) {
-		port.postMessage(err.message);
+		port.postMessage(err);
 	}
 	var loginSuccess = function(responseJSON) {
 		Wiz_Context.token = responseJSON.token;
