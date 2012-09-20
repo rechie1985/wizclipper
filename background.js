@@ -3,7 +3,8 @@ var Wiz_Context = {
 	cookieUrl : 'http://service.wiz.cn/web',
 	cookieName : 'wiz-clip-auth',
 	cookie_category: 'wiz-all-category',
-	category_expireSec: 10 * 60,
+	cookie_category_time: 'wiz-category-stored-time',
+	category_expireSec:  10 * 60,
 	token : null,
 	tab : null,
 	user_id : null
@@ -147,22 +148,41 @@ function portLoginAjax(loginParam, port) {
 }
 
 function requestCategory(port) {
-	var categoryStr = getNativeCagetory(Wiz_Context.user_id);
-	//本地如果为获取到文件夹信息，则获取服务端的文件夹信息
-	if (categoryStr && categoryStr.length > 0 && port) {
-		port.postMessage(categoryStr);
-	} else {
-		Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookie_category, requestCategoryByCookie, false, {port: port});
+	var nativeCategoryStr = getNativeCagetory(Wiz_Context.user_id),
+		localCategoryStr = getLocalCategory(),
+		categoryStr = (nativeCategoryStr) ? (nativeCategoryStr) : (localCategoryStr);
+
+	if (port) {
+		//本地如果为获取到文件夹信息，则获取服务端的文件夹信息
+		if (categoryStr) {
+			port.postMessage(categoryStr);
+		} else {
+			portRequestCategoryAjax(port);
+		}
 	}
 }
 
-function requestCategoryByCookie(cookie, params) {
-	var port = params.port;
-	if (cookie && cookie.value) {
-		port.postMessage(cookie.value);
+function getLocalCategory() {
+	var localCategoryStr = localStorage[Wiz_Context.cookie_category],
+		storedTimeStr = localStorage[Wiz_Context.cookie_category_time],
+		storedTime = Date.parse(storedTimeStr),
+		nowTime = new Date(),
+		isOverTime = ((nowTime - storedTime) / 1000 >= Wiz_Context.category_expireSec);//是否过期
+	if (isOverTime || !localCategoryStr || localCategoryStr.length < 1) {
+		return "";
 	} else {
-		portRequestCategoryAjax(port);
+		return localCategoryStr;
 	}
+}
+
+//把服务端获取到的目录信息存放在localStorage中
+//如果存放到cookie中，则会造成cookie过大，无法通过nginx
+//保存时，需要记录当前保存的时间，下次取出的时候进行比较
+//如果超出默认的时间，则自动清空，重新获取
+function setLocalCategory(value) {
+	var storedTime = (new Date()).toString();
+	localStorage[Wiz_Context.cookie_category] = value;
+	localStorage[Wiz_Context.cookie_category_time] = storedTime;
 }
 
 function getNativeCagetory(userid) {
@@ -185,7 +205,7 @@ function portRequestCategoryAjax(port) {
 	};
 	var callbackSuccess = function(responseJSON) {
 		var categoryStr = responseJSON.categories;
-		Cookie.setCookies(Wiz_Context.cookieUrl, Wiz_Context.cookie_category, categoryStr, Wiz_Context.category_expire);
+		setLocalCategory(categoryStr);
 		if (port) {
 			port.postMessage(categoryStr);
 		}
@@ -377,7 +397,7 @@ function wizSaveNativeContextMenuClick(info, tab) {
 	Wiz_Browser.sendRequest(tab.id, {
 		name: 'preview',
 		op: 'submit',
-		info : {},
+		info : { url: tab.url },
 		type: 'native'
 	});
 }

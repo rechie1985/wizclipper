@@ -26,8 +26,7 @@ window.onload = function() {
 
 	function tabLoadedListener() {
 		chrome.windows.getCurrent(function (win) {
-			chrome.tabs.getSelected(win.id, function (tab) {			
-				console.log(tab.status);
+			chrome.tabs.getSelected(win.id, function (tab) {
 				if (tab && tab.status === 'complete') {
 					Cookie.getCookies(cookieUrl, cookieName, showByCookies, true);
 				} else {

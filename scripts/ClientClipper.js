@@ -59,6 +59,10 @@ var Base64 = {
 
 
 var ClientClipper = function () {
+	var SAVE_CONTENT = 'save_content',
+		SAVE_FULLPAGE = 'save_all',
+		SAVE_SELECTION = 'save_sel',
+		SAVE_URL = 'save_url';
 
 	function wiz_base64Encode(str) {
 		if (!str || str.length < 1) {
@@ -272,10 +276,6 @@ var ClientClipper = function () {
 		return params;
 	}
 
-	var contentCmd = 'save_content',
-		fullpageCmd = 'save_all',
-		selectionCmd = 'save_sel',
-		urlCmd = 'save_url';
 
 
 	function launchClientClipperArticle(info) {
@@ -286,7 +286,7 @@ var ClientClipper = function () {
 			params = wiz_getSelected(window, info.isNative);
 		}
 		info.params = params;
-		info.cmd = contentCmd;
+		info.cmd = SAVE_CONTENT;
 		requestSaveDoc(info);
 	}
 
@@ -298,7 +298,7 @@ var ClientClipper = function () {
 		} else {
 			info.params = body;
 		}
-		info.cmd = fullpageCmd;
+		info.cmd = SAVE_FULLPAGE;
 		requestSaveDoc(info);
 	}
 
@@ -310,7 +310,7 @@ var ClientClipper = function () {
 		} else {
 			info.params = body;
 		}
-		info.cmd = selectionCmd;
+		info.cmd = SAVE_SELECTION;
 		requestSaveDoc(info);
 	}
 
@@ -322,11 +322,14 @@ var ClientClipper = function () {
 		} else {
 			info.params = body;
 		}
-		info.cmd = urlCmd;
+		info.cmd = SAVE_URL;
 		requestSaveDoc(info);
 	}
 
 	function formatParams(url, source_html) {
+		if (!source_html) {
+			return "";
+		}
 		var frame_url = wiz_base64Encode(url);
 		source_html = wiz_base64Encode(source_html);
 		var params = "param-surl='" + frame_url + "' ";
@@ -342,8 +345,8 @@ var ClientClipper = function () {
 	function launchNativeClipper(info) {
 		var isNative = true;
 		var params = wiz_collectAllFrames(window);
-		params = params + wiz_getSelected(window, isNative);
-		var info = info || {};
+		var selectHTML = getSelectedHTML();
+		params = params + formatParams(info.url, selectHTML); 
 		info.isNative = isNative;
 		info.params = params;
 		requestSaveDoc(info, true);

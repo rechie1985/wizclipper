@@ -323,7 +323,6 @@ function ClipPageControl() {
 		var target = evt.target,
 			skipTypes = ['input', 'select', 'textarea'],
 			skipIndex;
-		console.log(evt);
 		for (skipIndex = 0; skipIndex < skipTypes.length; skipIndex++) {
 			if (evt.srcElement.nodeName.toLowerCase() == skipTypes[skipIndex]) {
 				console.log(skipTypes[skipIndex]);
@@ -433,7 +432,6 @@ function ClipPageControl() {
 	}
 
 	function hasNativeClient() {
-		console.log(_hasNative);
 		return _hasNative;
 	}
 

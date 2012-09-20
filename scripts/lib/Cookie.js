@@ -12,7 +12,6 @@ Cookie.setCookies =  function(url, name, value, expireSecond) {
 		var expire = new Date().getTime() / 1000 + expireSecond;
 		param.expirationDate = expire;
 	}
-	console.log(param);
 	chrome.cookies.set(param, function(cookie) {
 	});
 };

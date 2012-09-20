@@ -57,7 +57,6 @@ function LoginControl() {
 				if (msg == false) {
 					msg = chrome.i18n.getMessage('network_wrong');
 				}
-				console.log(msg);
 				PopupView.showLoginError(msg);
 			}
 		});

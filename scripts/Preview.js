@@ -23,7 +23,6 @@ function Wiz_ContentPreview() {
 			var div = document.createElement("div");
 			var img = document.createElement("img");
 			var message = document.createTextNode(" " + chrome.i18n.getMessage(nudgeImgs[i][1]));
-			console.log(chrome.i18n.getMessage(nudgeImgs[i][1]));
 			div.className = "keyIcon";
 			img.src = chrome.extension.getURL("images/nudge-icons/" + nudgeImgs[i][0]);
 			div.appendChild(img);
@@ -670,6 +669,7 @@ function Wiz_ContentPreview() {
 			console.warn("Could not found wiz_clipper object!")
 			return ;
 		}
+		completeImgSrc();
 		switch(type) {
 			case "article" :
 				wiz_clipper.launchClientClipperArticle(info);
@@ -699,6 +699,22 @@ function Wiz_ContentPreview() {
 				//TODO
 		}
 	}
+
+	//剪辑页面之前首先把页面中img的src补全
+	function completeImgSrc() {
+		try {
+			var imgList = document.getElementsByTagName('img');
+			if (!imgList || imgList.length < 1) {
+				return ;
+			}
+			for (var index = 0, length = imgList.length; index < length; index++) {
+				imgList[index].src = imgList[index].src;
+			}
+		} catch (err) {
+			console.log('Preview.completeImgSrc() Error: ' + err);
+		}
+	}
+
 
 	Wiz_Browser.onRequest().addListener(messageHandler);
 

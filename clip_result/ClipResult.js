@@ -115,7 +115,6 @@ function switchNotificationMessageByCmd(cmd, info) {
 function messageHanlder(data, sender, sendResponse) {
 	try {
 		var cmd = data.name;
-		console.log(data.info);
 		switchNotificationMessageByCmd(cmd, data.info);
 	} catch (err) {
 		console.error('ClipResult.switchNotificationMessageByCmd() Error : ' + err);
