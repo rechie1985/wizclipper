@@ -172,5 +172,8 @@
 	},
 	"contentPreview_shrinkSelection": {
 		"message": "\u7F29\u5C0F\u9009\u53D6\u533A\u57DF"
+	},
+	"install_client_notify": {
+		"message": "\u8be5\u529f\u80fd\u9700\u8981\u5b89\u88c5\u6700\u65b0\u7248\u7684wiz\u5ba2\u6237\u7aef\uff0c\u662f\u5426\u8df3\u8f6c\u5230\u4e0b\u8f7d\u9875\u9762?"
 	}
 }

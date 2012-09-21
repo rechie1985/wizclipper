@@ -172,6 +172,9 @@
 	},
 	"contentPreview_shrinkSelection": {
 		"message": "shrink selection"
+	},
+	"install_client_notify": {
+		"message": "The feature need to install the latest version of the wiz client, whether to jump to the download page?"
 	}
 }
 

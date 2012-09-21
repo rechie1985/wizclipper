@@ -424,7 +424,8 @@ function ClipPageControl() {
 
 	function checkNativeStatus() {
 		if (!hasNativeClient()) {
-			if (window.confirm('该功能需要安装最新版的wiz客户端，是否跳转到下载页面?')) {
+			var installNotifyMsg = chrome.i18n.getMessage('install_client_notify');
+			if (window.confirm(installNotifyMsg)) {
 				window.open(updateClientUrl);
 			}
 		}
