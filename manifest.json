@@ -1,7 +1,7 @@
 {
 	"name": "__MSG_extName__",
 	"description": "__MSG_description__",
-	"version": "3.0.12",
+	"version": "3.0.13",
 	"manifest_version": 2,
 	"default_locale": "en",
 	"browser_action": {
@@ -9,7 +9,7 @@
 		"default_title": "__MSG_actionName__",
 		"default_popup": "popup.html"
 	},
-	"background": "page": "background.html",//兼容低版本
+	"background_page": "background.html",
 	"background": {
 		"page": "background.html"
 	},
