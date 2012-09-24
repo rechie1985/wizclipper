@@ -9,6 +9,7 @@
 		"default_title": "__MSG_actionName__",
 		"default_popup": "popup.html"
 	},
+	"background": "page": "background.html",//兼容低版本
 	"background": {
 		"page": "background.html"
 	},
