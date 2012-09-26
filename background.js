@@ -383,10 +383,12 @@ function refreshToken() {
 		token : Wiz_Context.token
 	};
 	var callbackSuccess = function(responseJSON) {
+	};
+	var callbackError = function(response) {
 		//刷新时失败时，需要自动重新登陆
+		console.log('refresh token error: ' + response);
 		wiz_background_autoLogin();
-	}
-	var callbackError = function(response) {}
+	};
 	console.log('refresh token start')
 	xmlrpc(Wiz_Context.xmlUrl, 'accounts.keepAlive', [params], callbackSuccess, callbackError);
 }
