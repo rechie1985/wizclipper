@@ -23,6 +23,7 @@ function onConnectListener(port) {
 		retryClip(port);
 		break;
 	case 'requestCategory':
+		// portRequestCategoryAjax(port);
 		requestCategory(port);
 		break;
 	case 'saveDocument':
@@ -148,12 +149,11 @@ function portLoginAjax(loginParam, port) {
 }
 
 function requestCategory(port) {
-	var nativeCategoryStr = getNativeCagetory(Wiz_Context.user_id),
-		localCategoryStr = getLocalCategory(),
-		categoryStr = (nativeCategoryStr) ? (nativeCategoryStr) : (localCategoryStr);
+	var localCategoryStr = getLocalCategory(),
+		categoryStr = localCategoryStr;
 
 	if (port) {
-		//本地如果为获取到文件夹信息，则获取服务端的文件夹信息
+		本地如果为获取到文件夹信息，则获取服务端的文件夹信息
 		if (categoryStr) {
 			port.postMessage(categoryStr);
 		} else {
@@ -185,17 +185,6 @@ function setLocalCategory(value) {
 	localStorage[Wiz_Context.cookie_category_time] = storedTime;
 }
 
-function getNativeCagetory(userid) {
-	var client = getNativeClient(),
-		categoryStr = null;
-	if (client) {
-		try {
-			categoryStr = client.GetAllFolders(userid);
-		} catch (err) {
-		}
-	}
-	return categoryStr;
-}
 
 function portRequestCategoryAjax(port) {
 	var params = {
