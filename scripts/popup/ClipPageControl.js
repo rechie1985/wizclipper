@@ -83,11 +83,32 @@ function ClipPageControl() {
 				initClipPageListener();
 			}
 			break;
-		case 'PageClipFailure':
-			var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
-			PopupView.showClipFailure(pageClipFailure);
+		case 'pagePreviewFailure':
+			exacutePreviewFailure();
 			break;
 		}
+	}
+
+	function requestPreview() {
+		var port = chrome.extension.connect({
+				name: 'preview'
+			});
+		port.postMessage('article');
+	}
+
+	function exacutePreviewFailure() {
+		chrome.windows.getCurrent(function (win) {
+			chrome.tabs.getSelected(win.id, function (tab) {
+				if (tab && tab.status === 'complete') {
+					//页面资源已经加载完成，未有preview返回，则提示无法剪辑s
+					var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
+					PopupView.showClipFailure(pageClipFailure);
+				} else {
+					//页面加载中，继续执行请求
+					setTimeout(requestPreview, 1000);
+				}
+			});
+		});
 	}
 
 	/**

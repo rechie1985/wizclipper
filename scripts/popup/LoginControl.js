@@ -44,7 +44,7 @@ function LoginControl() {
 				var expiredays;
 				if (keep_passoword.checked) {
 					expiredays = cookieExpiredays;
-				$('#loginoff_div').hide();
+					$('#loginoff_div').hide();
 				}
 				if (!isAutoLogin) {
 					//自动登陆不需要再次设置token

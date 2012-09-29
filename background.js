@@ -221,11 +221,11 @@ function portRequestCategoryAjax(port) {
 /**
  *获取当前页面的tab信息 
  */
-function getTab(callback, direction) {
+function getTab(callback, params) {
 	chrome.windows.getCurrent(function(win) {
 		chrome.tabs.getSelected(win.id, function(tab) {
 			Wiz_Context.tab = tab;
-			callback(tab, direction);
+			callback(tab, params);
 		});
 	});
 }
@@ -317,11 +317,10 @@ function sendTabRequestCallbackByBrowserAction(option) {
 	if (!option) {
 		//当前页面无法剪辑
 		chrome.extension.connect({
-			'name' : 'PageClipFailure'
+			'name' : 'pagePreviewFailure'
 		});
 	}
 }
-
 function sendTabRequestCallbackByContextMenu(option) {
 	if (!option) {
 		var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
@@ -401,7 +400,7 @@ function wizSaveNativeContextMenuClick(info, tab) {
 		op: 'submit',
 		info : { url: tab.url },
 		type: 'native'
-	});
+	}, sendTabRequestCallbackByContextMenu);
 }
 
 function wizSavePageContextMenuClick(info, tab) {
