@@ -13,6 +13,7 @@ window.onload = function() {
 				} else {
 					$('#wiz_login').hide();
 				}
+				clipPageControl.setNativeStatus(msg.hasNative);
 			});
 
 		} else {

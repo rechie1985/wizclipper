@@ -7,9 +7,8 @@ var cookieUrl = 'http://service.wiz.cn/web',
 	updateClientUrl = 'http://www.wiz.cn/wiznote_web_clipper_chrome';
 
 function ClipPageControl() {
-	// 'use strict';
+	'use strict';
 	
-	initNativeStatus();
 	
 	var saveType = localStorage['saveType'],
 		isNative = (saveType && saveType === 'save_to_native') ? true : false,
@@ -320,17 +319,6 @@ function ClipPageControl() {
 
 	function requestCategory() {
 		$('#category_info').bind('click', changeCategoryLoadingStatus);
-		var userid = localStorage[],
-			nativeCategoryStr = null,
-			userid = localStorage['wiz-clip-auth'];
-		//首先请求本地的目录信息
-		if (this._hasNative) {
-			nativeCategoryStr = this.getNativeCategory(userid);
-			if (nativeCategoryStr) {
-				parseWizCategory(nativeCategoryStr);
-				return;
-			} 
-		}
 		//本地目录信息错误，向后台请求目录信息
 		var port = chrome.extension.connect({
 			name: 'requestCategory'
@@ -471,40 +459,10 @@ function ClipPageControl() {
 		return _hasNative;
 	}
 
-	function initNativeStatus() {
-		if (isWinPlatform()) {
-			var client = this.getClient();
-			if (client === null) {
-				this._hasNative = false;
-			}
-			this._hasNative = true;
-		} else {
-			this._hasNative = false;
-		}
+	 
+	function setNativeStatus(hasNative) {
+		_hasNative = hasNative;
 	}
 
-	function getNativeClient() {
-		var client = document.getElementById('wiz-local-app');
-			version = client.Version;
-		if (typeof version === 'undefined') {
-			return null;
-		}
-		return client;
-	}
-
-	function getNativeCategory(userid) {
-		var	categoryStr = null;
-		if (!this._hasNative) {
-			return categoryStr;
-		}
-		var client = getNativeClient();
-		if (client) {
-			try {
-				categoryStr = client.GetAllFolders(userid);
-			} catch (err) {
-			}
-		}
-		return categoryStr;
-	}
-
+	this.setNativeStatus = setNativeStatus;
 }
