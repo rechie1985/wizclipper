@@ -1,3 +1,4 @@
+'use strict';
 var Wiz_Context = {
 	xmlUrl : 'http://service.wiz.cn/wizkm/xmlrpc',
 	cookieUrl : 'http://service.wiz.cn/web',
@@ -8,7 +9,7 @@ var Wiz_Context = {
 	token : null,
 	tab : null,
 	user_id : null
-}
+};
 
 function onConnectListener(port) {
 	var name = port.name;
@@ -27,14 +28,14 @@ function onConnectListener(port) {
 		requestCategory(port);
 		break;
 	case 'saveDocument':
-		port.onMessage.addListener(function(info) {
+		port.onMessage.addListener(function (info) {
 			if (!info) {
 				return;
 			}
 			if (info.isNative === true) {
 				saveToNative(info);
 			} else {
-				if (info.title == null || info.params == null || info.title.toString() === '' || info.params.toString() === '') {
+				if (!info.title|| !info.params) {
 					return;
 				}
 				wizPostDocument(info);
@@ -42,8 +43,8 @@ function onConnectListener(port) {
 		});
 		break;
 	case 'checkLogin':
-		port.onMessage.addListener(function(msg) {
-			if (Wiz_Context.token != null) {
+		port.onMessage.addListener(function (msg) {
+			if (Wiz_Context.token !== null) {
 				getTab(wizRequestPreview);
 				port.postMessage(true);
 			} else {
@@ -79,12 +80,12 @@ function onConnectListener(port) {
 		});
 		break;
 	case 'popupClosed':
-		port.onDisconnect.addListener(function() {
+		port.onDisconnect.addListener(function () {
 			getTab(hideContentVeil);
 		});
 		break;
 	case 'preview':
-		port.onMessage.addListener(function(msg) {
+		port.onMessage.addListener(function (msg) {
 			if (!msg) {
 				return;
 			}
@@ -99,7 +100,7 @@ function onConnectListener(port) {
 	case 'logout':
 		Wiz_Context.token = null;
 		break;
- 	}
+	}
 }
 
 function portLogin(loginParam, port) {
@@ -111,7 +112,7 @@ function portLogin(loginParam, port) {
 function retryClip(port) {
 	//不自动增加cookie时间
 	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, loginByCookies, false);
-	port.onMessage.addListener(function(msg) {
+	port.onMessage.addListener(function (msg) {
 		if (msg && msg.title && msg.params) {
 			wizPostDocument(msg);
 		}
@@ -119,9 +120,9 @@ function retryClip(port) {
 }
 
 function loginByCookies(cookie) {
-	var info = cookie.value;
-	var split_count = info.indexOf('*md5');
-	var loginParam = {};
+	var info = cookie.value,
+		split_count = info.indexOf('*md5'),
+		loginParam = {};
 	loginParam.client_type = 'web3';
 	loginParam.api_version = 3;
 	loginParam.user_id = info.substring(0, split_count);
@@ -130,10 +131,10 @@ function loginByCookies(cookie) {
 }
 
 function portLoginAjax(loginParam, port) {
-	var loginError = function(err) {
+	var loginError = function (err) {
 		port.postMessage(err);
-	}
-	var loginSuccess = function(responseJSON) {
+	};
+	var loginSuccess = function (responseJSON) {
 		Wiz_Context.token = responseJSON.token;
 		if (port) {
 			port.postMessage(true);
@@ -141,7 +142,7 @@ function portLoginAjax(loginParam, port) {
 			var time = 4 * 60 * 1000;
 			setInterval(refreshToken, time);
 		}
-	}
+	};
 	//缓存userid
 	Wiz_Context.user_id = loginParam.user_id;
 	console.log('login');
@@ -153,7 +154,7 @@ function requestCategory(port) {
 		categoryStr = localCategoryStr;
 
 	if (port) {
-		本地如果为获取到文件夹信息，则获取服务端的文件夹信息
+		//本地如果为获取到文件夹信息，则获取服务端的文件夹信息
 		if (categoryStr) {
 			port.postMessage(categoryStr);
 		} else {
@@ -192,18 +193,18 @@ function portRequestCategoryAjax(port) {
 		api_version : 3,
 		token : Wiz_Context.token
 	};
-	var callbackSuccess = function(responseJSON) {
+	var callbackSuccess = function (responseJSON) {
 		var categoryStr = responseJSON.categories;
 		setLocalCategory(categoryStr);
 		if (port) {
 			port.postMessage(categoryStr);
 		}
-	}
-	var callbackError = function(response) {
+	};
+	var callbackError = function (response) {
 		if (port) {
 			port.postMessage(false);
 		}
-	}
+	};
 	xmlrpc(Wiz_Context.xmlUrl, 'category.getAll', [params], callbackSuccess, callbackError);
 }
 
@@ -211,8 +212,8 @@ function portRequestCategoryAjax(port) {
  *获取当前页面的tab信息 
  */
 function getTab(callback, params) {
-	chrome.windows.getCurrent(function(win) {
-		chrome.tabs.getSelected(win.id, function(tab) {
+	chrome.windows.getCurrent(function (win) {
+		chrome.tabs.getSelected(win.id, function (tab) {
 			Wiz_Context.tab = tab;
 			callback(tab, params);
 		});
@@ -236,13 +237,13 @@ function bindKeyDownHandler(tab, direction) {
 
 function wizPostDocument(docInfo) {
 	//整理数据
-	var regexp = /%20/g, 
-		  title = docInfo.title, 
-		  category = docInfo.category, 
-		  comment = docInfo.comment, 
-		  body = docInfo.params;
+	var regexp = /%20/g,
+		title = docInfo.title,
+		category = docInfo.category,
+		comment = docInfo.comment,
+		body = docInfo.params;
 		  
-	if (comment && comment.trim() != '') {
+	if (comment && comment.trim() !== '') {
 		body = comment + '<hr>' + body;
 	}
 	
@@ -250,34 +251,35 @@ function wizPostDocument(docInfo) {
 		category = '/My Notes/';
 	}
 	
-	var requestData = 'title=' + encodeURIComponent(title).replace(regexp,  '+') + '&token_guid=' + encodeURIComponent(Wiz_Context.token).replace(regexp,  '+') 
+	var requestData = 'title=' + encodeURIComponent(title).replace(regexp,  '+') + '&token_guid=' + encodeURIComponent(Wiz_Context.token).replace(regexp,  '+')
 						+ '&body=' + encodeURIComponent(body).replace(regexp,  '+') + '&category=' + encodeURIComponent(category).replace(regexp,  '+');
 
 	//发送给当前tab消息，显示剪辑结果					
 	Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'sync', info: docInfo});
 	
-	var callbackSuccess = function(response) {
+	var callbackSuccess = function (response) {
 		var json = JSON.parse(response);
+		//需要类型转换
 		if (json.return_code != 200) {
 			console.error('sendError : ' + json.return_message);
 			docInfo.errorMsg = json.return_message;
 			
-			Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error' , info: docInfo});
+			Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error', info: docInfo});
 			return;
 		}
 		console.log('success : saveDocument');
 		
-		Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'saved' , info: docInfo});
+		Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'saved', info: docInfo});
 	}
 	
-	var callbackError = function(response) {
+	var callbackError = function (response) {
 		var errorJSON = JSON.parse(response);
 		docInfo.errorMsg = json.return_message;
 
-		Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error' , info: docInfo});
+		Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error', info: docInfo});
 
 		console.error('callback error : ' + json.return_message);
-	}
+	};
 	console.log('post document info');
 	$.ajax({
 		type : 'POST',
@@ -331,7 +333,7 @@ function isLogin() {
  * 获取本地客户端信息
  * @return {[本地客户端]} []
  */
-function getNativeClient () {
+function getNativeClient() {
 	try {
 		var nativeClient = document.getElementById('wiz-local-app'),
 			version = nativeClient.Version;
@@ -339,7 +341,7 @@ function getNativeClient () {
 			return null;
 		}
 		return nativeClient;
-	} catch(err) {
+	} catch (err) {
 		console.log('background.getNativeClient() Error : ' + err);
 		return null;
 	}
@@ -351,7 +353,7 @@ function hasNativeClient() {
 }
 
 function saveToNative(info) {
-	var wizClient = this.getNativeClient();
+	var wizClient = getNativeClient();
 	try {
 		wizClient.Execute(info.params);
 	} catch (err) {
@@ -370,20 +372,20 @@ function refreshToken() {
 		api_version : 3,
 		token : Wiz_Context.token
 	};
-	var callbackSuccess = function(responseJSON) {
+	var callbackSuccess = function (responseJSON) {
 	};
-	var callbackError = function(response) {
+	var callbackError = function (response) {
 		//刷新时失败时，需要自动重新登陆
 		console.log('refresh token error: ' + response);
 		wiz_background_autoLogin();
 	};
-	console.log('refresh token start')
+	console.log('refresh token start');
 	xmlrpc(Wiz_Context.xmlUrl, 'accounts.keepAlive', [params], callbackSuccess, callbackError);
 }
 
 function wizSaveNativeContextMenuClick(info, tab) {
 	Wiz_Context.tab = tab;
-	var wizClient = this.getNativeClient();
+	var wizClient = getNativeClient();
 	Wiz_Browser.sendRequest(tab.id, {
 		name: 'preview',
 		op: 'submit',
@@ -408,7 +410,7 @@ function wizSavePageContextMenuClick(info, tab) {
 function initContextMenus() {
 	var clipPageContext = chrome.i18n.getMessage('contextMenus_clipPage'),
 		allowableUrls = ['http://*/*', 'https://*/*'];
-	var	hasNative = this.getNativeClient();
+	var	hasNative = getNativeClient();
 	
 	if (hasNativeClient()) {
 		chrome.contextMenus.create({
