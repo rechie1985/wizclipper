@@ -8,7 +8,8 @@ var Wiz_Context = {
 	category_expireSec:  10 * 60,
 	token : null,
 	tab : null,
-	user_id : null
+	user_id : null,
+	refresh_token_delay_ms : 5 * 60 * 1000					//token自动保持在线时间间隔
 };
 
 function wiz_onConnectListener(port) {
@@ -151,8 +152,7 @@ function portLoginAjax(loginParam, port, params) {
 		}
 		//只要登陆成功就自动保持在线
 		if (!Wiz_Context.process) {
-			var time = 3 * 60 * 1000;
-			Wiz_Context.process = setInterval(refreshToken, time);
+			Wiz_Context.process = setInterval(refreshToken, Wiz_Context.refresh_token_delay_ms);
 		}
 	};
 	//缓存userid
@@ -339,7 +339,8 @@ function sendTabRequestCallbackByBrowserAction(option) {
 	}
 }
 function sendTabRequestCallbackByContextMenu(option) {
-	if (!option) {
+	//要等页面完全加载后，右键点击仍然无返回，提示无法剪辑
+	if (!option && Wiz_Context.tab.status === 'complete') {
 		var pageClipFailure = chrome.i18n.getMessage('pageClipFailure');
 		alert(pageClipFailure);
 	}
