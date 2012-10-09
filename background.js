@@ -11,7 +11,7 @@ var Wiz_Context = {
 	user_id : null
 };
 
-function onConnectListener(port) {
+function wiz_onConnectListener(port) {
 	var name = port.name;
 	if (!name) {
 		return;
@@ -24,8 +24,8 @@ function onConnectListener(port) {
 		retryClip(port);
 		break;
 	case 'requestCategory':
-		// portRequestCategoryAjax(port);
-		requestCategory(port);
+		// wiz_portRequestCategoryAjax(port);
+		wiz_requestCategory(port);
 		break;
 	case 'saveDocument':
 		port.onMessage.addListener(function (info) {
@@ -111,15 +111,21 @@ function portLogin(loginParam, port) {
 
 function retryClip(port) {
 	//不自动增加cookie时间
-	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, loginByCookies, false);
 	port.onMessage.addListener(function (msg) {
 		if (msg && msg.title && msg.params) {
-			wizPostDocument(msg);
+			Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, wiz_loginByCookies, false, msg);
+			// wizPostDocument(msg);
 		}
 	});
 }
 
-function loginByCookies(cookie) {
+/**
+ * 通过cookie自动登陆
+ * @param  {[type]} cookie [cookie中保存到用户信息]
+ * @param  {[type]} params [文档信息，如果不为空，登陆成功后，调用自动保存]
+ * @return {[type]}        [description]
+ */
+function wiz_loginByCookies(cookie, params) {
 	var info = cookie.value,
 		split_count = info.indexOf('*md5'),
 		loginParam = {};
@@ -127,20 +133,26 @@ function loginByCookies(cookie) {
 	loginParam.api_version = 3;
 	loginParam.user_id = info.substring(0, split_count);
 	loginParam.password = info.substring(split_count + 1);
-	portLogin(loginParam);
+	portLoginAjax(loginParam, null, params);
 }
 
-function portLoginAjax(loginParam, port) {
+function portLoginAjax(loginParam, port, params) {
 	var loginError = function (err) {
 		port.postMessage(err);
 	};
 	var loginSuccess = function (responseJSON) {
 		Wiz_Context.token = responseJSON.token;
+		if (params) {
+			wizPostDocument(params);
+		}
 		if (port) {
 			port.postMessage(true);
 			getTab(wizRequestPreview);
-			var time = 4 * 60 * 1000;
-			setInterval(refreshToken, time);
+		}
+		//只要登陆成功就自动保持在线
+		if (!Wiz_Context.process) {
+			var time = 3 * 60 * 1000;
+			Wiz_Context.process = setInterval(refreshToken, time);
 		}
 	};
 	//缓存userid
@@ -149,8 +161,8 @@ function portLoginAjax(loginParam, port) {
 	xmlrpc(Wiz_Context.xmlUrl, 'accounts.clientLogin', [loginParam], loginSuccess, loginError);
 }
 
-function requestCategory(port) {
-		var nativeCategoryStr = getNativeCagetory(Wiz_Context.user_id),
+function wiz_requestCategory(port) {
+	var nativeCategoryStr = getNativeCagetory(Wiz_Context.user_id),
 		localCategoryStr = getLocalCategory(),
 		categoryStr = (nativeCategoryStr) ? (nativeCategoryStr) : (localCategoryStr);
 
@@ -159,7 +171,7 @@ function requestCategory(port) {
 		if (categoryStr) {
 			port.postMessage(categoryStr);
 		} else {
-			portRequestCategoryAjax(port);
+			wiz_portRequestCategoryAjax(port);
 		}
 	}
 }
@@ -199,7 +211,7 @@ function getNativeCagetory(userid) {
 }
 
 
-function portRequestCategoryAjax(port) {
+function wiz_portRequestCategoryAjax(port) {
 	var params = {
 		client_type : 'web3',
 		api_version : 3,
@@ -209,12 +221,14 @@ function portRequestCategoryAjax(port) {
 		var categoryStr = responseJSON.categories;
 		setLocalCategory(categoryStr);
 		if (port) {
-			port.postMessage(categoryStr);
+			port.postMessage(false);
 		}
 	};
 	var callbackError = function (response) {
 		if (port) {
-			port.postMessage(false);
+			//失败后，应该自动重新获取
+			// port.postMessage(false); 这样会导致显示错误，目录显示为als
+			wiz_portRequestCategoryAjax(port);
 		}
 	};
 	xmlrpc(Wiz_Context.xmlUrl, 'category.getAll', [params], callbackSuccess, callbackError);
@@ -379,6 +393,7 @@ function saveToNative(info) {
  *延长token时间
  */
 function refreshToken() {
+	console.log('refresh token start');
 	var params = {
 		client_type : 'web3',
 		api_version : 3,
@@ -391,7 +406,6 @@ function refreshToken() {
 		console.log('refresh token error: ' + response);
 		wiz_background_autoLogin();
 	};
-	console.log('refresh token start');
 	xmlrpc(Wiz_Context.xmlUrl, 'accounts.keepAlive', [params], callbackSuccess, callbackError);
 }
 
@@ -425,7 +439,7 @@ function wizSavePageContextMenuClick(info, tab) {
 	}
 }
 
-function initContextMenus() {
+function wiz_initContextMenus() {
 	var clipPageContext = chrome.i18n.getMessage('contextMenus_clipPage'),
 		allowableUrls = ['http://*/*', 'https://*/*'];
 	var	hasNative = getNativeClient();
@@ -448,9 +462,9 @@ function initContextMenus() {
 }
 
 function wiz_background_autoLogin() {
-	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, loginByCookies, true);
+	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, wiz_loginByCookies, true);
 }
 
-chrome.extension.onConnect.addListener(onConnectListener);
-initContextMenus();
+chrome.extension.onConnect.addListener(wiz_onConnectListener);
+wiz_initContextMenus();
 wiz_background_autoLogin();
