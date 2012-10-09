@@ -7,7 +7,7 @@
 
 var GlobalUtils = {};
 (function(){
-  "use strict";
+  // "use strict";
 
   var urlMatcher = /^(.*?):\/\/((www\.)?(.*?))(:\d+)?(\/.*?)(\?.*)?$/;
 

@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 var Base64 = {
 	// private property
 	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",

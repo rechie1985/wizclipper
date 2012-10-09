@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 var Wiz_Context = {
 	xmlUrl : 'http://service.wiz.cn/wizkm/xmlrpc',
 	cookieUrl : 'http://service.wiz.cn/web',

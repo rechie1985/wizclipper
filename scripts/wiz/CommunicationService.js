@@ -3,7 +3,7 @@
  */
 window.WizService = window.WizService || {};
 WizService = {
-	'use strict';
+	// 'use strict';
 	ajaxUrl : 'http://service.wiz.cn/wizkm/xmlrpc',
 	ajaxDoCmd : function(cmd, requestData, callSuccess, callError, callFinally, isAsync) {
 		$.ajax(

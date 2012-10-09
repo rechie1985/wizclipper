@@ -7,7 +7,7 @@ var cookieUrl = 'http://service.wiz.cn/web',
 	updateClientUrl = 'http://www.wiz.cn/wiznote_web_clipper_chrome';
 
 function ClipPageControl() {
-	'use strict';
+	// 'use strict';
 	
 	
 	var saveType = localStorage['saveType'],

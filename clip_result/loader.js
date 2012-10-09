@@ -1,5 +1,5 @@
 function ClipResult() {
-	'use strict';
+	// 'use strict';
 	var iframe;
 
 	function removeIFrame() {
