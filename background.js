@@ -407,14 +407,20 @@ function wizSaveNativeContextMenuClick(info, tab) {
 }
 
 function wizSavePageContextMenuClick(info, tab) {
+	var type = 'fullPage';
 	Wiz_Context.tab = tab;
+
+	//判断是否用户手动选择
+	if (info.selectionText) {
+		type = 'selection';
+	}
 	if (isLogin()) {
 		info.title = tab.title;
 		Wiz_Browser.sendRequest(tab.id, {
 			name : 'preview',
 			op : 'submit',
 			info : info,
-			type : 'fullPage'
+			type : type
 		}, sendTabRequestCallbackByContextMenu);
 	}
 }
