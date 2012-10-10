@@ -8,17 +8,17 @@ window.onload = function() {
 				name : 'initRequest'
 			});
 			port.onMessage.addListener(function (msg) {
-				if (msg.login == false) {
-					loginControl.autoLogin(cookies);
-				} else {
-					$('#wiz_login').hide();
-				}
+				//2012-10-10
+				// if (msg.login == false) {
+				// 	loginControl.autoLogin(cookies);
+				// } else {
+				$('#wiz_login').hide();
+				// }
 				clipPageControl.setNativeStatus(msg.hasNative);
 			});
 
 		} else {
 			PopupView.showLogin();
-			
 			loginControl.initCreateAccountLink();
 		}
 	}

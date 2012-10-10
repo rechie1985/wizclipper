@@ -30,16 +30,20 @@ function wiz_onConnectListener(port) {
 		break;
 	case 'saveDocument':
 		port.onMessage.addListener(function (info) {
-			if (!info) {
+			console.log(info);
+			if (!info ) {
 				return;
 			}
 			if (info.isNative === true) {
+				//调用本地客户单保存，不需要进行登陆
 				saveToNative(info);
 			} else {
-				if (!info.title|| !info.params) {
+				if ( !info.title|| !info.params) {
 					return;
 				}
-				wizPostDocument(info);
+				//登陆成功后保存
+				saveToServer(info);
+				// wizPostDocument(info);
 			}
 		});
 		break;
@@ -61,14 +65,14 @@ function wiz_onConnectListener(port) {
 				token : Wiz_Context.token,
 				hasNative : hasNative
 			};
-		if (Wiz_Context.token) {
-			getTab(wizRequestPreview);
-			info.login = true;
-			port.postMessage(info);
-		} else {
-			info.login = false;
-			port.postMessage(info);
-		}
+		// if (Wiz_Context.token) {
+		getTab(wizRequestPreview);
+		// 	info.login = true;
+		// 	port.postMessage(info);
+		// } else {
+		// 	info.login = false;
+		port.postMessage(info);
+		// }
 		break;
 	case 'onkeydown':
 		port.onMessage.addListener(function (msg) {
@@ -114,7 +118,8 @@ function retryClip(port) {
 	//不自动增加cookie时间
 	port.onMessage.addListener(function (msg) {
 		if (msg && msg.title && msg.params) {
-			Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, wiz_loginByCookies, false, msg);
+			saveToServer(msg);
+			// Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, wiz_loginByCookies, false, msg);
 			// wizPostDocument(msg);
 		}
 	});
@@ -137,6 +142,7 @@ function wiz_loginByCookies(cookie, params) {
 	portLoginAjax(loginParam, null, params);
 }
 
+
 function portLoginAjax(loginParam, port, params) {
 	var loginError = function (err) {
 		port.postMessage(err);
@@ -151,9 +157,12 @@ function portLoginAjax(loginParam, port, params) {
 			getTab(wizRequestPreview);
 		}
 		//只要登陆成功就自动保持在线
-		if (!Wiz_Context.process) {
-			Wiz_Context.process = setInterval(refreshToken, Wiz_Context.refresh_token_delay_ms);
-		}
+		//服务端会一直保持该token对象在内存中
+		//用户量大的时候，会导致服务端压力过大
+		//TODO 以后token有效期延长时，可以使用该方法
+		// if (!Wiz_Context.process) {
+		// 	Wiz_Context.process = setInterval(refreshToken, Wiz_Context.refresh_token_delay_ms);
+		// }
 	};
 	//缓存userid
 	Wiz_Context.user_id = loginParam.user_id;
@@ -347,13 +356,15 @@ function sendTabRequestCallbackByContextMenu(option) {
 }
 
 var authenticationErrorMsg = chrome.i18n.getMessage('AuthenticationFailure');
+
 function isLogin() {
-	if (Wiz_Context.token === null) {
-		alert(authenticationErrorMsg);
-		return false;
-	} else {
-		return true;
-	}
+	// if (Wiz_Context.token === null) {
+	// 	alert(authenticationErrorMsg);
+	// 	return false;
+	// } else {
+	// 2012-10-10修改登陆逻辑
+	return true;
+	// }
 }
 
 /**
@@ -389,6 +400,11 @@ function saveToNative(info) {
 	console.log('Saved To Native Client');
 }
 
+function saveToServer(info) {
+	//1、登陆到服务器
+	//2、登陆返回成功后，postDocument
+	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, wiz_loginByCookies, true, info);
+}
 
 /**
  *延长token时间
@@ -468,4 +484,4 @@ function wiz_background_autoLogin() {
 
 chrome.extension.onConnect.addListener(wiz_onConnectListener);
 wiz_initContextMenus();
-wiz_background_autoLogin();
+// wiz_background_autoLogin();
