@@ -43,23 +43,29 @@ var xmlrpc = function(server, method, params, callback, callErr, callFinal) {
 
                 var ret = null;
                 try {
-                    if (request.responseXML)
+                    console.log(request);
+                    if (request.responseXML) {
                         ret = xmlrpc.parseResponse(request.responseXML);
+                    console.log(ret);}
                     else
                         throw "bad xml: '" + request.responseText + "'";
                 } catch (err) {
+                    console.log(request);
                     err.message = "xmlrpc: " + err.message;
                     callErr(err);
                     throw err;
                 }
 
-                try {
-                    callback(ret);
-                } catch (err) {
-                    err.message = "callback: " + err.message;
-                    callErr(err);
-                    throw err;
-                }
+                //调用callback不用xmlrpc来捕获异常，否则会调用成功后还调用callError
+                //如果上层代码写的有问题，会造成死循环
+                // try {
+                //     console.log('ok');
+                callback(ret);
+                // } catch (err) {
+                //     err.message = "callback: " + err.message;
+                //     callErr(err);
+                //     throw err;
+                // }
             } finally {
                 if (callFinal)
                     callFinal();

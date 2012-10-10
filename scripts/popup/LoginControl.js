@@ -22,7 +22,7 @@ function LoginControl() {
 		var info = cookie.value;
 		var split_count = info.indexOf('*md5');
 		var loginParam = new Object();
-		loginParam.client_type = 'web4';
+		loginParam.client_type = 'webclip_chrome';
 		loginParam.api_version = 3;
 		loginParam.user_id = info.substring(0, split_count);
 		loginParam.password = info.substring(split_count + 1);
@@ -66,7 +66,7 @@ function LoginControl() {
 		PopupView.showWaiting(loginingMsg);
 
 		var loginParam = new Object();
-		loginParam.client_type = 'web4';
+		loginParam.client_type = 'webclip_chrome';
 		loginParam.api_version = 3;
 		loginParam.user_id = user_id.value;
 		loginParam.password = 'md5.' + hex_md5(password.value);

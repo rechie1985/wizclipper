@@ -1,12 +1,12 @@
 // 'use strict';
 var Wiz_Context = {
-	xmlUrl : 'http://service.wiz.cn/wizkm/xmlrpc',
+	xmlUrl : 'http://webclip.openapi.wiz.cn/wizkm/xmlrpc',
 	cookieUrl : 'http://service.wiz.cn/web',
 	cookieName : 'wiz-clip-auth',
 	cookie_category: 'wiz-all-category',
 	cookie_category_time: 'wiz-category-stored-time',
 	category_expireSec:  10 * 60,
-	token : null,
+	token : '',												//token初始值不能设置为null，会造成xmlrpc无法解析，返回错误
 	tab : null,
 	user_id : null,
 	refresh_token_delay_ms : 5 * 60 * 1000					//token自动保持在线时间间隔
@@ -26,7 +26,12 @@ function wiz_onConnectListener(port) {
 		break;
 	case 'requestCategory':
 		// wiz_portRequestCategoryAjax(port);
-		wiz_requestCategory(port);
+		// token不能为空否则会造成
+		// 
+		console.log(Wiz_Context.token);
+		if (Wiz_Context.token) {
+			wiz_requestCategory(port);
+		}
 		break;
 	case 'saveDocument':
 		port.onMessage.addListener(function (info) {
@@ -135,7 +140,7 @@ function wiz_loginByCookies(cookie, params) {
 	var info = cookie.value,
 		split_count = info.indexOf('*md5'),
 		loginParam = {};
-	loginParam.client_type = 'web4';
+	loginParam.client_type = 'webclip_chrome';
 	loginParam.api_version = 3;
 	loginParam.user_id = info.substring(0, split_count);
 	loginParam.password = info.substring(split_count + 1);
@@ -145,16 +150,26 @@ function wiz_loginByCookies(cookie, params) {
 
 function portLoginAjax(loginParam, port, params) {
 	var loginError = function (err) {
-		port.postMessage(err);
+		try {
+			if (port) {
+				port.postMessage(err);
+			}
+		} catch (error) {
+			console.log('portLoginAjax callError Error: ' + error);
+		}
 	};
 	var loginSuccess = function (responseJSON) {
-		Wiz_Context.token = responseJSON.token;
-		if (params) {
-			wizPostDocument(params);
-		}
-		if (port) {
-			port.postMessage(true);
-			getTab(wizRequestPreview);
+		try {
+			Wiz_Context.token = responseJSON.token;
+			if (params) {
+				wizPostDocument(params);
+			}
+			if (port) {
+				port.postMessage(true);
+				getTab(wizRequestPreview);
+			}
+		} catch (error) {
+			console.log('portLoginAjax callSuccess Error: ' + error);
 		}
 		//只要登陆成功就自动保持在线
 		//服务端会一直保持该token对象在内存中
@@ -175,8 +190,10 @@ function wiz_requestCategory(port) {
 		localCategoryStr = getLocalCategory(),
 		categoryStr = (nativeCategoryStr) ? (nativeCategoryStr) : (localCategoryStr);
 
-	if (port) {
+	//必须校验token，否则会传入null进去，代码不健壮会造成死循环
+	if (port && Wiz_Context.token) {
 		//本地如果为获取到文件夹信息，则获取服务端的文件夹信息
+		// console.log('wiz_requestCategory categoryStr: ' + categoryStr);
 		if (categoryStr) {
 			port.postMessage(categoryStr);
 		} else {
@@ -222,23 +239,31 @@ function getNativeCagetory(userid) {
 
 function wiz_portRequestCategoryAjax(port) {
 	var params = {
-		client_type : 'web4',
+		client_type : 'webclip_chrome',
 		api_version : 3,
 		token : Wiz_Context.token
 	};
 	var callbackSuccess = function (responseJSON) {
-		var categoryStr = responseJSON.categories;
-		setLocalCategory(categoryStr);
-		if (port) {
-			port.postMessage(false);
+		try {
+			console.log('wiz_portRequestCategoryAjax callbackSuccess');
+			var categoryStr = responseJSON.categories;
+			setLocalCategory(categoryStr);
+			if (port) {
+				port.postMessage(categoryStr);
+			}
+		} catch (err) {
+			console.log('wiz_portRequestCategoryAjax callbackSuccess Error: ' + err);
 		}
 	};
 	var callbackError = function (response) {
-		if (port) {
-			//失败后，应该自动重新获取
-			// port.postMessage(null); //不能返回false.这样会导致显示错误，目录显示为als
-			// 
-			// wiz_portRequestCategoryAjax(port);
+		console.log('wiz_portRequestCategoryAjax callbackError');
+		try {
+			if (port) {
+				//失败后，应该自动重新获取
+				// port.postMessage(false); 这样会导致显示错误，目录显示为als
+			}
+		} catch (err) {
+			console.log('wiz_requestCategory callError Error: ' + err);
 		}
 	};
 	xmlrpc(Wiz_Context.xmlUrl, 'category.getAll', [params], callbackSuccess, callbackError);
@@ -294,34 +319,42 @@ function wizPostDocument(docInfo) {
 	Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'sync', info: docInfo});
 	
 	var callbackSuccess = function (response) {
-		var json = JSON.parse(response);
-		//需要类型转换
-		if (json.return_code != 200) {
-			console.error('sendError : ' + json.return_message);
-			docInfo.errorMsg = json.return_message;
+		try {
+			var json = JSON.parse(response);
+			//需要类型转换
+			if (json.return_code != 200) {
+				console.error('sendError : ' + json.return_message);
+				docInfo.errorMsg = json.return_message;
+				
+				Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error', info: docInfo});
+				return;
+			}
+			console.log('success : saveDocument');
 			
-			Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error', info: docInfo});
-			return;
+			Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'saved', info: docInfo});
+		} catch (err) {
+			console.log('wizPostDocument callbackSuccess Error: ' + err);
 		}
-		console.log('success : saveDocument');
-		
-		Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'saved', info: docInfo});
 	}
 	
 	var callbackError = function (response) {
 		//TODO 使用闭包，自动重试3次，如果3次均失败，再提示用户
 		//需要重构
-		var errorJSON = JSON.parse(response);
-		docInfo.errorMsg = json.return_message;
+		try {
+			var errorJSON = JSON.parse(response);
+			docInfo.errorMsg = json.return_message;
 
-		Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error', info: docInfo});
+			Wiz_Browser.sendRequest(Wiz_Context.tab.id, {name: 'error', info: docInfo});
 
-		console.error('callback error : ' + json.return_message);
+			console.error('callback error : ' + json.return_message);
+		} catch (err) {
+			console.log('wizPostDocument callbackError Error: ' + err);
+		}
 	};
 	console.log('post document info');
 	$.ajax({
 		type : 'POST',
-		url : 'http://service.wiz.cn/wizkm/a/web/post?',
+		url : 'http://webclip.openapi.wiz.cn/wizkm/a/web/post?',
 		data : requestData,
 		success : callbackSuccess,
 		error : callbackError
@@ -407,26 +440,6 @@ function saveToServer(info) {
 	//1、登陆到服务器
 	//2、登陆返回成功后，postDocument
 	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, wiz_loginByCookies, true, info);
-}
-
-/**
- *延长token时间
- */
-function refreshToken() {
-	console.log('refresh token start');
-	var params = {
-		client_type : 'web4',
-		api_version : 3,
-		token : Wiz_Context.token
-	};
-	var callbackSuccess = function (responseJSON) {
-	};
-	var callbackError = function (response) {
-		//刷新时失败时，需要自动重新登陆
-		console.log('refresh token error: ' + response);
-		wiz_background_autoLogin();
-	};
-	xmlrpc(Wiz_Context.xmlUrl, 'accounts.keepAlive', [params], callbackSuccess, callbackError);
 }
 
 function wizSaveNativeContextMenuClick(info, tab) {
