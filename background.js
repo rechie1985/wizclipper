@@ -135,7 +135,7 @@ function wiz_loginByCookies(cookie, params) {
 	var info = cookie.value,
 		split_count = info.indexOf('*md5'),
 		loginParam = {};
-	loginParam.client_type = 'web3';
+	loginParam.client_type = 'web4';
 	loginParam.api_version = 3;
 	loginParam.user_id = info.substring(0, split_count);
 	loginParam.password = info.substring(split_count + 1);
@@ -222,7 +222,7 @@ function getNativeCagetory(userid) {
 
 function wiz_portRequestCategoryAjax(port) {
 	var params = {
-		client_type : 'web3',
+		client_type : 'web4',
 		api_version : 3,
 		token : Wiz_Context.token
 	};
@@ -236,8 +236,9 @@ function wiz_portRequestCategoryAjax(port) {
 	var callbackError = function (response) {
 		if (port) {
 			//失败后，应该自动重新获取
-			// port.postMessage(false); 这样会导致显示错误，目录显示为als
-			wiz_portRequestCategoryAjax(port);
+			// port.postMessage(null); //不能返回false.这样会导致显示错误，目录显示为als
+			// 
+			// wiz_portRequestCategoryAjax(port);
 		}
 	};
 	xmlrpc(Wiz_Context.xmlUrl, 'category.getAll', [params], callbackSuccess, callbackError);
@@ -414,7 +415,7 @@ function saveToServer(info) {
 function refreshToken() {
 	console.log('refresh token start');
 	var params = {
-		client_type : 'web3',
+		client_type : 'web4',
 		api_version : 3,
 		token : Wiz_Context.token
 	};

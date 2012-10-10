@@ -70,6 +70,7 @@ var xmlrpc = function(server, method, params, callback, callErr, callFinal) {
     };
 
     var sending = xmlrpc.writeCall(method, params);
+    console.log(sending);
     request.send(sending);
 };
 
