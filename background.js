@@ -200,7 +200,7 @@ function wiz_requestCategory(port) {
 			//已经登陆的，直接调用获取目录信息
 			if (Wiz_Context.token) {
 				wiz_portRequestCategoryAjax(port);
-			} eles {
+			} else {
 				//TODO 1、登陆，成功后调用wiz_portRequestCategoryAjax();
 			}
 		}
@@ -505,4 +505,4 @@ function wiz_background_autoLogin() {
 
 chrome.extension.onConnect.addListener(wiz_onConnectListener);
 wiz_initContextMenus();
-// wiz_background_autoLogin();
+wiz_background_autoLogin();

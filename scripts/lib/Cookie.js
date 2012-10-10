@@ -25,7 +25,11 @@ Cookie.getCookies = function(url, key, callback, isAutoDelay, params) {
 			var expiredays = cookieExpiredays;
 			Cookie.setCookies(url, key, cookies.value, expiredays);
 		}
-		callback(cookies, params);
+		if (params) {
+			callback(cookies, params);
+		} else {
+			callback(cookies);
+		}
 	});
 };
 Cookie.removeCookies = function(url, key, callback) {
