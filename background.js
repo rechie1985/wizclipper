@@ -29,9 +29,9 @@ function wiz_onConnectListener(port) {
 		// token不能为空否则会造成
 		// 
 		console.log(Wiz_Context.token);
-		if (Wiz_Context.token) {
-			wiz_requestCategory(port);
-		}
+		// if (Wiz_Context.token) {
+		wiz_requestCategory(port);
+		// }
 		break;
 	case 'saveDocument':
 		port.onMessage.addListener(function (info) {
@@ -191,13 +191,18 @@ function wiz_requestCategory(port) {
 		categoryStr = (nativeCategoryStr) ? (nativeCategoryStr) : (localCategoryStr);
 
 	//必须校验token，否则会传入null进去，代码不健壮会造成死循环
-	if (port && Wiz_Context.token) {
+	if (port) {
 		//本地如果为获取到文件夹信息，则获取服务端的文件夹信息
 		// console.log('wiz_requestCategory categoryStr: ' + categoryStr);
 		if (categoryStr) {
 			port.postMessage(categoryStr);
 		} else {
-			wiz_portRequestCategoryAjax(port);
+			//已经登陆的，直接调用获取目录信息
+			if (Wiz_Context.token) {
+				wiz_portRequestCategoryAjax(port);
+			} eles {
+				//TODO 1、登陆，成功后调用wiz_portRequestCategoryAjax();
+			}
 		}
 	}
 }
