@@ -308,6 +308,8 @@ function wizPostDocument(docInfo) {
 	}
 	
 	var callbackError = function (response) {
+		//TODO 使用闭包，自动重试3次，如果3次均失败，再提示用户
+		//需要重构
 		var errorJSON = JSON.parse(response);
 		docInfo.errorMsg = json.return_message;
 
