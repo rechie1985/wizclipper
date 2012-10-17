@@ -669,7 +669,12 @@ function Wiz_ContentPreview() {
 			console.warn("Could not found wiz_clipper object!")
 			return ;
 		}
+
+		//保存之前，把当前网页中img的src补全，否则相对地址会无法正常显示
 		completeImgSrc();
+		//把之前显示的result iframe去除掉再保存
+		clipResult.removeIframe();
+		
 		switch(type) {
 			case "article" :
 				wiz_clipper.launchClientClipperArticle(info);
