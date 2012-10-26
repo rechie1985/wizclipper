@@ -19,6 +19,9 @@ input, textarea, select, button {
 	display: inline-block;
 	text-align: -webkit-auto;
 }
+option:disabled {
+	color: graytext;
+}
 
 /*隐藏聚焦时显示的黄色边框*/
 input, button, select, textarea, ul, li {

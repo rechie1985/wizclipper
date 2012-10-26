@@ -1,165 +1,78 @@
 {
-	"actionName": {
-		"message": "WizNote Web Clipper"
+	"AuthenticationFailure": {
+		"message": "Before you clip the page. Please sign in using the toolbar button, and try again. "
 	},
-	"extName": {
-		"message": "WizNote Web Clipper"
+	"Completed": {
+		"message": "Completed"
 	},
-	"description": {
-		"message": "The extension “Wiz Note” can help you to save the web content or the whole website in your own account."
+	"DeletedItems": {
+		"message": "Deleted Items"
 	},
-	"popup_wating": {
-		"message": "Waiting page..."
+	"Inbox": {
+		"message": "Inbox"
 	},
-	"user_id_tip": {
-		"message": "Account: "
-	},
-	"user_id_help": {
-		"message": "(email or mobile)"
-	},
-	"userid_error": {
-		"message": "Invalid user name"
-	},
-	"password_tip": {
-		"message": "Password: "
-	},
-	"keep_password_tip": {
-		"message": "Remember me"
-	},
-	"login_msg": {
-		"message": "   Sign in   "
-	},
-	"note_title_tip": {
-		"message": "Title: "
-	},
-	"category_tip": {
-		"message": "Folder: "
-	},
-	"tag_tip": {
-		"message": "Tags: "
-	},
-	"tag_input": {
-		"message": "Input tag: "
-	},
-	"note_submit": {
-		"message": "   Commit   "
-	},
-	"logining": {
-		"message": "Logining"
-	},
-	"article_save": {
-		"message": "Save Article"
-	},
-	"fullpage_save": {
-		"message": "Save Full Page"
-	},
-	"select_save": {
-		"message": "Save Selected"
-	},
-	"url_save": {
-		"message": "Save URL"
-	},
-	"network_wrong" : {
-		"message" : "Network is not available. Please try again after checking"
-	},
-	"add_tag" : {
-		"message" : "Add tag"
-	},
-	"comment_tip" : {
-		"message" : "Comment: "
-	},
-	"password_error" : {
-		"message" : "Invalid Password"
-	},
-	"add_comment" : {
-		"message" : "Add comment"
-	},
-	"MyNotes": {
-		"message": "My Notes"
-	},
-	"MyMobiles": {
-		"message": "My Mobiles"
+	"MyContacts": {
+		"message": "My Contacts"
 	},
 	"MyDrafts": {
 		"message": "My Drafts"
 	},
-	"MyJournals" : {
-		"message" : "My Journals"
-	},
-	"MyEvents" : {
-		"message" : "My Events"
-	},
-	"MyContacts" : {
-		"message" : "My Contacts"
-	},
-	"MyTasks" : {
-		"message" : "My Tasks"
-	},
-	"DeletedItems" : {
-		"message" : "Deleted Items"
-	},
-	"MyStickyNotes" : {
-		"message" : "My Sticky Notes"
-	},
-	"Inbox": {
-		"message" : "Inbox"
-	},
-	"Completed" : {
-		"message" : "Completed"
-	},
-	"MyPhotos" : {
-		"message" : "My Photos"
-	},
 	"MyEmails": {
-		"message" : "My Emails"
+		"message": "My Emails"
 	},
-	"logout": {
-		"message" : "Sign out"
+	"MyEvents": {
+		"message": "My Events"
 	},
-	"clipResult_clipping" : {
-		"message" : "Clipping"
+	"MyJournals": {
+		"message": "My Journals"
 	},
-	"clipResult_sync" : {
-		"message" : "Syncing"
+	"MyMobiles": {
+		"message": "My Mobiles"
 	},
-	"clipResult_success": {
-		"message" : "Clipped"
+	"MyNotes": {
+		"message": "My Notes"
 	},
-	"clipResult_error": {
-		"message" : "Save Error"
-	}, 
-	"AuthenticationFailure" : {
-		"message" : "Before you clip the page. Please sign in using the toolbar button, and try again. "
+	"MyPhotos": {
+		"message": "My Photos"
 	},
-	"contextMenus_clipPage" : {
-		"message" : "Save To WizNote"
+	"MyStickyNotes": {
+		"message": "My Sticky Notes"
 	},
-	"contextMenus_clipSelection": {
-		"message" : "Clip Selection"
+	"MyTasks": {
+		"message": "My Tasks"
 	},
-	"contextMenus_clipUrl": {
-		"message" : "Clip URL"
+	"actionName": {
+		"message": "WizNote Web Clipper"
 	},
-	"create_account_link": {
-		"message" : "Create WizNote Account"
+	"add_comment": {
+		"message": "Add comment"
 	},
-	"pageClipFailure": {
-		"message" : "Can not clip this page"
+	"add_tag": {
+		"message": "Add tag"
+	},
+	"article_save": {
+		"message": "Save Article"
 	},
 	"category_loading": {
-		"message" : "Loading category,please wait"
+		"message": "Loading category,please wait"
 	},
-	"retry_clip_button" : {
-		"message" : "Retry"
+	"category_tip": {
+		"message": "Folder: "
 	},
-	"save_to_native" : {
-		"message" : "Save to PC Client"
+	"clipResult_clipping": {
+		"message": "Clipping"
 	},
-	"save_to_server" : {
-		"message" : "Save to Server"
+	"clipResult_error": {
+		"message": "Save Error"
 	},
-	"save_more" : {
-		"message" : "More"
+	"clipResult_success": {
+		"message": "Clipped"
+	},
+	"clipResult_sync": {
+		"message": "Syncing"
+	},
+	"comment_tip": {
+		"message": "Comment: "
 	},
 	"contentPreview_clipArticle": {
 		"message": "clip article"
@@ -173,9 +86,94 @@
 	"contentPreview_shrinkSelection": {
 		"message": "shrink selection"
 	},
+	"contextMenus_clipPage": {
+		"message": "Save To WizNote"
+	},
+	"contextMenus_clipSelection": {
+		"message": "Clip Selection"
+	},
+	"contextMenus_clipUrl": {
+		"message": "Clip URL"
+	},
+	"create_account_link": {
+		"message": "Create WizNote Account"
+	},
+	"description": {
+		"message": "The extension “Wiz Note” can help you to save the web content or the whole website in your own account."
+	},
+	"extName": {
+		"message": "WizNote Web Clipper"
+	},
+	"fullpage_save": {
+		"message": "Save Full Page"
+	},
 	"install_client_notify": {
 		"message": "The feature need to install the latest version of the wiz client, whether to jump to the download page?"
+	},
+	"keep_password_tip": {
+		"message": "Remember me"
+	},
+	"login_msg": {
+		"message": "   Sign in   "
+	},
+	"logining": {
+		"message": "Logining"
+	},
+	"logout": {
+		"message": "Sign out"
+	},
+	"network_wrong": {
+		"message": "Network is not available. Please try again after checking"
+	},
+	"note_submit": {
+		"message": "   Commit   "
+	},
+	"note_title_tip": {
+		"message": "Title: "
+	},
+	"pageClipFailure": {
+		"message": "Can not clip this page"
+	},
+	"password_error": {
+		"message": "Invalid Password"
+	},
+	"password_tip": {
+		"message": "Password: "
+	},
+	"popup_wating": {
+		"message": "Waiting page..."
+	},
+	"retry_clip_button": {
+		"message": "Retry"
+	},
+	"save_more": {
+		"message": "More"
+	},
+	"save_to_native": {
+		"message": "Save to PC Client"
+	},
+	"save_to_server": {
+		"message": "Save to Server"
+	},
+	"select_save": {
+		"message": "Save Selected"
+	},
+	"tag_input": {
+		"message": "Input tag: "
+	},
+	"tag_tip": {
+		"message": "Tags: "
+	},
+	"url_save": {
+		"message": "Save URL"
+	},
+	"user_id_help": {
+		"message": "(email or mobile)"
+	},
+	"user_id_tip": {
+		"message": "Account: "
+	},
+	"userid_error": {
+		"message": "Invalid user name"
 	}
 }
-
-
