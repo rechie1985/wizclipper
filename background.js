@@ -9,7 +9,8 @@ var Wiz_Context = {
 	token : '',												//token初始值不能设置为null，会造成xmlrpc无法解析，返回错误
 	tab : null,
 	user_id : null,
-	refresh_token_delay_ms : 5 * 60 * 1000					//token自动保持在线时间间隔
+	refresh_token_delay_ms : 5 * 60 * 1000,					//token自动保持在线时间间隔
+	cookies: null
 };
 
 function wiz_onConnectListener(port) {
@@ -137,6 +138,11 @@ function retryClip(port) {
  * @return {[type]}        [description]
  */
 function wiz_loginByCookies(cookie, params) {
+	loginParam = getloginParam(cookie);
+	portLoginAjax(loginParam, null, params);
+}
+
+function getloginParam(cookie) {
 	var info = cookie.value,
 		split_count = info.indexOf('*md5'),
 		loginParam = {};
@@ -144,11 +150,11 @@ function wiz_loginByCookies(cookie, params) {
 	loginParam.api_version = 3;
 	loginParam.user_id = info.substring(0, split_count);
 	loginParam.password = info.substring(split_count + 1);
-	portLoginAjax(loginParam, null, params);
+	return loginParam;
 }
 
 
-function portLoginAjax(loginParam, port, params) {
+function portLoginAjax(loginParam, port, params, callback) {
 	var loginError = function (err) {
 		try {
 			if (port) {
@@ -167,6 +173,9 @@ function portLoginAjax(loginParam, port, params) {
 			if (port) {
 				port.postMessage(true);
 				getTab(wizRequestPreview);
+				if (callback) {
+					callback(port);
+				}
 			}
 		} catch (error) {
 			console.log('portLoginAjax callSuccess Error: ' + error);
@@ -201,7 +210,12 @@ function wiz_requestCategory(port) {
 			if (Wiz_Context.token) {
 				wiz_portRequestCategoryAjax(port);
 			} else {
+				if (Wiz_Context.cookies) {
+					var loginParam = getloginParam(Wiz_Context.cookies);
+					portLoginAjax(loginParam, port, null, wiz_portRequestCategoryAjax);
+				}
 				//TODO 1、登陆，成功后调用wiz_portRequestCategoryAjax();
+				
 			}
 		}
 	}
@@ -503,6 +517,15 @@ function wiz_background_autoLogin() {
 	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, wiz_loginByCookies, true);
 }
 
+function wiz_background_getCookie() {
+	var callback = function (cookies) {
+		Wiz_Context.cookies = cookies;
+	};
+	Cookie.getCookies(Wiz_Context.cookieUrl, Wiz_Context.cookieName, callback, true);
+}
+
 chrome.extension.onConnect.addListener(wiz_onConnectListener);
 wiz_initContextMenus();
-wiz_background_autoLogin();
+//屏蔽自动登陆
+// wiz_background_autoLogin();
+wiz_background_getCookie();
